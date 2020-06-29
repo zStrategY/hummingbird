@@ -19,7 +19,7 @@ import net.minecraft.network.play.server.SPacketExplosion;
  * Updated a bit. -Zim 5/5/20
  **/
 @ModuleManifest(label = "Velocity", category = ModuleCategory.COMBAT, color = 0x717171)
-public class NoVelocity extends ToggleableModule {
+public class Velocity extends ToggleableModule {
     private boolean once;
 
     @Setting("AAC")
