@@ -21,7 +21,7 @@ import java.util.Objects;
 @ModuleManifest(label = "Speed", category = ModuleCategory.MOVEMENT, color = 0x2FBDCF)
 public class Speed extends ToggleableModule {
     @Setting("mode")
-    @Mode({"OnGround", "Strafe", "tpSpeed"})
+    @Mode({"OnGround", "NCPHOP", "PACKET"})
     public String mode = "OnGround";
     @Clamp(minimum = "0.1", maximum = "10.0")
     @Setting("Speed")
@@ -54,11 +54,11 @@ public class Speed extends ToggleableModule {
     public void onUpdate(UpdateEvent event) {
         if (mc.world == null || mc.player == null) return;
         switch (mode.toUpperCase()) {
-            case "Strafe":
+            case "NCPHOP":
                 if (event.getType() == EventType.PRE)
                     lastDist = Math.sqrt(((mc.player.posX - mc.player.prevPosX) * (mc.player.posX - mc.player.prevPosX)) + ((mc.player.posZ - mc.player.prevPosZ) * (mc.player.posZ - mc.player.prevPosZ)));
                 break;
-            case "tpSpeed":
+            case "PACKET":
                 if ((this.mc.player.moveForward != 0.0f || this.mc.player.moveStrafing != 0.0f)) {
                     for (double x = 0.0625; x < this.speed; x += 0.262) {
                         final double[] dir = getDirectionalSpeed(x);
