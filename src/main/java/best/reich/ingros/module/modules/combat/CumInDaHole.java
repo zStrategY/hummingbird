@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @ModuleManifest(label = "CumInDaHole", category = ModuleCategory.COMBAT, color = 0xffAEffAE)
-public class HoleFiller extends ToggleableModule {
+public class CumInDaHole extends ToggleableModule {
     @Setting("Fade")
     public boolean fade = true;
     @Setting("Radius")
