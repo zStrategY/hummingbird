@@ -22,7 +22,7 @@ import java.util.Objects;
 public class Speed extends ToggleableModule {
     @Setting("mode")
     @Mode({"OnGround", "Strafe", "tpSpeed"})
-    public String mode = "NCP";
+    public String mode = "OnGround";
     @Clamp(minimum = "0.1", maximum = "10.0")
     @Setting("Speed")
     public double speed = 0.25;
