@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 
 
 @ModuleManifest(label = "OffhandGap", category = ModuleCategory.COMBAT, color = 0xffAEEA1E)
-public class AutoOffhandGap extends ToggleableModule {
+public class OffhandGap extends ToggleableModule {
     @Clamp(minimum = "1", maximum = "22")
     @Setting("Health")
     public int health = 10;
