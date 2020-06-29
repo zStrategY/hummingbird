@@ -14,7 +14,7 @@ import java.util.Objects;
 
 
 @ModuleManifest(label = "OnGround", category = ModuleCategory.MOVEMENT, color = 0xff0AEf00)
-public class Strafe extends ToggleableModule {
+public class OnGround extends ToggleableModule {
     @Setting("OnGround")
     public boolean ground = false;
     @Subscribe
