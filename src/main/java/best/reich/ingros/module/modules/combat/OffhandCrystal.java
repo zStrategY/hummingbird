@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 
 
 @ModuleManifest(label = "OffhandCrystal", category = ModuleCategory.COMBAT, color = 0xffFFEA1E)
-public class AutoOffhandCrystal extends ToggleableModule {
+public class OffhandCrystal extends ToggleableModule {
     @Clamp(minimum = "1", maximum = "22")
     @Setting("Health")
     public int health = 20;
