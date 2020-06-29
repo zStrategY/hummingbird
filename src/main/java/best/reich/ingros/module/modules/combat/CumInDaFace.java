@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ModuleManifest(label = "CumInDaFace", category = ModuleCategory.COMBAT, color = 0x4BF7FF)
-public class AutoWeb extends ToggleableModule {
+public class CumInDaFace extends ToggleableModule {
 
     @Setting("Range")
     public double range = 3.4;
