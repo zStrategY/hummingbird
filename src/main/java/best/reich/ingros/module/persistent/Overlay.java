@@ -45,7 +45,7 @@ import java.util.*;
 public class Overlay extends PersistentModule {
     @Setting("ColorMode")
     @Mode({"NORMAL", "CLIENT", "RAINBOW"})
-    public String colormode = "NORMAL";
+    public String colormode = "RAINBOW";
 
     @Setting("Font")
     public boolean font = true;
@@ -96,7 +96,7 @@ public class Overlay extends PersistentModule {
     public boolean targetHUD = true;
 
     @Setting("ClientColor")
-    public Color clientColor = new Color(234, 38, 38);
+    public Color clientColor = new Color(234, 0, 230);
 
     private final TimerUtil potionTimer = new TimerUtil();
     private final TimerUtil serverTimer = new TimerUtil();
@@ -115,7 +115,7 @@ public class Overlay extends PersistentModule {
     @Subscribe
     public void onRender(Render2DEvent event) {
         if (mc.world == null || mc.player == null || mc.gameSettings.showDebugInfo) return;
-        RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + ChatFormatting.WHITE + " (" + IngrosWare.INSTANCE.getVersion() + ")", 2, 2, getHudColor(), font);
+        RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
         if (arraylist) {
             int togglesY = (int) (initialRenderPos - RenderUtil.getTextHeight(font) - 2);
             ArrayList<ToggleableModule> modules = new ArrayList<>(IngrosWare.INSTANCE.moduleManager.getToggles());

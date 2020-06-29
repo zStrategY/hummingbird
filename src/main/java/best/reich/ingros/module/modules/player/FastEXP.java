@@ -8,6 +8,8 @@ import me.xenforu.kelo.module.type.ToggleableModule;
 import net.b0at.api.event.Subscribe;
 import net.minecraft.init.Items;
 
+import static best.reich.ingros.util.game.GameUtil.setRightClickDelayTimer;
+
 
 @ModuleManifest(label = "FastEXP", category = ModuleCategory.PLAYER, color = 0x66ff66,hidden = true)
 public class FastEXP extends ToggleableModule {
@@ -15,8 +17,8 @@ public class FastEXP extends ToggleableModule {
 
     @Subscribe
     public void onPacket(PacketEvent event) {
-        if (mc.player != null && (mc.player.getHeldItemMainhand().getItem() == Items.EXPERIENCE_BOTTLE || mc.player.getHeldItemOffhand().getItem() == Items.EXPERIENCE_BOTTLE)) {
-            new Thread(() -> ((IMinecraft)mc).setRightClickDelayTimer(0)).start();
+        if (mc.player != null && (mc.player.getHeldItemMainhand().getItem() == Items.EXPERIENCE_BOTTLE)) {
+            mc.rightClickDelayTimer = 0;
         }
     }
 }

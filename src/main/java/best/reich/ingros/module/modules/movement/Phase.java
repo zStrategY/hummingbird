@@ -25,8 +25,8 @@ import net.minecraft.util.math.Vec3d;
 public class Phase extends ToggleableModule {
     @Setting("Mode")
     @Mode({"SAND", "PACKET", "SKIP", "NOCLIP", "VCLIP", "FULL"})
-    public String mode = "PACKET";
-    @Setting("Floor")
+    public String mode = "VCLIP";
+    @Setting("FLOOR")
     public boolean floor = true;
     private boolean zoomies = true;
 

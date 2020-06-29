@@ -23,7 +23,7 @@ import java.util.List;
 public class Flight extends ToggleableModule {
     @Setting("mode")
     @Mode({"CREATIVE", "PACKET", "VANILLA"})
-    public String mode = "CREATIVE";
+    public String mode = "PACKET";
     @Clamp(minimum = "0.01", maximum = "10.0")
     @Setting("Speed")
     public double speed = 0.06;

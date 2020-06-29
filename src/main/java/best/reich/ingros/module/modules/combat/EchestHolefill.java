@@ -1,4 +1,4 @@
-package best.reich.ingros.module.modules.player;
+package best.reich.ingros.module.modules.combat;
 
 import best.reich.ingros.events.entity.UpdateEvent;
 import me.xenforu.kelo.module.ModuleCategory;
@@ -25,8 +25,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-@ModuleManifest(label = "EnderChestHolefill", category = ModuleCategory.COMBAT, color = 0xffAEffAE)
-public class EnderChestHoleFill extends ToggleableModule {
+@ModuleManifest(label = "EchestHolefill", category = ModuleCategory.COMBAT, color = 0xffAEffAE)
+public class EchestHolefill extends ToggleableModule {
     @Setting("Fade")
     public boolean fade = true;
     @Setting("Radius")

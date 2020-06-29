@@ -77,7 +77,7 @@ public class MCFontRenderer extends CFont
         boolean bold = false;
         boolean italic = false;
         boolean strikethrough = false;
-        boolean underline = false;
+        boolean underline = true;
         boolean render = true;
         x *= 2.0D;
         y = (y - 3.0D) * 2.0D;

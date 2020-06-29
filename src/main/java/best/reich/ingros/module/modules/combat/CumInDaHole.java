@@ -62,7 +62,7 @@ public class CumInDaHole extends ToggleableModule {
             }
         }
         if (!holes.isEmpty()) {
-            if (!mc.player.getHeldItemMainhand().isEmpty() && mc.player.getHeldItemMainhand().getItem() instanceof ItemBlock && ((ItemBlock) mc.player.getHeldItemMainhand().getItem()).getBlock() == Blocks.COBWEB) {
+            if (!mc.player.getHeldItemMainhand().isEmpty() && mc.player.getHeldItemMainhand().getItem() instanceof ItemBlock && ((ItemBlock) mc.player.getHeldItemMainhand().getItem()).getBlock() == Blocks.WEB) {
                 holes.sort(Comparator.comparingDouble(hole1 -> mc.player.getDistance(hole1.getX(), hole1.getY(), hole1.getZ())));
                 Hole hole = holes.get(0);
                 placeBlock(event, new BlockPos(hole.getX(), hole.getY(), hole.getZ()));

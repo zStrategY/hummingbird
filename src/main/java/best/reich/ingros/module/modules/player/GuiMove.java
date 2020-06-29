@@ -13,8 +13,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import org.lwjgl.input.Keyboard;
 
-@ModuleManifest(label = "InvWalk", category = ModuleCategory.PLAYER, color = 0xffffff00)
-public class InvWalk extends ToggleableModule {
+@ModuleManifest(label = "GuiMove", category = ModuleCategory.PLAYER, color = 0xffffff00)
+public class GuiMove extends ToggleableModule {
     private static final KeyBinding[] MOVEMENT_KEYS = new KeyBinding[]{mc.gameSettings.keyBindForward, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindJump, mc.gameSettings.keyBindSprint};
 
     @Subscribe

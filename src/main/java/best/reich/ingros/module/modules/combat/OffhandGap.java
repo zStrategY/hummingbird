@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 public class OffhandGap extends ToggleableModule {
     @Clamp(minimum = "1", maximum = "22")
     @Setting("Health")
-    public int health = 10;
+    public int health = 7;
 
     @Setting("ToggleTotem")
     public boolean toggletotem = true;

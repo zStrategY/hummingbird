@@ -9,10 +9,10 @@ import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 
-@ModuleManifest(label = "ClickGui", category = ModuleCategory.RENDER, color = 0xFF05BAEC,bind = Keyboard.KEY_DELETE, hidden = true)
+@ModuleManifest(label = "ClickGui", category = ModuleCategory.RENDER, color = 0xFF05BAEC,bind = Keyboard.KEY_PAUSE, hidden = true)
 public class ClickGui extends ToggleableModule {
     @Setting("Color")
-    public Color color = new Color(179,0,46);
+    public Color color = new Color(179,0,240);
 
     private ClickGUI clickGUI;
     @Override

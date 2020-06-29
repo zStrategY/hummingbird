@@ -59,12 +59,12 @@ public class ModuleManager extends AbstractModuleManager {
     private void loadInternalModules() {
         try {
             System.out.println("DIR: " + getJarFolder());
-            if (ClassUtil.getClassesIn(getJarFolder()).isEmpty()) System.out.println("[IngrosWare] No internal modules found!");
+            if (ClassUtil.getClassesIn(getJarFolder()).isEmpty()) System.out.println("[hummingbird] No internal modules found!");
             for (Class clazz : ClassUtil.getClassesIn(getJarFolder())) {
                 if (clazz != null && ToggleableModule.class.isAssignableFrom(clazz)) {
                     final ToggleableModule module = (ToggleableModule) clazz.newInstance();
                     register(module);
-                    System.out.println("[IngrosWare] Found internal module " + module.getLabel());
+                    System.out.println("[hummingbird] Found internal module " + module.getLabel());
                 }
             }
         } catch (Exception e) {
@@ -78,12 +78,12 @@ public class ModuleManager extends AbstractModuleManager {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            if (ClassUtil.getClassesEx(dir.getPath()).isEmpty()) System.out.println("[IngrosWare] No external modules found!");
+            if (ClassUtil.getClassesEx(dir.getPath()).isEmpty()) System.out.println("[hummingbird] No external modules found!");
             for (Class clazz : ClassUtil.getClassesEx(dir.getPath())) {
                 if (clazz != null && ToggleableModule.class.isAssignableFrom(clazz)) {
                     final ToggleableModule module = (ToggleableModule) clazz.newInstance();
                     register(module);
-                    System.out.println("[IngrosWare] Found external module " + module.getLabel());
+                    System.out.println("[hummingbird] Found external module " + module.getLabel());
                 }
             }
         } catch (Exception e) {

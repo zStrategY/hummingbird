@@ -32,7 +32,7 @@ public class Surround extends ToggleableModule {
     @Setting("Sneak")
     public boolean sneak = false;
     @Setting("Teleport")
-    public boolean teleport = true;
+    public boolean teleport = false;
     @Setting("EndChest")
     public boolean endChest = true;
     @Setting("JumpDisable")

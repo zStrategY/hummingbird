@@ -45,14 +45,14 @@ public class CommandManager extends AbstractCommandManager {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            if (ClassUtil.getClassesEx(dir.getPath()).isEmpty()) System.out.println("[IngrosWare] No external commands found!");
+            if (ClassUtil.getClassesEx(dir.getPath()).isEmpty()) System.out.println("[hummingbird] No external commands found!");
             for (Class clazz : ClassUtil.getClassesEx(dir.getPath())) {
                 if (clazz != null) {
                     if (Command.class.isAssignableFrom(clazz)) {
                         final Command command = (Command) clazz.newInstance();
                         if (command != null) {
                             register(command);
-                            System.out.println("[IngrosWare] Found external command " + command.getLabel());
+                            System.out.println("[hummingbird] Found external command " + command.getLabel());
                         }
                     }
                 }

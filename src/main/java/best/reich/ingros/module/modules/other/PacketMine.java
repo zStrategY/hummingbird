@@ -19,10 +19,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 
-@ModuleManifest(label = "FastBreak", category = ModuleCategory.OTHER, color = 0xfffED3)
-public class FastBreak extends ToggleableModule {
+@ModuleManifest(label = "PacketMine", category = ModuleCategory.OTHER, color = 0xfffED3)
+public class PacketMine extends ToggleableModule {
     @Setting("Mode")
-    @Mode({"PACKET", "DAMAGE","INSTANCE"})
+    @Mode({"PACKET"})
     public String mode = "PACKET";
     @Setting("Reset")
     public boolean reset = true;
@@ -75,18 +75,6 @@ public class FastBreak extends ToggleableModule {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.getPos(), event.getFacing()));
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.getPos(), event.getFacing()));
                     event.setCancelled(true);
-                    break;
-                case "DAMAGE":
-                    if (mc.playerController.curBlockDamageMP >= 0.7f) {
-                        mc.playerController.curBlockDamageMP = 1.0f;
-                    }
-                    break;
-                case "INSTANT":
-                    mc.player.swingArm(EnumHand.MAIN_HAND);
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.getPos(), event.getFacing()));
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.getPos(), event.getFacing()));
-                    mc.playerController.onPlayerDestroyBlock(event.getPos());
-                    mc.world.setBlockToAir(event.getPos());
                     break;
             }
         }
