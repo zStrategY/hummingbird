@@ -1,6 +1,6 @@
 <h1 align="center">hummingbird</h1>
 <div align="center">
-  <strong> ingrosware continued by chardeenol.</strong>
+  <strong> an ingrosware fork by chardnol.</strong>
 </div>
 <br />
 
