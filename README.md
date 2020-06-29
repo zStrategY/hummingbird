@@ -1,6 +1,6 @@
-<h1 align="center">IngrosWare</h1>
+<h1 align="center">chardware</h1>
 <div align="center">
-  <strong> 1.12 Minecraft injection cheat.</strong>
+  <strong> ingrosware continued by chardeenol.</strong>
 </div>
 <br />
 
