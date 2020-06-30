@@ -13,7 +13,7 @@ public class Logger implements Minecraftable {
     }
 
     public static void printMessage(String message,boolean notification) {
-        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.RED + "{" + ChatFormatting.GRAY + "hummingbird" + ChatFormatting.RED + "} " + ChatFormatting.GRAY +  message));
+        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.BLUE + "(" + ChatFormatting.WHITE + "Hummingbird" + ChatFormatting.BLUE + ") " + ChatFormatting.GRAY +  message));
         if (notification)
         IngrosWare.INSTANCE.notificationManager.addNotification(StringUtils.stripControlCodes(message),3000);
     }

@@ -8,6 +8,7 @@ import me.xenforu.kelo.setting.SettingManager;
 import net.b0at.api.event.Event;
 import net.b0at.api.event.EventManager;
 
+import java.io.File;
 import java.nio.file.Files;
 
 /**
@@ -26,7 +27,7 @@ public class IngrosWare extends Client {
     public ProfileManager profileManager = new ProfileManager();
     private final AltService altService = new AltService();
     public IngrosWare() {
-        super("hummingbird", "0.0.2", new String[]{"x3", "carroteater", "Xenforu"});
+        super("Hummingbird", "0.0.2", new String[]{"x3", "carroteater", "Xenforu"});
     }
 
     @Override

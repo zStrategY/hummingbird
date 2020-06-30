@@ -12,7 +12,7 @@ import net.b0at.api.event.types.EventType;
 
 @ModuleManifest(label = "Timer", category = ModuleCategory.MOVEMENT, color = 0xff0355ff)
 public class Timer extends ToggleableModule {
-    @Clamp(minimum = "0.1f", maximum = "10.0f")
+    @Clamp(minimum = "0.1f", maximum = "50.0f")
     @Setting("Speed")
     public float speed = 10;
 

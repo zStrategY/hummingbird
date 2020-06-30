@@ -44,15 +44,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-@ModuleManifest(label = "WaifuESP", category = ModuleCategory.RENDER, color = 0xff007777, hidden = false)
-public class WaifuESP extends ToggleableModule {
-    private ResourceLocation waifu;
+@ModuleManifest(label = "FloppaESP", category = ModuleCategory.RENDER, color = 0xff007777, hidden = false)
+public class FloppaESP extends ToggleableModule {
+    private ResourceLocation Flop;
 
-    private final String waifuUrl = "https://i.imgur.com/AFZUcqA.png";
+    private final String FlopUrl = "https://imgur.com/a/tn2DqeB.png";
 
 
-    private final File waifuCache =
-            new File(IngrosWare.INSTANCE.path + File.separator + "waifu.png");
+    private final File FlopCache =
+            new File(IngrosWare.INSTANCE.path + File.separator + "Flop.png");
 
     private <T> BufferedImage getImage(T source, ThrowingFunction<T, BufferedImage> readFunction) {
         try {
@@ -67,7 +67,7 @@ public class WaifuESP extends ToggleableModule {
     @Subscribe
     public void onRenderGameOverlayEvent(Render2DEvent event) {
         if (mc.world == null || mc.player == null) return;
-        if (waifu == null) {
+        if (Flop == null) {
             return;
         }
 
@@ -99,7 +99,7 @@ public class WaifuESP extends ToggleableModule {
                     final float h = (transformed.z * 2) - y;
 
 
-                    mc.renderEngine.bindTexture(waifu);
+                    mc.renderEngine.bindTexture(Flop);
 
                     GlStateManager.color(255, 255, 255);
                     Gui.drawScaledCustomSizeModalRect(
@@ -117,29 +117,29 @@ public class WaifuESP extends ToggleableModule {
                 () -> {
                     try {
                         BufferedImage image;
-                        if (waifuCache.exists()) { // TODO: download async
-                            image = getImage(waifuCache, ImageIO::read); // from cache
+                        if (FlopCache.exists()) { // TODO: download async
+                            image = getImage(FlopCache, ImageIO::read); // from cache
                         } else {
-                            image = getImage(new URL(waifuUrl), ImageIO::read); // from internet
+                            image = getImage(new URL(FlopUrl), ImageIO::read); // from internet
                             if (image != null) {
                                 try {
-                                    ImageIO.write(image, "png", waifuCache);
+                                    ImageIO.write(image, "png", FlopCache);
                                 } catch (IOException ex) {
                                     ex.printStackTrace();
                                 }
                             }
                         }
                         if (image == null) {
-                            Logger.printMessage("Failed to download waifu image", true);
+                            Logger.printMessage("Failed to download Flop image", true);
                             return;
                         }
 
                         DynamicTexture dynamicTexture = new DynamicTexture(image);
                         dynamicTexture.loadTexture(mc.getResourceManager());
-                        waifu = mc.getTextureManager().getDynamicTextureLocation("WAIFU", dynamicTexture);
+                        Flop = mc.getTextureManager().getDynamicTextureLocation("Flop", dynamicTexture);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Logger.printMessage("WaifuESP did an oopsie", true);
+                        Logger.printMessage("FlopESP did an oopsie", true);
                     }
                 });
     }

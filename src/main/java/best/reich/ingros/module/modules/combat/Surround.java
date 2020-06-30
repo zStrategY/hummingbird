@@ -28,7 +28,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 @ModuleManifest(label = "Surround", category = ModuleCategory.COMBAT, color = 0xff0030ff)
-public class Surround extends ToggleableModule {
+public class    Surround extends ToggleableModule {
     @Setting("Sneak")
     public boolean sneak = false;
     @Setting("Teleport")

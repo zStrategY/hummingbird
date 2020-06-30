@@ -1,4 +1,4 @@
-package best.reich.ingros.module.modules.player;
+package best.reich.ingros.module.modules.combat;
 
 import best.reich.ingros.events.entity.UpdateEvent;
 import me.xenforu.kelo.module.ModuleCategory;

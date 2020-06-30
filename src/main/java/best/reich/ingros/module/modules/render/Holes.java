@@ -72,10 +72,10 @@ public class Holes extends ToggleableModule {
 
                 } else if (isObbyHole(new BlockPos(hole.getX(), hole.getY(), hole.getZ())) || isBothHole(new BlockPos(hole.getX(), hole.getY(), hole.getZ()))) {
                     if (mode.equalsIgnoreCase("fill") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESP(bb, 255f, 160f, 0f, 40F);
+                        RenderUtil.drawESP(bb, 255f, 0f, 230f, 40F);
 
                     if (mode.equalsIgnoreCase("outline") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESPOutline(bb, 255f, 160f, 0f, 255f, 1f);
+                        RenderUtil.drawESPOutline(bb, 255f, 0f, 230f, 255f, 1f);
 
                 } else if (weak && isElseHole(new BlockPos(hole.getX(), hole.getY(), hole.getZ()))) {
                     if (mode.equalsIgnoreCase("fill") || mode.equalsIgnoreCase("both"))
@@ -86,10 +86,10 @@ public class Holes extends ToggleableModule {
 
                 } else if (voidholes) {
                     if (mode.equalsIgnoreCase("fill") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESP(bb, 255f,0,255f, 40F);
+                        RenderUtil.drawESP(bb, 255f,255,255f, 40F);
 
                     if (mode.equalsIgnoreCase("outline") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESPOutline(bb, 255f,0,255f,255f, 1f);
+                        RenderUtil.drawESPOutline(bb, 255f,255,255f,255f, 1f);
 
                 }
             }
