@@ -88,7 +88,7 @@ public class Overlay extends PersistentModule {
     public boolean greetings = true;
 
     @Setting("Potions")
-    public boolean potions = true;
+    public boolean potions = false;
 
     @Setting("NotResponding")
     public boolean notresponding = true;
@@ -454,13 +454,13 @@ public class Overlay extends PersistentModule {
     private String getGreetings() {
         final int timeOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         if (timeOfDay < 12) {
-            return "Good Morning ";
+            return "Good Morning :^)";
         } else if (timeOfDay < 16) {
-            return "Good afternoon ";
+            return "Good afternoon :^)";
         } else if (timeOfDay < 21) {
-            return "Good evening ";
+            return "Good evening :^)";
         } else {
-            return "Good night ";
+            return "Good night :^)";
         }
     }
 
