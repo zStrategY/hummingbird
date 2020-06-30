@@ -17,7 +17,8 @@ import java.util.Objects;
 
 
 @ModuleManifest(label = "Speed", category = ModuleCategory.MOVEMENT, color = 0x2FBDCF)
-public class Speed extends ToggleableModule {
+public class Speed extends ToggleableModule {/*
+}
     @Setting("mode")
     @Mode({"OnGround", "Strafe", "tpSpeed"})
     public String mode = "OnGround";
@@ -90,6 +91,6 @@ public class Speed extends ToggleableModule {
         final double posX = forward * speed * cos + side * speed * sin;
         final double posZ = forward * speed * sin - side * speed * cos;
         return new double[]{posX, posZ};
-    }
+    }*/
 
 }

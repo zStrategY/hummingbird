@@ -74,7 +74,7 @@ public class MCFontRenderer extends CFont
         CFont.CharData[] currentData = this.charData;
         float alpha = (color >> 24 & 0xFF) / 255.0F;
         boolean randomCase = false;
-        boolean bold = false;
+        boolean bold = true;
         boolean italic = false;
         boolean strikethrough = false;
         boolean underline = false;

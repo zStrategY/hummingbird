@@ -16,7 +16,6 @@ import net.b0at.api.event.Subscribe;
  **/
 @ModuleManifest(label = "Sprint", category = ModuleCategory.MOVEMENT, color = 0xff00ff00)
 public class Sprint extends ToggleableModule {
-
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         if(event.getType() == EventType.PRE) {
