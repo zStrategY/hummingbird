@@ -62,7 +62,7 @@ public class Spammer extends ToggleableModule {
             if (!file.exists()) {
                 file.createNewFile();
                 StringList = new ArrayList<>();
-                StringList.add("IngrosWare owns all! %RANDOMNUMBER%");
+                StringList.add("Hummingbird owns all! %RANDOMNUMBER%");
                 FileInit = true;
                 return;
             }
@@ -70,7 +70,7 @@ public class Spammer extends ToggleableModule {
             if (file.exists()) {
                 if (Files.readAllLines(file.toPath()).size() <= 0) {
                     StringList = new ArrayList<>();
-                    StringList.add("IngrosWare owns all! %RANDOMNUMBER%");
+                    StringList.add("Hummingbird owns all! %RANDOMNUMBER%");
                     FileInit = true;
                     return;
                 }

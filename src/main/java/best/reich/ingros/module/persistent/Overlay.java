@@ -172,8 +172,7 @@ public class Overlay extends PersistentModule {
                 if (IngrosWare.INSTANCE.moduleManager.getToggleByName("TotemPopCounter").isEnabled() && TotemPopCounter.popList.containsKey(getTarget().getName()))
                     RenderUtil.drawText("pops:" + TotemPopCounter.popList.get(getTarget().getName()), event.getScaledResolution().getScaledWidth() - 150 / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
 
-                RenderUtil.drawText("hp: " + Math.floor(getTarget().getHealth()), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth("HP: " + Math.floor(getTarget().getHealth()) + getTarget().getAbsorptionAmount(), font) / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
-
+                RenderUtil.drawText("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), font) / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
                 GlStateManager.scale(1, 1, 1);
                 GlStateManager.popMatrix();
                 RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 48, (event.getScaledResolution().getScaledHeight() / 2) + 45 + 50, (((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.60f), 3, new Color(45, 45, 45, 255).getRGB());
@@ -193,8 +192,9 @@ public class Overlay extends PersistentModule {
             RenderUtil.drawText((fps ? ", TPS: " : "TPS: ") + ChatFormatting.WHITE + TickRate.TPS, 2 + (fps ? RenderUtil.getTextWidth("FPS: " + ChatFormatting.WHITE + Minecraft.getDebugFPS(), font) : 0), event.getScaledResolution().getScaledHeight() - (mc.ingameGUI.getChatGUI().getChatOpen() ? RenderUtil.getTextHeight(font) + 14 : RenderUtil.getTextHeight(font) + 2) - (xyz ? RenderUtil.getTextHeight(font) + 2 : 0), getHudColor(), font);
         float y = 4 + RenderUtil.getTextHeight(font);
         if (totems) {
-            RenderUtil.drawText("Totems" + ChatFormatting.WHITE + totemCount(), 2, y, getHudColor(), font);
+            RenderUtil.drawText("Totems: " + ChatFormatting.WHITE + totemCount(), 2, y, getHudColor(), font);
             y += RenderUtil.getTextHeight(font) + 2;
+
         }
         if (crystals) {
             RenderUtil.drawText("Crystals" + ChatFormatting.WHITE + crystalCount(), 2, y, getHudColor(), font);
@@ -475,7 +475,8 @@ public class Overlay extends PersistentModule {
     private int crystalCount() {
         int count = 0;
         for (int i = 0; i < 45; ++i) {
-            if (!mc.player.inventory.getStackInSlot(i).isEmpty() && mc.player.inventory.getStackInSlot(i).getItem() == Items.END_CRYSTAL) {
+            if (!mc.player.inventory.getStackInSlot(i).isStackable() && mc.player.inventory.getStackInSlot(i).getItem() == Items.END_CRYSTAL) {
+                count++;
 
             }
         }

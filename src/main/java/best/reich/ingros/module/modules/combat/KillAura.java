@@ -129,7 +129,7 @@ public class KillAura extends ToggleableModule {
             case "FOV":
                 return yawDist(e);
             case "HEALTH":
-                return e instanceof EntityLivingBase ? ((EntityLivingBase) e).getHealth() : Double.POSITIVE_INFINITY;
+                return e instanceof EntityLivingBase ? ((EntityLivingBase) e).getHealth() +  ((EntityLivingBase) e).getAbsorptionAmount() : Double.POSITIVE_INFINITY;
             default:
                 return mc.player.getDistanceSqToEntity(e);
         }

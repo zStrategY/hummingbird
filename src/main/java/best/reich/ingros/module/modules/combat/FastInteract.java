@@ -10,7 +10,7 @@ import net.b0at.api.event.Subscribe;
 public class FastInteract extends ToggleableModule {
 
     @Subscribe
-    public void onPacket(PacketEvent event) {
+    public void onPacket(PacketEvent event){
         mc.rightClickDelayTimer = 0;
     }
 

@@ -19,7 +19,7 @@ import java.util.Objects;
 
 
 @ModuleManifest(label = "Speed", category = ModuleCategory.MOVEMENT, color = 0x2FBDCF)
-public class Speed extends ToggleableModule {
+public class Speed extends ToggleableModule { /*
     @Setting("mode")
     @Mode({"NCP", "NCPHOP", "PACKET"})
     public String mode = "NCP";
@@ -32,18 +32,57 @@ public class Speed extends ToggleableModule {
     private int waitCounter;
     private int forward = 1;
 
+    @Subscribe
+    public void onSendPacket(PacketEvent event) {
+        if (mc.world == null || mc.player == null) return;
+        setSuffix(mode);
+        if (event.getType() == EventType.PRE) {
+            if (mode.toUpperCase().equals("NCP") && event.getPacket() instanceof CPacketPlayer && mc.player.onGround && !mc.player.movementInput.jump) {
+                speedTick = !speedTick;
+                if (!speedTick) {
+                    final boolean isUnderBlocks = !mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0, 1, 0)).isEmpty();
+                    ICPacketPlayer packet = (ICPacketPlayer) event.getPacket();
+                    packet.setY(packet.getY() + (isUnderBlocks ? 0.2 : 0.4));
+                }
+                mc.player.motionX *= (speedTick ? 2D : 0.701);
+                mc.player.motionZ *= (speedTick ? 2D : 0.701);
+            }
+        }
+    }
+
+    @Subscribe
+    public void onUpdate(UpdateEvent event) {
+        if (mc.world == null || mc.player == null) return;
+        switch (mode.toUpperCase()) {
+            case "NCPHOP":
+                if (event.getType() == EventType.PRE)
+                    lastDist = Math.sqrt(((mc.player.posX - mc.player.prevPosX) * (mc.player.posX - mc.player.prevPosX)) + ((mc.player.posZ - mc.player.prevPosZ) * (mc.player.posZ - mc.player.prevPosZ)));
+                break;
+            case "PACKET":
+                if ((this.mc.player.moveForward != 0.0f || this.mc.player.moveStrafing != 0.0f)) {
+                    for (double x = 0.0625; x < this.speed; x += 0.262) {
+                        final double[] dir = getDirectionalSpeed(x);
+                        this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX + dir[0], this.mc.player.posY, this.mc.player.posZ + dir[1], this.mc.player.onGround));
+                    }
+                    this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX + this.mc.player.motionX, -30, this.mc.player.posZ + this.mc.player.motionZ, this.mc.player.onGround));
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
 
     @Subscribe
     public void onMotion(MotionEvent event) {
         if (mc.world == null || mc.player == null) return;
         if (mode.toUpperCase().equals("NCPHOP")) {
-            switch (this.stage) {
+            switch (stage) {
                 case 0:
                     ++stage;
                     lastDist = 0.0D;
                     break;
-                case 1:
-                default:
+                case 2:
                     double motionY = 0.40123128;
                     if ((mc.player.moveForward != 0.0F || mc.player.moveStrafing != 0.0F) && mc.player.onGround) {
                         if (mc.player.isPotionActive(MobEffects.JUMP_BOOST))
@@ -53,8 +92,14 @@ public class Speed extends ToggleableModule {
                     }
                     break;
                 case 3:
-                    this.moveSpeed = this.lastDist - 0.76D * (this.lastDist - this.getBaseMoveSpeed());
-
+                    moveSpeed = lastDist - (0.76 * (lastDist - getBaseMoveSpeed()));
+                    break;
+                default:
+                    if ((mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0D, mc.player.motionY, 0.0D)).size() > 0 || mc.player.isCollidedVertically) && stage > 0) {
+                        stage = mc.player.moveForward == 0.0F && mc.player.moveStrafing == 0.0F ? 0 : 1;
+                    }
+                    moveSpeed = lastDist - lastDist / 159.0D;
+                    break;
             }
             moveSpeed = Math.max(moveSpeed, getBaseMoveSpeed());
             double forward = mc.player.movementInput.moveForward, strafe = mc.player.movementInput.moveStrafe, yaw = mc.player.rotationYaw;
@@ -103,6 +148,6 @@ public class Speed extends ToggleableModule {
         final double posX = forward * speed * cos + side * speed * sin;
         final double posZ = forward * speed * sin - side * speed * cos;
         return new double[]{posX, posZ};
-    }
+    } */
 
 }

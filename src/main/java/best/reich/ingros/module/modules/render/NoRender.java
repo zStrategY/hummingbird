@@ -22,5 +22,6 @@ public class NoRender extends ToggleableModule { /*
     public boolean nohurtcam = true;
     @Setting("NoTotemAnimation")
     public boolean nototemanimation = false;
-*/
+    */
+
 }

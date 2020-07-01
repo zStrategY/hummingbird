@@ -8,6 +8,10 @@ import me.xenforu.kelo.module.type.ToggleableModule;
 import net.b0at.api.event.Subscribe;
 
 
+/**
+ * YOINK
+ */
+
 @ModuleManifest(label = "YoinkHoleTP", category = ModuleCategory.MOVEMENT, color = 0xffffff33)
 public class YoinkHoleTP extends ToggleableModule {
     @Subscribe
