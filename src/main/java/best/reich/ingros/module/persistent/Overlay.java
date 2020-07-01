@@ -78,6 +78,9 @@ public class Overlay extends PersistentModule {
     @Setting("Totems")
     public boolean totems = true;
 
+    @Setting("Crystals")
+    public boolean crystals = true;
+
     @Setting("Inventory")
     public boolean inventory = true;
 
@@ -106,6 +109,7 @@ public class Overlay extends PersistentModule {
     private final TimerUtil serverTimer = new TimerUtil();
     private int initialRenderPos = 2;
     private final ResourceLocation INVENTORY_RESOURCE = new ResourceLocation("textures/gui/container/inventory.png");
+    private final ResourceLocation TOTEM_RESOURCE = new ResourceLocation("textures/item/totem.png");
     private Gui gui = new Gui();
 
     @Subscribe
@@ -166,9 +170,9 @@ public class Overlay extends PersistentModule {
                 GlStateManager.scale(0.5, 0.5, 0.5);
 
                 if (IngrosWare.INSTANCE.moduleManager.getToggleByName("TotemPopCounter").isEnabled() && TotemPopCounter.popList.containsKey(getTarget().getName()))
-                    RenderUtil.drawText("Pops:" + TotemPopCounter.popList.get(getTarget().getName()), event.getScaledResolution().getScaledWidth() - 150 / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
+                    RenderUtil.drawText("pops:" + TotemPopCounter.popList.get(getTarget().getName()), event.getScaledResolution().getScaledWidth() - 150 / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
 
-                RenderUtil.drawText("HP: " + Math.floor(getTarget().getHealth()), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth("HP: " + Math.floor(getTarget().getHealth()), font) / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
+                RenderUtil.drawText("hp: " + Math.floor(getTarget().getHealth()), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth("HP: " + Math.floor(getTarget().getHealth()) + getTarget().getAbsorptionAmount(), font) / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
 
                 GlStateManager.scale(1, 1, 1);
                 GlStateManager.popMatrix();
@@ -189,7 +193,11 @@ public class Overlay extends PersistentModule {
             RenderUtil.drawText((fps ? ", TPS: " : "TPS: ") + ChatFormatting.WHITE + TickRate.TPS, 2 + (fps ? RenderUtil.getTextWidth("FPS: " + ChatFormatting.WHITE + Minecraft.getDebugFPS(), font) : 0), event.getScaledResolution().getScaledHeight() - (mc.ingameGUI.getChatGUI().getChatOpen() ? RenderUtil.getTextHeight(font) + 14 : RenderUtil.getTextHeight(font) + 2) - (xyz ? RenderUtil.getTextHeight(font) + 2 : 0), getHudColor(), font);
         float y = 4 + RenderUtil.getTextHeight(font);
         if (totems) {
-            RenderUtil.drawText("Totems: " + ChatFormatting.WHITE + totemCount(), 2, y, getHudColor(), font);
+            RenderUtil.drawText("Totems" + ChatFormatting.WHITE + totemCount(), 2, y, getHudColor(), font);
+            y += RenderUtil.getTextHeight(font) + 2;
+        }
+        if (crystals) {
+            RenderUtil.drawText("Crystals" + ChatFormatting.WHITE + crystalCount(), 2, y, getHudColor(), font);
             y += RenderUtil.getTextHeight(font) + 2;
         }
         if (ping) {
@@ -454,14 +462,24 @@ public class Overlay extends PersistentModule {
     private String getGreetings() {
         final int timeOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         if (timeOfDay < 12) {
-            return "Good Morning :^)";
+            return "Good Morning :^) ";
         } else if (timeOfDay < 16) {
-            return "Good afternoon :^)";
+            return "Good afternoon :^) ";
         } else if (timeOfDay < 21) {
-            return "Good evening :^)";
+            return "Good evening :^) ";
         } else {
-            return "Good night :^)";
+            return "Good night :^) ";
         }
+    }
+
+    private int crystalCount() {
+        int count = 0;
+        for (int i = 0; i < 45; ++i) {
+            if (!mc.player.inventory.getStackInSlot(i).isEmpty() && mc.player.inventory.getStackInSlot(i).getItem() == Items.END_CRYSTAL) {
+
+            }
+        }
+        return count;
     }
 
     private int totemCount() {

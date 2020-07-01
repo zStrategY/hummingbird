@@ -60,7 +60,7 @@ public class CrystalAura extends ToggleableModule {
     @Setting("BreakRange")
     public float breakRange = 6.0f;
     @Setting("AttackSpeed")
-    public int attackSpeed = 19;
+    public int attackSpeed = 18;
     @Clamp(minimum = "1", maximum = "19")
     @Setting("MinimumDamage")
     public int minDamage = 4;
@@ -76,7 +76,7 @@ public class CrystalAura extends ToggleableModule {
     @Setting("Place")
     public boolean place = true;
     @Setting("pSilent")
-    public boolean pSilent = false;
+    public boolean pSilent = true;
     @Setting("RayTrace")
     public boolean rayTrace = false;
     @Setting("AutoSwitch")
@@ -85,8 +85,6 @@ public class CrystalAura extends ToggleableModule {
     public boolean antiStuck = true;
     @Setting("MultiPlace")
     public boolean multiPlace = false;
-    @Setting("ShowRotations")
-    public boolean showRotations = false;
     @Setting("Announcer")
     public boolean announcer = true;
     @Setting("AntiSuicide")
@@ -96,7 +94,7 @@ public class CrystalAura extends ToggleableModule {
     private BlockPos render;
     private String dmg;
     private long placeSystemTime;
-    private long breakSystemTime;
+    private double breakSystemTime;
     private long antiStuckSystemTime;
     private long multiPlaceSystemTime;
     private boolean switchCooldown;
@@ -104,27 +102,26 @@ public class CrystalAura extends ToggleableModule {
 
 
     //break
+    // thanks neva lack for helping me (even tho you called me a skid)
+
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream()
-                .filter(entity -> entity instanceof EntityEnderCrystal)
-                .map(entity -> entity)
-                .min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c)))
-                .orElse(null);
+        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).map(entity -> entity).min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c))).orElse(null);
         if (crystal != null && render != null && mc.player.getDistanceToEntity(crystal) <= breakRange) {
             if (event.getType() == EventType.PRE) {
-            } else if (System.nanoTime() / 5000L - breakSystemTime >= 300 - attackSpeed * 20) {
+                final float[] rots = MathUtil.calcAngle(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(render.getX() + 0.5, render.getY() + 1.0, render.getZ() + 0.5));
+            } else if (System.nanoTime() / 1000000L - breakSystemTime >= 420 - attackSpeed * 20) {
                 mc.playerController.attackEntity(mc.player, crystal);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
-                breakSystemTime = System.nanoTime() / 5000L;
+                breakSystemTime = System.nanoTime() / 1000000L;
             }
             if (multiPlace) {
-                if (System.nanoTime() / 5000L - multiPlaceSystemTime <= multiPlaceSpeed * 50 && multiPlaceSpeed < 10) {
+                if (System.nanoTime() / 1000000L - multiPlaceSystemTime <= multiPlaceSpeed * 50 && multiPlaceSpeed < 10) {
                     if (!antiStuck) {
                         return;
                     }
-                    if (System.nanoTime() / 5000L - antiStuckSystemTime <= 300 + (400 - attackSpeed * 20)) {
-                        multiPlaceSystemTime = System.nanoTime() / 5000L;
+                    if (System.nanoTime() / 1000000L - antiStuckSystemTime <= 300 + (400 - attackSpeed * 20)) {
+                        multiPlaceSystemTime = System.nanoTime() / 1000000L;
                         return;
                     }
                 }
@@ -348,11 +345,15 @@ public class CrystalAura extends ToggleableModule {
         return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
     }
 
+    /*
+    make an antiplacestuck (should be decently easy) if theres an entity it should place on and no placing is happening disable and enable ca
+     */
+
     @Override
     public void onEnable() {
         super.onEnable();
         if (announcer) {
-            Logger.printMessage("CrystalAura Enabled!", true);
+            Logger.printMessage("CrystalAura ON", true);
         }
     }
 
@@ -362,7 +363,7 @@ public class CrystalAura extends ToggleableModule {
         dmg = null;
         render = null;
         if (announcer) {
-            Logger.printMessage("CrystalAura Disabled!", true);
+            Logger.printMessage("CrystalAura OFF", true);
         }
     }
 }

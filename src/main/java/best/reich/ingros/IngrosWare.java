@@ -27,7 +27,7 @@ public class IngrosWare extends Client {
     public ProfileManager profileManager = new ProfileManager();
     private final AltService altService = new AltService();
     public IngrosWare() {
-        super("Hummingbird", "0.0.2", new String[]{"x3", "carroteater", "Xenforu"});
+        super("Hummingbird", "0.1", new String[]{"x3", "carroteater", "Xenforu"});
     }
 
     @Override

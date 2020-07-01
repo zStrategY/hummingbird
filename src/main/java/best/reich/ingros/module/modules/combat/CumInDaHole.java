@@ -1,6 +1,7 @@
 package best.reich.ingros.module.modules.combat;
 
 import best.reich.ingros.events.entity.UpdateEvent;
+import best.reich.ingros.util.game.InventoryUtil;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
@@ -10,6 +11,7 @@ import net.b0at.api.event.Subscribe;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -33,7 +35,18 @@ public class CumInDaHole extends ToggleableModule {
     @Clamp(maximum = "5")
     public int radius = 5;
     public final List<Hole> holes = new ArrayList<>();
-    private final List<Block> blackList = Arrays.asList(Blocks.ENDER_CHEST, Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.CRAFTING_TABLE, Blocks.ANVIL, Blocks.BREWING_STAND, Blocks.HOPPER, Blocks.DROPPER, Blocks.DISPENSER, Blocks.TRAPDOOR, Blocks.ENCHANTING_TABLE);
+    private final List<Block> blackList = Arrays.asList(
+            Blocks.ENDER_CHEST,
+            Blocks.CHEST,
+            Blocks.TRAPPED_CHEST,
+            Blocks.CRAFTING_TABLE,
+            Blocks.ANVIL,
+            Blocks.BREWING_STAND,
+            Blocks.HOPPER,
+            Blocks.DROPPER,
+            Blocks.DISPENSER,
+            Blocks.TRAPDOOR,
+            Blocks.ENCHANTING_TABLE);
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
@@ -51,6 +64,14 @@ public class CumInDaHole extends ToggleableModule {
                         final IBlockState downBlockState = mc.world.getBlockState(blockPos.down());
                         if (downBlockState.getBlock() == Blocks.AIR) {
                             final BlockPos downPos = blockPos.down();
+                            int lastSlot;
+                            int slot;
+                            if (InventoryUtil.getItemSlot(mc.player.inventoryContainer, Item.getItemById(30)) < 36) {
+                                InventoryUtil.swap(InventoryUtil.getItemSlot(mc.player.inventoryContainer, Item.getItemById(30)), 44);
+                            }
+                            slot = InventoryUtil.getItemSlotInHotbar(Item.getItemById(30));
+                            mc.player.inventory.currentItem = slot;
+                            mc.playerController.updateController();
                             if (this.isBlockValid(downBlockState, downPos)) {
                                 this.holes.add(new Hole(downPos.getX(), downPos.getY(), downPos.getZ(), true));
                             }
@@ -100,6 +121,10 @@ public class CumInDaHole extends ToggleableModule {
         float[] rotations = getLegitRotations(vec);
 
         mc.player.connection.sendPacket(new CPacketPlayer.Rotation(rotations[0], rotations[1], mc.player.onGround));
+    }
+
+    public boolean canPlace() {
+        return InventoryUtil.getItemCount(mc.player.inventoryContainer, Item.getItemById(30)) != 0;
     }
 
     private boolean placeBlock(UpdateEvent event, final BlockPos pos) {
