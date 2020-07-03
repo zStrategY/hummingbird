@@ -71,10 +71,10 @@ public class FloppaESP extends ToggleableModule {
             return;
         }
 
-        for (Entity entity : mc.world.loadedEntityList) {
-            if (entity instanceof EntityLivingBase) {
-                final EntityLivingBase ent = (EntityLivingBase) entity;
-                if (isValid(ent) && ent.getUniqueID() != mc.player.getUniqueID() && RenderUtil.isInViewFrustrum(ent)) {
+            for (Entity entity : mc.world.loadedEntityList) {
+                if (entity instanceof EntityLivingBase) {
+                    final EntityLivingBase ent = (EntityLivingBase) entity;
+                    if (isValid(ent) && ent.getUniqueID() != mc.player.getUniqueID() && RenderUtil.isInViewFrustrum(ent)) {
 
                     float partialTicks = event.getPartialTicks();
                     double posX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * event.getPartialTicks();

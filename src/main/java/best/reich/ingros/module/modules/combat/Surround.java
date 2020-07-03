@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketEntityAction;
@@ -35,6 +36,8 @@ public class Surround extends ToggleableModule {
     public boolean endChest = true;
     @Setting("JumpDisable")
     public boolean jumpDisable = false;
+    @Setting("DisableOnChorus")
+    public boolean disableOnChorus = true;
     @Setting("AutoToggle")
     public boolean autoToggle = false;
     public boolean chainPopToggle = false;
@@ -52,6 +55,7 @@ public class Surround extends ToggleableModule {
     public void onTick(TickEvent event) {
         if (mc.player == null) return;
         if (sneak && !mc.gameSettings.keyBindSneak.isKeyDown()) return;
+        if (mc.player.getHeldItemMainhand().getItem() == Items.CHORUS_FRUIT && mc.player.isHandActive() && disableOnChorus) toggle();
         if (!mc.player.onGround) {
             if (mc.gameSettings.keyBindJump.isKeyDown() && jumpDisable) toggle();
             return;

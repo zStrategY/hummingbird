@@ -27,6 +27,7 @@
     "MixinTextComponentString",
     "MixinWorldClient",
     "MixinMovementInputFromOptions",
-    "MixinGuiNewChat"
+    "MixinGuiNewChat",
+    "MixinItemRenderer"
   ]
 }

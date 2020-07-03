@@ -184,7 +184,7 @@ public class Visuals extends ToggleableModule {
             if (event.getEventType() == EventType.PRE) {
                 if (wallHack) {
                     GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-                    GL11.glPolygonOffset(1.0F, -2000000F);
+                    GL11.glPolygonOffset(1.0F, -20000F);
                 }
                 if (outline) {
                     final Color clr = getEntityColor(event.getEntity());
@@ -202,7 +202,7 @@ public class Visuals extends ToggleableModule {
                 }
             } else {
                 if (wallHack) {
-                    GL11.glPolygonOffset(1.0F, 2000000F);
+                    GL11.glPolygonOffset(1.0F, 20000F);
                     GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
                 }
             }

@@ -3,6 +3,7 @@ package best.reich.ingros.module.modules.render;
 
 import best.reich.ingros.events.render.BossbarEvent;
 import best.reich.ingros.events.render.HurtcamEvent;
+import best.reich.ingros.events.render.OverlayEvent;
 import best.reich.ingros.events.render.RenderArmorEvent;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
@@ -42,9 +43,12 @@ public class NoRender extends ToggleableModule {
         if (noArmor) event.setCancelled(true);
     }
 
+    /**
+     * @author TBM really epic guy helped me with nofire !
+     */
     @Subscribe
-    public void RenderBlockEvent(RenderBlockOverlayEvent event) {
+    public void RenderBlockEvent(OverlayEvent event) {
         if (mc.player != null);
-        if (noFire) RenderBlockOverlayEvent.OverlayType.FIRE) event.setCanceled(true);
+        if (noFire) event.setCancelled(true);
     }
 }
