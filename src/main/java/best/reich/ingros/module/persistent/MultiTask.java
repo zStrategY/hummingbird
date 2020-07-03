@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Mouse;
 
 @ModuleManifest(label = "Multitask", category = ModuleCategory.COMBAT, color = 0x4BF7FF)
-
 public class MultiTask extends PersistentModule {
     @SubscribeEvent
     public void onMouseInput(final InputEvent.MouseInputEvent event) {

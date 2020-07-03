@@ -1,5 +1,6 @@
 package best.reich.ingros;
 
+import best.reich.ingros.gui.hudeditor.HudEditorGUI;
 import best.reich.ingros.manager.*;
 import best.reich.ingros.notification.NotificationManager;
 import best.reich.ingros.util.thealtening.AltService;
@@ -25,6 +26,7 @@ public class IngrosWare extends Client {
     public MacroManager macroManager = new MacroManager();
     public NotificationManager notificationManager = new NotificationManager();
     public ProfileManager profileManager = new ProfileManager();
+    public HudEditorGUI hudEditorGUI = new HudEditorGUI();
     private final AltService altService = new AltService();
     public IngrosWare() {
         super("Hummingbird", "0.1", new String[]{"x3", "carroteater", "Xenforu"});
@@ -36,6 +38,7 @@ public class IngrosWare extends Client {
         moduleManager.load();
         commandManager.load();
         macroManager.load();
+        hudEditorGUI.load();
         System.out.println("[hummingbird] Loaded!");
     }
 
@@ -51,6 +54,7 @@ public class IngrosWare extends Client {
         friendManager.unload();
         moduleManager.unload();
         profileManager.unload();
+        hudEditorGUI.unload();
     }
     public void switchToMojang() {
         try {
