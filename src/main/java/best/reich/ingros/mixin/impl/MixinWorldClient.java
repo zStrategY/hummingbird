@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WorldClient.class)
-public class MixinWorldClient {
+public class    MixinWorldClient {
 
     @Inject(method = "onEntityAdded", at = @At("HEAD"))
     private void onEntityAdded(Entity entity, CallbackInfo info) {

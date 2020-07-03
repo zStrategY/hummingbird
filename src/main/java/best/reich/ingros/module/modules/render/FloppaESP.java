@@ -48,7 +48,7 @@ import java.net.URL;
 public class FloppaESP extends ToggleableModule {
     private ResourceLocation Flop;
 
-    private final String FlopUrl = "https://cdn.discordapp.com/attachments/698525925569986610/727560055355998318/canvas.png";
+    private final String FlopUrl = "https://i.imgur.com/Ww6uLo3.png";
 
 
     private final File FlopCache =

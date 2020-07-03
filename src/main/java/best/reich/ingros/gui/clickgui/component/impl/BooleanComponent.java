@@ -33,7 +33,7 @@ public class BooleanComponent extends Component {
         RenderUtil.drawBorderedRect(getFinishedX() + getWidth() - 17,getFinishedY() + 1,12,getHeight() - 2,0.5f,getBooleanSetting().getValue() ? clickGui.color.brighter().getRGB():0x40000000,clickGui.color.getRGB());
         if (getBooleanSetting().getValue())
             RenderUtil.drawCheckMark(getFinishedX() + getWidth() - 11,getFinishedY() + 1,10,0xFFFFFFFF);
-        Fonts.arialFont.drawStringWithShadow(getLabel(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - Fonts.arialFont.getStringHeight(getLabel()) / 2, getBooleanSetting().getValue() ? 0xFFFFFFFF : 0xFFAAAAAA);
+        Fonts.caviarFont.drawStringWithShadow(getLabel(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - Fonts.caviarFont.getStringHeight(getLabel()) / 2, getBooleanSetting().getValue() ? 0xFFFFFFFF : 0xFFAAAAAA);
     }
 
     @Override

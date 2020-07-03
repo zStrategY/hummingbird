@@ -66,8 +66,8 @@ public class ModuleComponent extends Component {
         RenderUtil.drawRect(getFinishedX(), getFinishedY(), getWidth(), getHeight(), 0x92000000);
         if (getModule().isEnabled())
             RenderUtil.drawRect(getFinishedX() + 1, getFinishedY() + 0.5f, getWidth() - 2, getHeight() - 1, clickGui.color.getRGB());
-        Fonts.arialFont.drawStringWithShadow(getLabel(),getFinishedX() + 4,getFinishedY() + getHeight() / 2 - Fonts.arialFont.getStringHeight(getLabel()) / 2,getModule().isEnabled() ? 0xFFFFFFFF:0xFFAAAAAA);
-        if (!getComponents().isEmpty()) Fonts.arialFont.drawStringWithShadow(isExtended() ? "-" : "+",getFinishedX() + getWidth() - 4 - Fonts.arialFont.getStringWidth(isExtended() ? "-" : "+"),getFinishedY() + getHeight() / 2 - Fonts.arialFont.getStringHeight(isExtended() ? "-" : "+") / 2,getModule().isEnabled() ? 0xFFFFFFFF:0xFFAAAAAA);
+        Fonts.caviarFont.drawStringWithShadow(getLabel(),getFinishedX() + 4,getFinishedY() + getHeight() / 2 - Fonts.caviarFont.getStringHeight(getLabel()) / 2,getModule().isEnabled() ? 0xFFFFFFFF:0xFFAAAAAA);
+        if (!getComponents().isEmpty()) Fonts.caviarFont.drawStringWithShadow(isExtended() ? "-" : "+",getFinishedX() + getWidth() - 4 - Fonts.caviarFont.getStringWidth(isExtended() ? "-" : "+"),getFinishedY() + getHeight() / 2 - Fonts.caviarFont.getStringHeight(isExtended() ? "-" : "+") / 2,getModule().isEnabled() ? 0xFFFFFFFF:0xFFAAAAAA);
         if (isExtended()) getComponents().forEach(component -> component.drawScreen(mouseX,mouseY,partialTicks));
     }
 

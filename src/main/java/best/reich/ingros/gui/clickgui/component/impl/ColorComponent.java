@@ -54,7 +54,7 @@ public class ColorComponent extends Component {
             }
             if (0.001 * Math.floor((i / getWidth()) * 1000.0) == 0.001 * Math.floor(hue* 1000.0)) pos = i;
         }
-        Fonts.arialFont.drawStringWithShadow(getLabel(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - (Fonts.arialFont.getStringHeight(getLabel()) >>1),0xFFFFFFFF );
+        Fonts.caviarFont.drawStringWithShadow(getLabel(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - (Fonts.caviarFont.getStringHeight(getLabel()) >>1),0xFFFFFFFF );
         RenderUtil.drawRect(getFinishedX() + 5 + pos, getFinishedY() + 1, 2, getHeight() - 2,  0xffffffff);
     }
 

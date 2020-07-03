@@ -27,7 +27,7 @@ public class ModeStringComponent extends Component {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         RenderUtil.drawRect(getFinishedX(), getFinishedY(), getWidth(), getHeight(), 0x92000000);
-        Fonts.arialFont.drawStringWithShadow(getLabel() + ": " + getModeStringSetting().getValue(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - Fonts.arialFont.getStringHeight(getLabel()) / 2, 0xFFFFFFFF);
+        Fonts.caviarFont.drawStringWithShadow(getLabel() + ": " + getModeStringSetting().getValue(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - Fonts.caviarFont.getStringHeight(getLabel()) / 2, 0xFFFFFFFF);
     }
 
     @Override

@@ -31,8 +31,6 @@ import net.minecraft.util.math.Vec3d;
 public class Surround extends ToggleableModule {
     @Setting("Sneak")
     public boolean sneak = false;
-    @Setting("Teleport")
-    public boolean teleport = false;
     @Setting("EndChest")
     public boolean endChest = true;
     @Setting("JumpDisable")
@@ -70,10 +68,10 @@ public class Surround extends ToggleableModule {
         double y = centerPos.getY();
         double x = centerPos.getX();
         double z = centerPos.getZ();
-        final Vec3d plusPlus = new Vec3d(x + 0.5, y, z + 0.5);
-        final Vec3d plusMinus = new Vec3d(x + 0.5, y, z - 0.5);
-        final Vec3d minusMinus = new Vec3d(x - 0.5, y, z - 0.5);
-        final Vec3d minusPlus = new Vec3d(x - 0.5, y, z + 0.5);
+        final Vec3d plusPlus = new Vec3d(x + .5, y, z + .5);
+        final Vec3d plusMinus = new Vec3d(x + .5, y, z - .5);
+        final Vec3d minusMinus = new Vec3d(x - .5, y, z - .5);
+        final Vec3d minusPlus = new Vec3d(x - .5, y, z + .5);
         final int oldSlot = mc.player.inventory.currentItem;
         mc.player.inventory.currentItem = newSlot;
         if (!hasNeighbour(northBlockPos)) {
@@ -117,104 +115,88 @@ public class Surround extends ToggleableModule {
         }
 
         if (mc.world.getBlockState(northBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(northBlockPos)) {
-            if (mc.player.onGround && teleport) {
+            if (mc.player.onGround) {
                 if (getDst(plusPlus) < getDst(plusMinus) && getDst(plusPlus) < getDst(minusMinus) && getDst(plusPlus) < getDst(minusPlus)) {
                     x = centerPos.getX() + 0.5;
                     z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(plusMinus) < getDst(plusPlus) && getDst(plusMinus) < getDst(minusMinus) && getDst(plusMinus) < getDst(minusPlus)) {
                     x = centerPos.getX() + 0.5;
                     z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(minusMinus) < getDst(plusPlus) && getDst(minusMinus) < getDst(plusMinus) && getDst(minusMinus) < getDst(minusPlus)) {
                     x = centerPos.getX() - 0.5;
                     z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(minusPlus) < getDst(plusPlus) && getDst(minusPlus) < getDst(plusMinus) && getDst(minusPlus) < getDst(minusMinus)) {
                     x = centerPos.getX() - 0.5;
                     z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
                 }
             }
             placeBlockScaffold(northBlockPos, true);
         }
 
         if (mc.world.getBlockState(southBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(southBlockPos)) {
-            if (mc.player.onGround && teleport) {
+            if (mc.player.onGround) {
                 if (getDst(plusPlus) < getDst(plusMinus) && getDst(plusPlus) < getDst(minusMinus) && getDst(plusPlus) < getDst(minusPlus)) {
                     x = centerPos.getX() + 0.5;
                     z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(plusMinus) < getDst(plusPlus) && getDst(plusMinus) < getDst(minusMinus) && getDst(plusMinus) < getDst(minusPlus)) {
                     x = centerPos.getX() + 0.5;
                     z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(minusMinus) < getDst(plusPlus) && getDst(minusMinus) < getDst(plusMinus) && getDst(minusMinus) < getDst(minusPlus)) {
                     x = centerPos.getX() - 0.5;
                     z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(minusPlus) < getDst(plusPlus) && getDst(minusPlus) < getDst(plusMinus) && getDst(minusPlus) < getDst(minusMinus)) {
                     x = centerPos.getX() - 0.5;
                     z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
                 }
             }
             placeBlockScaffold(southBlockPos, true);
         }
 
         if (mc.world.getBlockState(eastBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(eastBlockPos)) {
-            if (mc.player.onGround && teleport) {
+            if (mc.player.onGround) {
                 if (getDst(plusPlus) < getDst(plusMinus) && getDst(plusPlus) < getDst(minusMinus) && getDst(plusPlus) < getDst(minusPlus)) {
                     x = centerPos.getX() + 0.5;
                     z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(plusMinus) < getDst(plusPlus) && getDst(plusMinus) < getDst(minusMinus) && getDst(plusMinus) < getDst(minusPlus)) {
                     x = centerPos.getX() + 0.5;
                     z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(minusMinus) < getDst(plusPlus) && getDst(minusMinus) < getDst(plusMinus) && getDst(minusMinus) < getDst(minusPlus)) {
                     x = centerPos.getX() - 0.5;
                     z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(minusPlus) < getDst(plusPlus) && getDst(minusPlus) < getDst(plusMinus) && getDst(minusPlus) < getDst(minusMinus)) {
                     x = centerPos.getX() - 0.5;
                     z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
                 }
             }
             placeBlockScaffold(eastBlockPos, true);
         }
 
         if (mc.world.getBlockState(westBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(westBlockPos)) {
-            if (mc.player.onGround && teleport) {
+            if (mc.player.onGround) {
                 if (getDst(plusPlus) < getDst(plusMinus) && getDst(plusPlus) < getDst(minusMinus) && getDst(plusPlus) < getDst(minusPlus)) {
                     x = centerPos.getX() + 0.5;
                     z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(plusMinus) < getDst(plusPlus) && getDst(plusMinus) < getDst(minusMinus) && getDst(plusMinus) < getDst(minusPlus)) {
                     x = centerPos.getX() + 0.5;
                     z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(minusMinus) < getDst(plusPlus) && getDst(minusMinus) < getDst(plusMinus) && getDst(minusMinus) < getDst(minusPlus)) {
                     x = centerPos.getX() - 0.5;
                     z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
                 }
                 if (getDst(minusPlus) < getDst(plusPlus) && getDst(minusPlus) < getDst(plusMinus) && getDst(minusPlus) < getDst(minusMinus)) {
                     x = centerPos.getX() - 0.5;
                     z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
                 }
             }
             placeBlockScaffold(westBlockPos, true);
@@ -250,10 +232,6 @@ public class Surround extends ToggleableModule {
         return -1;
     }
 
-    private void centerPlayer(double x, double y, double z) {
-        mc.player.connection.sendPacket(new CPacketPlayer.Position(x, y, z, true));
-        mc.player.setPosition(x, y, z);
-    }
 
     private double getDst(Vec3d vec) {
         return mc.player.getDistance(vec.x, vec.y, vec.z);

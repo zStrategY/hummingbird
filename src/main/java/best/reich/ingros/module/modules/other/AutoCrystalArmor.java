@@ -17,16 +17,20 @@ import java.util.Comparator;
 
 @ModuleManifest(label = "AutoCrystalArmor", category = ModuleCategory.OTHER, color = 0xffEfaAEF)
 public class AutoCrystalArmor extends ToggleableModule {
-    private static final Item[] HELMETS = {Items.DIAMOND_HELMET, Items.IRON_HELMET, Items.GOLDEN_HELMET, Items.CHAINMAIL_HELMET, Items.LEATHER_HELMET};
-    private static final Item[] CHESTPLATES = {Items.DIAMOND_CHESTPLATE, Items.IRON_CHESTPLATE, Items.GOLDEN_CHESTPLATE, Items.CHAINMAIL_CHESTPLATE, Items.LEATHER_CHESTPLATE};
-    private static final Item[] LEGGINGS = {Items.DIAMOND_LEGGINGS, Items.IRON_LEGGINGS, Items.GOLDEN_LEGGINGS, Items.CHAINMAIL_LEGGINGS, Items.LEATHER_LEGGINGS};
-    private static final Item[] BOOTS = {Items.DIAMOND_BOOTS, Items.IRON_BOOTS, Items.GOLDEN_BOOTS, Items.CHAINMAIL_BOOTS, Items.LEATHER_BOOTS};
+    private static final Item[] HELMETS = {Items.DIAMOND_HELMET};
+    private static final Item[] CHESTPLATES = {Items.DIAMOND_CHESTPLATE};
+    private static final Item[] LEGGINGS = {Items.DIAMOND_LEGGINGS};
+    private static final Item[] BOOTS = {Items.DIAMOND_BOOTS};
     private final TimerUtil timer = new TimerUtil();
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         if (mc.player == null) return;
-        final EntityEnderCrystal crystal = mc.world.loadedEntityList.stream().filter(e -> e instanceof EntityEnderCrystal && mc.player.getDistanceToEntity(e) <= 10).map(entity -> (EntityEnderCrystal) entity).min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c))).orElse(null);
+        final EntityEnderCrystal crystal = mc.world.loadedEntityList.stream()
+                .filter(e -> e instanceof EntityEnderCrystal && mc.player.getDistanceToEntity(e) <= 12)
+                .map(entity -> (EntityEnderCrystal) entity)
+                .min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c)))
+                .orElse(null);
         if (crystal != null && event.getType() == EventType.PRE) {
             int selectedSlotId = -1;
             if (timer.reach(100)) {

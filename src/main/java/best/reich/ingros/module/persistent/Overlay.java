@@ -79,7 +79,7 @@ public class Overlay extends PersistentModule {
     public boolean totems = true;
 
     @Setting("Crystals")
-    public boolean crystals = true;
+    public boolean crystals = false;
 
     @Setting("Inventory")
     public boolean inventory = true;
@@ -123,7 +123,7 @@ public class Overlay extends PersistentModule {
     @Subscribe
     public void onRender(Render2DEvent event) {
         if (mc.world == null || mc.player == null || mc.gameSettings.showDebugInfo) return;
-        RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
+        RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + " " + IngrosWare.INSTANCE.getVersion() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
         if (arraylist) {
             int togglesY = (int) (initialRenderPos - RenderUtil.getTextHeight(font) - 2);
             ArrayList<ToggleableModule> modules = new ArrayList<>(IngrosWare.INSTANCE.moduleManager.getToggles());
@@ -159,11 +159,11 @@ public class Overlay extends PersistentModule {
             }
         }
         if (getTarget() != null && getTarget() instanceof EntityPlayer && targetHUD) {
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 14, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 14, event.getScaledResolution().getScaledHeight() / 2 - 1 + 50, new Color(0, 0, 0, 255).getRGB());
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 52, event.getScaledResolution().getScaledHeight() / 2 + 23 + 50, event.getScaledResolution().getScaledWidth() / 2 + 52, event.getScaledResolution().getScaledHeight() / 2 + 52 + 50, new Color(0, 0, 0, 255).getRGB());
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 51, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 51, event.getScaledResolution().getScaledHeight() / 2 + 51 + 50, new Color(45, 45, 45, 255).getRGB());
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 50, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 50, event.getScaledResolution().getScaledHeight() / 2 + 50 + 50, new Color(15, 15, 15, 255).getRGB());
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 13, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 13, event.getScaledResolution().getScaledHeight() / 2 + 50, new Color(45, 45, 45, 255).getRGB());
+                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 14, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 14, event.getScaledResolution().getScaledHeight() / 2 - 1 + 50, new Color(230, 190, 190, 255).getRGB());
+                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 52, event.getScaledResolution().getScaledHeight() / 2 + 23 + 50, event.getScaledResolution().getScaledWidth() / 2 + 52, event.getScaledResolution().getScaledHeight() / 2 + 52 + 50, new Color(230, 100, 255, 255).getRGB());
+                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 51, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 51, event.getScaledResolution().getScaledHeight() / 2 + 51 + 50, new Color(230, 190, 210, 255).getRGB());
+                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 50, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 50, event.getScaledResolution().getScaledHeight() / 2 + 50 + 50, new Color(255, 190, 240, 255).getRGB());
+                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 13, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 13, event.getScaledResolution().getScaledHeight() / 2 + 50, new Color(200, 190, 190, 255).getRGB());
                 drawAltFace(getTarget(), event.getScaledResolution().getScaledWidth() / 2 - 12, event.getScaledResolution().getScaledHeight() / 2 + 1 + 50, 24, 24);
                 RenderUtil.drawText(getTarget().getName(), event.getScaledResolution().getScaledWidth() / 2 - RenderUtil.getTextWidth(getTarget().getName(), font) / 2, event.getScaledResolution().getScaledHeight() / 2 + 27 + 50, -1, font);
                 GlStateManager.pushMatrix();
@@ -175,7 +175,7 @@ public class Overlay extends PersistentModule {
                 RenderUtil.drawText("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), font) / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
                 GlStateManager.scale(1, 1, 1);
                 GlStateManager.popMatrix();
-                RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 48, (event.getScaledResolution().getScaledHeight() / 2) + 45 + 50, (((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.60f), 3, new Color(45, 45, 45, 255).getRGB());
+                RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 48, (event.getScaledResolution().getScaledHeight() / 2) + 45 + 50, (((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.60f), 3, new Color(255, 255, 255, 255).getRGB());
                 RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 47, (event.getScaledResolution().getScaledHeight() / 2) + 46 + 50,(((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.40f), 1, getHealthColor(getTarget()));
         }
         if (armor) drawArmor(event.getScaledResolution());

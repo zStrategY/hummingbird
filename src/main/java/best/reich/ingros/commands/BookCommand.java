@@ -51,7 +51,7 @@ public class BookCommand extends Command {
             mc.player.connection.sendPacket(new CPacketCustomPayload("MC|BSign", buf));
             Logger.printMessage("Book Hack Success!",true);
         } else {
-            Logger.printMessage("Pussy nigga u fucked up!",true);
+            Logger.printMessage("error, error, you suck balls",true);
         }
 
     }

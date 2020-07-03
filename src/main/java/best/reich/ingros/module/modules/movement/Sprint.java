@@ -18,6 +18,7 @@ import net.b0at.api.event.Subscribe;
 public class Sprint extends ToggleableModule {
     @Subscribe
     public void onUpdate(UpdateEvent event) {
+        if (mc.player != null);
         if(event.getType() == EventType.PRE) {
             Scaffold scaffold = (Scaffold) IngrosWare.INSTANCE.moduleManager.getToggleByName("Scaffold");
             if (scaffold.isEnabled() && !scaffold.sprint) {

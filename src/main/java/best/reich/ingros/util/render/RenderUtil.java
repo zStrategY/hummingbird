@@ -75,19 +75,19 @@ public class RenderUtil implements Minecraftable {
     }
     public static void drawText(String str, float x, float y, int color, boolean font) {
         if (font) {
-            Fonts.arialFont.drawStringWithShadow(str, x, y, color);
+            Fonts.caviarFont.drawStringWithShadow(str, x, y, color);
         } else {
             mc.fontRenderer.drawStringWithShadow(str, x, y, color);
         }
     }
 
     public static float getTextHeight(boolean font) {
-        if (font) return Fonts.arialFont.getHeight();
+        if (font) return Fonts.caviarFont.getHeight();
         return mc.fontRenderer.FONT_HEIGHT;
     }
 
     public static float getTextWidth(String str,boolean font) {
-        if (font) return Fonts.arialFont.getStringWidth(str);
+        if (font) return Fonts.caviarFont.getStringWidth(str);
         return mc.fontRenderer.getStringWidth(str);
     }
 

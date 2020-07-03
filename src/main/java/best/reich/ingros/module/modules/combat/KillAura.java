@@ -90,7 +90,7 @@ public class KillAura extends ToggleableModule {
             if (target == null)
                 return;
             final float ticks = 20.0f - TickRate.TPS;
-            final boolean canAttack = mc.player.getCooledAttackStrength(-ticks) >= 1 && target.hurtResistantTime <= 11;
+            final boolean canAttack = mc.player.getCooledAttackStrength(-ticks) >= 1 && target.hurtResistantTime <= 11 && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD;
             if (canAttack) {
                 attackEntity(target);
             }

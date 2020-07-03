@@ -20,9 +20,7 @@ public class TickRate {
             if (!(packet.getPacket() instanceof SPacketTimeUpdate)) {
                 return;
             }
-
             long currentTime = System.currentTimeMillis();
-
             if (lastUpdate == -1) {
                 lastUpdate = currentTime;
                 return;

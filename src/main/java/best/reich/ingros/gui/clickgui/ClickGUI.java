@@ -16,7 +16,7 @@ public class ClickGUI extends GuiScreen {
         int x = 2;
         int y = 2;
         for (ModuleCategory moduleCategory : ModuleCategory.values()) {
-            getFrames().add(new CategoryFrame(moduleCategory, x, y, 110, 16));
+            getFrames().add(new CategoryFrame(moduleCategory, x, y, 100, 10));
             if (x + 235 >= new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth()) {
                 x = 2;
                 y += 20;
