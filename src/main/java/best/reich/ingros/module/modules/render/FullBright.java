@@ -8,7 +8,9 @@ import net.b0at.api.event.Subscribe;
 
 @ModuleManifest(label = "FullBright", category = ModuleCategory.RENDER, color = 0xFFA030FF)
 public class FullBright extends ToggleableModule {
+
     private float oldGamma;
+
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         if (mc.player == null || mc.world == null || mc.gameSettings == null) return;

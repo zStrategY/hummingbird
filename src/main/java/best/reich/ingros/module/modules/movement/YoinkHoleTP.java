@@ -16,6 +16,7 @@ import net.b0at.api.event.Subscribe;
 public class YoinkHoleTP extends ToggleableModule {
     @Subscribe
     public void onUpdate(UpdateEvent event) {
+        if (mc.player.isInWater() || mc.player.isInLava()) return;
         if (mc.player.onGround) {
             --mc.player.motionY;
         }

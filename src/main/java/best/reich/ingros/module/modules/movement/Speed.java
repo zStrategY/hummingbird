@@ -17,6 +17,8 @@ import net.minecraft.network.play.client.CPacketPlayer;
 
 import java.util.Objects;
 
+import static best.reich.ingros.util.game.MotionUtil.getBaseMoveSpeed;
+
 
 @ModuleManifest(label = "Speed", category = ModuleCategory.MOVEMENT, color = 0x2FBDCF)
 public class Speed extends ToggleableModule {

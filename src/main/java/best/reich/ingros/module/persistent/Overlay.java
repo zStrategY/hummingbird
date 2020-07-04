@@ -51,8 +51,14 @@ public class Overlay extends PersistentModule {
     @Mode({"NORMAL", "CLIENT", "RAINBOW"})
     public String colormode = "RAINBOW";
 
+    @Setting("Watermark")
+    public boolean watermark = true;
+
     @Setting("Font")
     public boolean font = true;
+
+    @Setting("Version")
+    public boolean version = true;
 
     @Setting("ArrayList")
     public boolean arraylist = true;
@@ -123,6 +129,7 @@ public class Overlay extends PersistentModule {
     @Subscribe
     public void onRender(Render2DEvent event) {
         if (mc.world == null || mc.player == null || mc.gameSettings.showDebugInfo) return;
+        if (!watermark)
         RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + " " + IngrosWare.INSTANCE.getVersion() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
         if (arraylist) {
             int togglesY = (int) (initialRenderPos - RenderUtil.getTextHeight(font) - 2);

@@ -27,7 +27,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemFood;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
@@ -61,13 +60,13 @@ public class CrystalAura extends ToggleableModule {
     @Setting("BreakRange")
     public float breakRange = 6.0f;
     @Setting("AttackSpeed")
-    public int attackSpeed = 17;
+    public int attackSpeed = 18;
     @Clamp(minimum = "1", maximum = "16")
     @Setting("MinimumDamage")
     public int minDamage = 4;
     @Clamp(minimum = "1", maximum = "16")
     @Setting("Faceplace")
-    public int facePlace = 2;
+    public int facePlace = 8;
     @Clamp(minimum = "1")
     @Setting("MaxSelfDamage")
     public int maxDamage = 11;
@@ -90,8 +89,6 @@ public class CrystalAura extends ToggleableModule {
     public boolean announcer = true;
     @Setting("AntiSuicide")
     public boolean antiSuicide = true;
-    @Setting("PauseWhileEating")
-    public boolean pauseWhileEating = true;
     @Setting("Color")
     public Color color = new Color(0,0,0);
     @Setting("DmgRender")
@@ -116,11 +113,8 @@ public class CrystalAura extends ToggleableModule {
                         .orElse(null);
         if (crystal != null && render != null && mc.player.getDistanceToEntity(crystal) <= breakRange) {
             if (event.getType() == EventType.PRE) {
-                final float[] rots = MathUtil.calcAngle(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(render.getX() + 0.5, render.getY() + 1.0, render.getZ() + 0.5));
-            } else if (System.nanoTime() / 1000000L - breakSystemTime >= 420 - attackSpeed * 20) {
                 mc.playerController.attackEntity(mc.player, crystal);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
-                breakSystemTime = System.nanoTime() / 1000000L;
             }
             if (multiPlace) {
                 if (System.nanoTime() / 1000000L - multiPlaceSystemTime <= multiPlaceSpeed * 50 && multiPlaceSpeed < 10) {
@@ -197,7 +191,7 @@ public class CrystalAura extends ToggleableModule {
                 mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(finalPos, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
                 this.placeLocations.add(new PlaceLocation(finalPos.getX(), finalPos.getY(), finalPos.getZ()));
                 render = finalPos;
-                dmg = MathHelper.floor(damage) + "hp";
+                dmg = MathHelper.floor(damage) + "DMG";
                 antiStuckSystemTime = System.nanoTime() / 1000000L;
                 placeSystemTime = System.nanoTime() / 1000000L;
             }
@@ -247,7 +241,7 @@ public class CrystalAura extends ToggleableModule {
                 if (packetSpawnObject.getType() == 51) {
                     for (PlaceLocation placeLocation : this.placeLocations) {
                         if (!placeLocation.placed && placeLocation.getDistance((int) packetSpawnObject.getX(), (int) packetSpawnObject.getY() - 1, (int) packetSpawnObject.getZ()) <= 1) {
-                            placeLocation.placed = true;
+                            placeLocation.placed = true || false;
                             if (pSilent && !mc.player.isPotionActive(MobEffects.WEAKNESS)) {
                                 event.setCancelled(true);
                                 CPacketUseEntity packetUseEntity = new CPacketUseEntity();

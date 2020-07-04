@@ -10,6 +10,7 @@ import net.b0at.api.event.Subscribe;
 import net.b0at.api.event.types.EventType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;

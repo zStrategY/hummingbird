@@ -7,6 +7,7 @@ import best.reich.ingros.events.render.Render2DEvent;
 import best.reich.ingros.events.render.Render3DEvent;
 import best.reich.ingros.mixin.accessors.IEntityRenderer;
 import best.reich.ingros.util.render.GLUProjection;
+import best.reich.ingros.module.modules.render.FovChanger;
 import com.google.common.base.Predicate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
@@ -22,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -81,4 +83,5 @@ public abstract class MixinEntityRenderer {
         else
             return worldClient.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
     }
+
 }

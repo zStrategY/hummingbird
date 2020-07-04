@@ -1,10 +1,7 @@
 package best.reich.ingros.module.modules.render;
 
 
-import best.reich.ingros.events.render.BossbarEvent;
-import best.reich.ingros.events.render.HurtcamEvent;
-import best.reich.ingros.events.render.OverlayEvent;
-import best.reich.ingros.events.render.RenderArmorEvent;
+import best.reich.ingros.events.render.*;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
@@ -24,6 +21,8 @@ public class NoRender extends ToggleableModule {
     public boolean noArmor = false;
     @Setting("NoFire")
     public boolean noFire = true;
+    @Setting("NoHands")
+    public boolean noHands = false;
 
     @Subscribe
     public void onHurtcam(HurtcamEvent event) {
@@ -51,4 +50,12 @@ public class NoRender extends ToggleableModule {
         if (mc.player != null);
         if (noFire) event.setCancelled(true);
     }
+
+    @Subscribe
+    public void onArmRender(RenderArmEvent event) {
+        if (mc.player != null);
+        if (noHands) event.setCancelled(true);
+    }
+
+
 }
