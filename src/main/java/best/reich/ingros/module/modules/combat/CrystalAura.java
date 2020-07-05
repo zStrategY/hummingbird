@@ -114,7 +114,6 @@ public class CrystalAura extends ToggleableModule {
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         if (mc.player != null || mc.world != null) return;
-        if (event.getType() == EventType.PRE) return;
         int crystalSlot = (mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL) ? mc.player.inventory.currentItem : -1;
         if (crystalSlot == -1) {
             for (int l = 0; l < 9; ++l) {
