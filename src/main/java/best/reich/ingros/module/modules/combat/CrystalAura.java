@@ -113,8 +113,7 @@ public class CrystalAura extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        if (mc.player != null || mc.world != null) return;
-        if(!(event.getType() == EventType.PRE)) return;
+        if ((mc.player != null || mc.world != null) && event.getType() != EventType.PRE) return;
         int crystalSlot = (mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL) ? mc.player.inventory.currentItem : -1;
         if (crystalSlot == -1) {
             for (int l = 0; l < 9; ++l) {
@@ -133,8 +132,7 @@ public class CrystalAura extends ToggleableModule {
         }
 
         final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c))).orElse(null);
-        assert crystal != null;
-        if (mc.player.getDistanceToEntity(crystal) <= breakRange) {
+        if (crystal != null && mc.player.getDistanceToEntity(crystal) <= breakRange) {
             if (tickDelay > 0) {
                 if (tickCounter < tickDelay) {
                     tickCounter++;
