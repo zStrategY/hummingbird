@@ -106,7 +106,7 @@ public class CrystalAura extends ToggleableModule {
     public Color dmgRender = new Color(200, 140, 200);
     private BlockPos render;
     private String dmg;
-    private int tickCounter;
+    private int tickCounter = 0;
     private long placeSystemTime;
     private boolean switchCooldown;
     private final List<PlaceLocation> placeLocations = new CopyOnWriteArrayList<>();
