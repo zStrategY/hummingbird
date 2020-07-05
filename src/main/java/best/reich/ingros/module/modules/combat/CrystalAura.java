@@ -101,7 +101,7 @@ public class CrystalAura extends ToggleableModule {
     @Setting("AntiSuicide")
     public boolean antiSuicide = true;
     @Setting("Color")
-    public Color color = new Color(255,0,0);
+    public Color color = new Color(255, 0, 0);
     @Setting("DmgRender")
     public Color dmgRender = new Color(200, 140, 200);
     private BlockPos render;
@@ -114,21 +114,7 @@ public class CrystalAura extends ToggleableModule {
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         if (mc.player != null || mc.world != null) return;
-        if (event.getType() == EventType.PRE);
-        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).map(entity -> entity).min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c))).orElse(null);
-                if (mc.player.getDistanceToEntity(crystal) <= breakRange) ;
-                mc.playerController.attackEntity(mc.player, crystal);
-                mc.player.swingArm(EnumHand.MAIN_HAND);
-
-                if (tickDelay > 0) {
-                    if (tickCounter < (tickDelay)) {
-                        tickCounter++;
-                        return;
-                    } else {
-                        tickCounter = 0;
-                    }
-                }
-
+        if (event.getType() == EventType.PRE) return;
         int crystalSlot = (mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL) ? mc.player.inventory.currentItem : -1;
         if (crystalSlot == -1) {
             for (int l = 0; l < 9; ++l) {
@@ -146,6 +132,20 @@ public class CrystalAura extends ToggleableModule {
             return;
         }
 
+        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c))).orElse(null);
+        assert crystal != null;
+        if (mc.player.getDistanceToEntity(crystal) <= breakRange) {
+            if (tickDelay > 0) {
+                if (tickCounter < tickDelay) {
+                    tickCounter++;
+                } else {
+                    mc.playerController.attackEntity(mc.player, crystal);
+                    mc.player.swingArm(EnumHand.MAIN_HAND);
+                    tickCounter = 0;
+                }
+            }
+        }
+
         BlockPos finalPos = null;
         final List<BlockPos> blocks = findCrystalBlocks();
         final List<Entity> entities = mc.world.playerEntities
@@ -155,7 +155,8 @@ public class CrystalAura extends ToggleableModule {
         double damage = 0.5;
         double prevSelf = 0.5;
         for (final Entity entity2 : entities) {
-            if (((EntityLivingBase) entity2).getHealth() <= 0.0f || mc.player.getDistanceSqToEntity(entity2) > enemyRange * enemyRange) continue;
+            if (((EntityLivingBase) entity2).getHealth() <= 0.0f || mc.player.getDistanceSqToEntity(entity2) > enemyRange * enemyRange)
+                continue;
             for (final BlockPos blockPos : blocks) {
                 final double d = calculateDamage(blockPos.getX() + .5, blockPos.getY() + 1, blockPos.getZ() + .5, entity2);
                 final double self = calculateDamage(blockPos.getX() + .5, blockPos.getY() + 1, blockPos.getZ() + .5, mc.player);
@@ -262,6 +263,7 @@ public class CrystalAura extends ToggleableModule {
 
     private static final class PlaceLocation extends Vec3i {
         private boolean placed = false;
+
         private PlaceLocation(int xIn, int yIn, int zIn) {
             super(xIn, yIn, zIn);
         }
