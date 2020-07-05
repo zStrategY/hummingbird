@@ -4,6 +4,7 @@ import best.reich.ingros.events.entity.MotionEvent;
 import best.reich.ingros.events.entity.UpdateEvent;
 import best.reich.ingros.events.network.PacketEvent;
 import best.reich.ingros.mixin.accessors.ICPacketPlayer;
+import best.reich.ingros.mixin.accessors.IMinecraft;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
@@ -12,6 +13,7 @@ import me.xenforu.kelo.setting.annotation.Mode;
 import me.xenforu.kelo.setting.annotation.Setting;
 import net.b0at.api.event.Subscribe;
 import net.b0at.api.event.types.EventType;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayer;
 
@@ -52,6 +54,7 @@ public class Speed extends ToggleableModule {
         }
     }
 
+
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         if (mc.world == null || mc.player == null) return;
@@ -87,8 +90,6 @@ public class Speed extends ToggleableModule {
                 case 2:
                     double motionY = 0.40123128;
                     if ((mc.player.moveForward != 0.0F || mc.player.moveStrafing != 0.0F) && mc.player.onGround) {
-                        if (mc.player.isPotionActive(MobEffects.JUMP_BOOST))
-                            motionY += ((mc.player.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
                         event.setY(mc.player.motionY = motionY);
                         moveSpeed *= 2.149;
                     }
@@ -122,8 +123,7 @@ public class Speed extends ToggleableModule {
     private double getBaseMoveSpeed() {
         double baseSpeed = 0.272;
         if (mc.player.isPotionActive(MobEffects.SPEED)) {
-            final int amplifier = Objects.requireNonNull(mc.player.getActivePotionEffect(MobEffects.SPEED)).getAmplifier();
-            baseSpeed *= 1.0 + (0.2 * amplifier);
+            baseSpeed *= 1.0 + (0.0);
         }
         return baseSpeed;
     }

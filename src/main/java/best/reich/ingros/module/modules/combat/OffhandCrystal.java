@@ -24,6 +24,9 @@ public class OffhandCrystal extends ToggleableModule {
     @Clamp(minimum = "1", maximum = "22")
     @Setting("Health")
     public int health = 20;
+    @Clamp(minimum = "1", maximum = "30")
+    @Setting("EnemyRange")
+    public int enemyRange = 10;
 
     @Setting("ToggleTotem")
     public boolean toggletotem = true;
@@ -62,7 +65,7 @@ public class OffhandCrystal extends ToggleableModule {
     }
 
     private boolean nearPlayers() {
-        return mc.world.playerEntities.stream().anyMatch(e -> e != mc.player && e.getEntityId() != -1488 && !IngrosWare.INSTANCE.friendManager.isFriend(e.getName()) && mc.player.getDistanceToEntity(e) <= 10);
+        return mc.world.playerEntities.stream().anyMatch(e -> e != mc.player && e.getEntityId() != -1488 && !IngrosWare.INSTANCE.friendManager.isFriend(e.getName()) && mc.player.getDistanceToEntity(e) <= enemyRange);
     }
 
     private boolean shouldTotem() {

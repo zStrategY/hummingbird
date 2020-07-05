@@ -34,7 +34,7 @@ public class AutoTotem extends ToggleableModule {
     }
 
     private boolean shouldTotem() {
-        return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= health || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA;
+        return (mc.player.inventory.offHandInventory.isEmpty() || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA);
     }
 
     int getTotemSlot() {

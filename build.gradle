@@ -21,9 +21,9 @@ apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = "0.0.2"
-group = "ingrosware"
-archivesBaseName = "ingrosware"
+version = "0.1"
+group = "cummingbird"
+archivesBaseName = "cummingbird"
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
