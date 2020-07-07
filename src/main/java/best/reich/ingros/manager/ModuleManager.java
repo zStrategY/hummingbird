@@ -31,7 +31,6 @@ public class ModuleManager extends AbstractModuleManager {
         register(new Keybinds());
         register(new Overlay());
         loadInternalModules();
-        loadExternalModules();
         getValues().forEach(IModule::init);
         load(new File(IngrosWare.INSTANCE.path.toFile(), "modules").toPath());
     }
@@ -72,28 +71,10 @@ public class ModuleManager extends AbstractModuleManager {
         }
     }
 
-    private void loadExternalModules() {
-        try {
-            final File dir = new File(IngrosWare.INSTANCE.path + File.separator + "externals" + File.separator + "modules");
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            if (ClassUtil.getClassesEx(dir.getPath()).isEmpty()) System.out.println("[hummingbird] No external modules found!");
-            for (Class clazz : ClassUtil.getClassesEx(dir.getPath())) {
-                if (clazz != null && ToggleableModule.class.isAssignableFrom(clazz)) {
-                    final ToggleableModule module = (ToggleableModule) clazz.newInstance();
-                    register(module);
-                    System.out.println("[hummingbird] Found external module " + module.getLabel());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void load(Path source) {
         getValues().forEach(plugin -> {
-            Path pluginConfiguration = new File(source.toFile(), plugin.getLabel().toLowerCase() + ".json").toPath();
+            Path pluginConfiguration = new File(source.toFile(), plugin.getLabel() + ".json").toPath();
             if (Files.exists(source) && Files.exists(pluginConfiguration)) {
                 try (Reader reader = new FileReader(pluginConfiguration.toFile())) {
                     JsonElement element = new JsonParser().parse(reader);

@@ -27,8 +27,6 @@ import java.util.List;
 
 @ModuleManifest(label = "AutoNovola", category = ModuleCategory.PLAYER, color = 0xffAEffAE)
 public class AutoNovola extends ToggleableModule {
-    @Setting("Fade")
-    public boolean fade = true;
     @Setting("Radius")
     @Clamp(maximum = "5")
     public int radius = 5;

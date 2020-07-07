@@ -12,7 +12,7 @@ import net.minecraft.network.play.client.CPacketChatMessage;
 @ModuleManifest(label = "Suffixes", category = ModuleCategory.OTHER, color = 0xff33ff33,hidden = true)
 public class Suffixes extends ToggleableModule {
     @Setting("Suffix")
-    public String suffix = "<\u029C\u1D1C\u1D0D\u1D0D\u026A\u0274\u0262\u0299\u026A\u0280\u1D05>";
+    public String suffix = "[\u029C\u1D1C\u1D0D\u1D0D\u026A\u0274\u0262\u0299\u026A\u0280\u1D05]";
 
     @Subscribe
     public void onPacket(PacketEvent event) {

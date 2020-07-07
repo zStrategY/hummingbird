@@ -84,9 +84,6 @@ public class Overlay extends PersistentModule {
     @Setting("Totems")
     public boolean totems = true;
 
-    @Setting("Crystals")
-    public boolean crystals = false;
-
     @Setting("Inventory")
     public boolean inventory = true;
 
@@ -129,8 +126,10 @@ public class Overlay extends PersistentModule {
     @Subscribe
     public void onRender(Render2DEvent event) {
         if (mc.world == null || mc.player == null || mc.gameSettings.showDebugInfo) return;
-        if (!watermark)
-        RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + " " + IngrosWare.INSTANCE.getVersion() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
+        if (watermark)
+        RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
+        if (version)
+        RenderUtil.drawText(IngrosWare.INSTANCE.getVersion() + ChatFormatting.WHITE, 60, 2, getHudColor(), font);
         if (arraylist) {
             int togglesY = (int) (initialRenderPos - RenderUtil.getTextHeight(font) - 2);
             ArrayList<ToggleableModule> modules = new ArrayList<>(IngrosWare.INSTANCE.moduleManager.getToggles());
@@ -202,10 +201,6 @@ public class Overlay extends PersistentModule {
             RenderUtil.drawText("Totems: " + ChatFormatting.WHITE + totemCount(), 2, y, getHudColor(), font);
             y += RenderUtil.getTextHeight(font) + 2;
 
-        }
-        if (crystals) {
-            RenderUtil.drawText("Crystals" + ChatFormatting.WHITE + crystalCount(), 2, y, getHudColor(), font);
-            y += RenderUtil.getTextHeight(font) + 2;
         }
         if (ping) {
             final NetworkPlayerInfo networkPlayerInfo = mc.getConnection().getPlayerInfo(mc.player.getGameProfile().getId());
@@ -477,17 +472,6 @@ public class Overlay extends PersistentModule {
         } else {
             return "Good night :^) ";
         }
-    }
-
-    private int crystalCount() {
-        int count = 0;
-        for (int i = 0; i < 45; ++i) {
-            if (!mc.player.inventory.getStackInSlot(i).isStackable() && mc.player.inventory.getStackInSlot(i).getItem() == Items.END_CRYSTAL) {
-                count++;
-
-            }
-        }
-        return count;
     }
 
     private int totemCount() {

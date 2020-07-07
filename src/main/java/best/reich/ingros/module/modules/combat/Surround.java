@@ -2,6 +2,7 @@ package best.reich.ingros.module.modules.combat;
 
 import best.reich.ingros.events.entity.UpdateEvent;
 import best.reich.ingros.events.other.TickEvent;
+import best.reich.ingros.events.entity.TeleportEvent;
 import best.reich.ingros.mixin.accessors.IMinecraft;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
@@ -52,10 +53,14 @@ public class Surround extends ToggleableModule {
     }
 
     @Subscribe
+    public void onT(TeleportEvent event) {
+        if (disableOnChorus) toggle();
+    }
+
+    @Subscribe
     public void onTick(TickEvent event) {
         if (mc.player == null) return;
         if (sneak && !mc.gameSettings.keyBindSneak.isKeyDown()) return;
-        if (mc.player.getHeldItemMainhand().getItem() == Items.CHORUS_FRUIT && mc.player.isHandActive() && disableOnChorus) toggle();
         if (!mc.player.onGround) {
             if (mc.gameSettings.keyBindJump.isKeyDown() && jumpDisable) toggle();
             return;

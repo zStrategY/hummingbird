@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-@ModuleManifest(label = "AutoGG", category = ModuleCategory.COMBAT, hidden = true)
-public class AutoGG extends ToggleableModule {
+//@ModuleManifest(label = "AutoGG", category = ModuleCategory.COMBAT, hidden = true)
+public class AutoGG extends ToggleableModule { /*
     static List<String> AutoGgMessages = new ArrayList<>();
     private ConcurrentHashMap targetedPlayers = null;
     int index = -1;
@@ -128,5 +128,5 @@ public class AutoGG extends ToggleableModule {
         }
 
         mc.player.connection.sendPacket(new CPacketChatMessage(messageSanitized));
-    }
+    } */
 }

