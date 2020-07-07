@@ -8,7 +8,6 @@ import net.b0at.api.event.Subscribe;
 import net.minecraft.network.play.client.CPacketCloseWindow;
 
 @ModuleManifest(label = "XCarry", category = ModuleCategory.PLAYER)
-
 public class XCarry extends ToggleableModule {
     @Subscribe
     public void onWindow(PacketEvent event) {

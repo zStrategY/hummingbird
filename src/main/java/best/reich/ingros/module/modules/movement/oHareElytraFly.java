@@ -1,6 +1,7 @@
 package best.reich.ingros.module.modules.movement;
 
 import best.reich.ingros.events.entity.MotionEvent;
+import best.reich.ingros.events.entity.UpdateEvent;
 import best.reich.ingros.events.network.PacketEvent;
 import best.reich.ingros.mixin.accessors.ISPacketPosLook;
 import me.xenforu.kelo.module.ModuleCategory;
@@ -28,7 +29,7 @@ public class oHareElytraFly extends ToggleableModule {
 
     @Subscribe
     private void onRecieve(PacketEvent event) {
-        if (mc.player == null || !mc.player.isElytraFlying()) return;
+        if (!mc.player.isElytraFlying()) return;
         if (event.getPacket() instanceof SPacketPlayerPosLook) {
             ISPacketPosLook packet = (ISPacketPosLook) event.getPacket();
             packet.setPitch(mc.player.rotationPitch);

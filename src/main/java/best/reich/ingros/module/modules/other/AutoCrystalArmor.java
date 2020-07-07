@@ -32,7 +32,7 @@ public class AutoCrystalArmor extends ToggleableModule {
     public void onUpdate(UpdateEvent event) {
         if (mc.player == null || mc.world == null) return;
         final EntityEnderCrystal crystal = mc.world.loadedEntityList.stream()
-                .filter(e -> e instanceof EntityEnderCrystal && mc.player.getDistanceToEntity(e) <= crystalRange || mc.player.hurtTime > 1)
+                .filter(e -> e instanceof EntityEnderCrystal && mc.player.getDistanceToEntity(e) <= crystalRange || mc.player.hurtTime < 1)
                 .map(entity -> (EntityEnderCrystal) entity)
                 .min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c)))
                 .orElse(null);

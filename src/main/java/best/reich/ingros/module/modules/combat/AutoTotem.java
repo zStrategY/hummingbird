@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 
 @ModuleManifest(label = "AutoTotem", category = ModuleCategory.COMBAT, color = 0xffffff10)
-public class AutoTotem extends ToggleableModule {
+public class  AutoTotem extends ToggleableModule {
     @Clamp(minimum = "1", maximum = "100")
     @Setting("Health")
     public int health = 20;
@@ -34,8 +34,7 @@ public class AutoTotem extends ToggleableModule {
     }
 
     private boolean shouldTotem() {
-        return
-                (mc.player.inventory.offHandInventory.isEmpty() || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA);
+        return (mc.player.inventory.offHandInventory.isEmpty() || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA);
         }
 
     int getTotemSlot() {

@@ -25,6 +25,8 @@ public class NoRender extends ToggleableModule {
     public boolean noHands = false;
     @Setting("NoItem")
     public boolean noItem = false;
+    @Setting("NoFog")
+    public boolean noFog = true;
 
     @Subscribe
     public void onHurtcam(HurtcamEvent event) {
@@ -34,13 +36,13 @@ public class NoRender extends ToggleableModule {
 
     @Subscribe
     public void onBossbar(BossbarEvent event) {
-        if (mc.player != null);
+        if (mc.world != null);
         if (noBossBar) event.setCancelled(true);
     }
 
     @Subscribe
     public void onArmorRender(RenderArmorEvent event) {
-        if (mc.player != null);
+        if (mc.world != null);
         if (noArmor) event.setCancelled(true);
     }
 
@@ -65,6 +67,10 @@ public class NoRender extends ToggleableModule {
         if (noItem) event.setCancelled(true);
     }
 
-
+    @Subscribe
+    public void onFog(FogEvent event) {
+        if (mc.world != null);
+        if (noFog) event.setCancelled(true);
+    }
 
 }

@@ -1,6 +1,7 @@
 package best.reich.ingros.mixin.impl;
 
 import best.reich.ingros.IngrosWare;
+import best.reich.ingros.events.render.FogEvent;
 import best.reich.ingros.events.render.ItemRenderEvent;
 import best.reich.ingros.events.render.OverlayEvent;
 import best.reich.ingros.events.render.RenderArmEvent;
@@ -34,6 +35,13 @@ public abstract class MixinItemRenderer {
     @Inject(method = "renderItemInFirstPerson(Lnet/minecraft/client/entity/AbstractClientPlayer;FFLnet/minecraft/util/EnumHand;FLnet/minecraft/item/ItemStack;F)V", at = @At("HEAD"), cancellable = true)
     public void onRenderItem(CallbackInfo ci) {
         ItemRenderEvent event = new ItemRenderEvent();
+        IngrosWare.INSTANCE.bus.fireEvent(event);
+        if (event.isCancelled()) ci.cancel();
+    }
+
+    @Inject(method = "renderWaterOverlayTexture", at = @At("HEAD"), cancellable = true)
+    public void onFogEvent(CallbackInfo ci) {
+        FogEvent event = new FogEvent();
         IngrosWare.INSTANCE.bus.fireEvent(event);
         if (event.isCancelled()) ci.cancel();
     }
