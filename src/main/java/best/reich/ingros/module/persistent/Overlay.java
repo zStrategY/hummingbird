@@ -132,7 +132,8 @@ public class Overlay extends PersistentModule {
         RenderUtil.drawText(IngrosWare.INSTANCE.getVersion() + ChatFormatting.WHITE, 60, 2, getHudColor(), font);
         if (arraylist) {
             int togglesY = (int) (initialRenderPos - RenderUtil.getTextHeight(font) - 2);
-            ArrayList<ToggleableModule> modules = new ArrayList<>(IngrosWare.INSTANCE.moduleManager.getToggles());
+            ArrayList<ToggleableModule> modules;
+            modules = new ArrayList<>(IngrosWare.INSTANCE.moduleManager.getToggles());
             modules.sort(Comparator.comparingDouble(m -> -RenderUtil.getTextWidth(getRenderLabel(m), font)));
             for (ToggleableModule module : modules) {
                 if (!module.isEnabled() || module.isHidden()) continue;
@@ -300,99 +301,6 @@ public class Overlay extends PersistentModule {
         }
     }
 
-/* credit finz0  https://github.com/cryrobtrwew/osiris/blob/master/src/main/java/me/finz0/osiris/module/modules/gui/CurrentHole.java
-    private boolean HoleRender(ScaledResolution scaledResolution) {
-        private void renderHole(double x, double y){
-            double leftX = x;
-            double leftY = y + 16;
-            double upX = x + 16;
-            double upY = y;
-            double rightX = x + 32;
-            double rightY = y + 16;
-            double bottomX = x + 16;
-            double bottomY = y + 32;
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            switch (mc.getRenderViewEntity().getHorizontalFacing()) {
-                case NORTH:
-                    if(northObby() || northBrock()) renderItem(upX, upY, new ItemStack(mc.world.getBlockState(playerPos.north()).getBlock()));
-                    if(westObby() || westBrock()) renderItem(leftX, leftY, new ItemStack(mc.world.getBlockState(playerPos.west()).getBlock()));
-                    if(eastObby() || eastBrock()) renderItem(rightX, rightY, new ItemStack(mc.world.getBlockState(playerPos.east()).getBlock()));
-                    if(southObby() || southBrock()) renderItem(bottomX, bottomY, new ItemStack(mc.world.getBlockState(playerPos.south()).getBlock()));
-                    break;
-
-                case SOUTH:
-                    if(southObby() || southBrock()) renderItem(upX, upY, new ItemStack(mc.world.getBlockState(playerPos.south()).getBlock()));
-                    if(eastObby() || eastBrock()) renderItem(leftX, leftY, new ItemStack(mc.world.getBlockState(playerPos.east()).getBlock()));
-                    if(westObby() || westBrock()) renderItem(rightX, rightY, new ItemStack(mc.world.getBlockState(playerPos.west()).getBlock()));
-                    if(northObby() || northBrock()) renderItem(bottomX, bottomY, new ItemStack(mc.world.getBlockState(playerPos.north()).getBlock()));
-                    break;
-
-                case WEST:
-                    if(westObby() || westBrock()) renderItem(upX, upY, new ItemStack(mc.world.getBlockState(playerPos.west()).getBlock()));
-                    if(southObby() || southBrock()) renderItem(leftX, leftY, new ItemStack(mc.world.getBlockState(playerPos.south()).getBlock()));
-                    if(northObby() || northBrock()) renderItem(rightX, rightY, new ItemStack(mc.world.getBlockState(playerPos.north()).getBlock()));
-                    if(eastObby() || eastBrock()) renderItem(bottomX, bottomY, new ItemStack(mc.world.getBlockState(playerPos.east()).getBlock()));
-                    break;
-
-                case EAST:
-                    if(eastObby() || eastBrock()) renderItem(upX, upY, new ItemStack(mc.world.getBlockState(playerPos.east()).getBlock()));
-                    if(northObby() || northBrock()) renderItem(leftX, leftY, new ItemStack(mc.world.getBlockState(playerPos.north()).getBlock()));
-                    if(southObby() || southBrock()) renderItem(rightX, rightY, new ItemStack(mc.world.getBlockState(playerPos.south()).getBlock()));
-                    if(westObby() || westBrock()) renderItem(bottomX, bottomY, new ItemStack(mc.world.getBlockState(playerPos.west()).getBlock()));
-                    break;
-            }
-        }
-
-        private void renderItem(double x, double y, ItemStack is){
-            RenderHelper.enableGUIStandardItemLighting();
-            mc.getRenderItem().renderItemAndEffectIntoGUI(is, (int)x, (int)y);
-            RenderHelper.disableStandardItemLighting();
-        }
-
-        private boolean northObby(){
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            return mc.world.getBlockState(playerPos.north()).getBlock() == Blocks.OBSIDIAN;
-        }
-        private boolean eastObby(){
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            return mc.world.getBlockState(playerPos.east()).getBlock() == Blocks.OBSIDIAN;
-        }
-        private boolean southObby(){
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            return mc.world.getBlockState(playerPos.south()).getBlock() == Blocks.OBSIDIAN;
-        }
-        private boolean westObby(){
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            return mc.world.getBlockState(playerPos.west()).getBlock() == Blocks.OBSIDIAN;
-        }
-
-        private boolean northBrock(){
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            return mc.world.getBlockState(playerPos.north()).getBlock() == Blocks.BEDROCK;
-        }
-        private boolean eastBrock(){
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            return mc.world.getBlockState(playerPos.east()).getBlock() == Blocks.BEDROCK;
-        }
-        private boolean southBrock(){
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            return mc.world.getBlockState(playerPos.south()).getBlock() == Blocks.BEDROCK;
-        }
-        private boolean westBrock(){
-            Vec3d vec3d = BlockUtils.getInterpolatedPos(mc.player, 0);
-            BlockPos playerPos = new BlockPos(vec3d);
-            return mc.world.getBlockState(playerPos.west()).getBlock() == Blocks.BEDROCK;
-        }
-
-    } */
 
 
 
@@ -426,8 +334,10 @@ public class Overlay extends PersistentModule {
         }
     }
 
-    private String getRenderLabel(ToggleableModule module) {
-        final StringBuilder sb = new StringBuilder(module.getLabel());
+
+    public String getRenderLabel(ToggleableModule module) {
+        final StringBuilder sb;
+        sb = new StringBuilder(module.getLabel());
         if (module.getSuffix() != null && showsuffix)
             sb.append(ChatFormatting.GRAY).append(" [").append(ChatFormatting.WHITE).append(module.getSuffix()).append(ChatFormatting.GRAY).append("]");
         return sb.toString();

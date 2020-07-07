@@ -23,6 +23,8 @@ public class NoRender extends ToggleableModule {
     public boolean noFire = true;
     @Setting("NoHands")
     public boolean noHands = false;
+    @Setting("NoItem")
+    public boolean noItem = false;
 
     @Subscribe
     public void onHurtcam(HurtcamEvent event) {
@@ -55,6 +57,12 @@ public class NoRender extends ToggleableModule {
     public void onArmRender(RenderArmEvent event) {
         if (mc.player != null);
         if (noHands) event.setCancelled(true);
+    }
+
+    @Subscribe
+    public void onItemRender(ItemRenderEvent event) {
+        if (mc.player != null);
+        if (noItem) event.setCancelled(true);
     }
 
 

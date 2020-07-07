@@ -58,6 +58,7 @@ dependencies {
         exclude module: 'log4j-core'
     }
     compile 'com.esotericsoftware:reflectasm:1.11.9'
+    compile "club.minnced:java-discord-rpc:2.0.1"
     compile 'org.apache.commons:commons-lang3:3.6'
 }
 
@@ -87,6 +88,7 @@ shadowJar {
     dependencies {
         include(dependency('org.spongepowered:mixin'))
         include(dependency('com.esotericsoftware:reflectasm'))
+        include(dependency('club.minnced:java-discord-rpc'))
     }
     exclude 'dummyThing'
     exclude 'LICENSE.txt'
