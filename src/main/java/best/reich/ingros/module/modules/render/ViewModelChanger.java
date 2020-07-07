@@ -5,7 +5,7 @@ import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
 import net.minecraft.item.ItemSword;
 
-@ModuleManifest(label = "ViewModelChanger", category = ModuleCategory.RENDER, color = 0xffffff33)
+@ModuleManifest(label = "ViewModelChanger", category = ModuleCategory.RENDER, hidden = true, color = 0xffffff33)
 public class ViewModelChanger extends ToggleableModule {
 
     public void onUpdate(){
