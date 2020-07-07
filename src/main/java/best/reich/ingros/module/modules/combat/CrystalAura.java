@@ -27,7 +27,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemFood;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
@@ -105,17 +104,14 @@ public class CrystalAura extends ToggleableModule {
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).map(entity -> entity).min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c))).orElse(null);
-        if (crystal != null && render != null && mc.player.getDistanceToEntity(crystal) <= breakRange) {
+        if (crystal != null && mc.player.getDistanceToEntity(crystal) <= breakRange) {
             if (event.getType() == EventType.PRE) {
                 mc.playerController.attackEntity(mc.player, crystal);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
                 if (hitDelay > 0) {
                     if (hitCounter > hitDelay) {
                         hitCounter++;
-                        return;
-                    }
-                    else
-                    {
+                        return; } else {
                         hitCounter = 0;
                     }
                 }
