@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-//@ModuleManifest(label = "AutoGG", category = ModuleCategory.COMBAT, hidden = true)
+@ModuleManifest(label = "AutoGG", category = ModuleCategory.COMBAT, hidden = true)
 public class AutoGG extends ToggleableModule { /*
     static List<String> AutoGgMessages = new ArrayList<>();
     private ConcurrentHashMap targetedPlayers = null;
