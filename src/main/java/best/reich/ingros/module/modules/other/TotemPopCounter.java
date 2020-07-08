@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class TotemPopCounter extends ToggleableModule {
     public static HashMap<String, Integer> popList = new HashMap<>();
 
-     @Subscribe
+    @Subscribe
     public void onUpdate(UpdateEvent event) {
          if (mc.world == null || mc.player == null) {
              return;

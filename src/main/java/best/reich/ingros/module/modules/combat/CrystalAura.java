@@ -11,6 +11,7 @@ import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
 import me.xenforu.kelo.setting.annotation.Clamp;
+import me.xenforu.kelo.setting.annotation.Mode;
 import me.xenforu.kelo.setting.annotation.Setting;
 import me.xenforu.kelo.util.math.MathUtil;
 import net.b0at.api.event.Subscribe;
@@ -44,56 +45,71 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-
-@ModuleManifest(label = "CrystalAura", category = ModuleCategory.COMBAT, color = 0x4BF7FF)
+@ModuleManifest(label = "CrystalAura", category = ModuleCategory.COMBAT)
 public class CrystalAura extends ToggleableModule {
-    @Clamp(minimum = "1.0", maximum = "6.0")
+
+    @Clamp(minimum = "1", maximum = "6")
     @Setting("EnemyRange")
-    public float enemyRange = 6.0f;
-    @Clamp(minimum = "1.0", maximum = "6.0")
+    public int enemyRange = 6;
+
+    @Clamp(minimum = "1", maximum = "6")
     @Setting("PlaceRange")
-    public float placeRange = 6.0f;
-    @Clamp(maximum = "50")
+    public int placeRange = 6;
+
+    @Clamp(maximum = "20")
     @Setting("PlaceDelay")
     public int placeDelay = 0;
-    @Clamp(minimum = "1.0", maximum = "6.0")
-    @Setting("BreakRange")
-    public float breakRange = 6.0f;
-    @Clamp(minimum = "0", maximum = "20")
-    @Setting("HitDelay")
-    public int hitDelay = 1;
-    @Clamp(minimum = "1", maximum = "16")
-    @Setting("MinimumDamage")
+
+    @Clamp(maximum = "6")
+    @Setting("HitRange")
+    public int hitRange = 6;
+
+    @Clamp(maximum = "6")
+    @Setting("WallRange")
+    public float wallRange = 0f;
+
+    @Clamp(maximum = "15")
+    @Setting("MinDamage")
     public int minDamage = 4;
-    @Clamp(minimum = "1", maximum = "16")
-    @Setting("Faceplace")
-    public int facePlace = 2;
-    @Clamp(minimum = "1")
-    @Setting("MaxSelfDamage")
-    public int maxDamage = 11;
-    @Clamp(minimum = "1", maximum = "75")
-    @Setting("MultiPlaceSpeed")
-    public int multiPlaceSpeed = 2;
-    @Setting("Place")
-    public boolean place = true;
-    @Setting("pSilent")
-    public boolean pSilent = true;
-    @Setting("RayTrace")
-    public boolean rayTrace = false;
+
+    @Clamp(minimum = "1", maximum = "36")
+    @Setting("FacePlace")
+    public int facePlace = 10;
+
+    @Clamp(minimum = "1", maximum = "20")
+    @Setting("MaxSelfDmg")
+    public int maxDamage = 8;
+
+    @Clamp(maximum = "20")
+    @Setting("TickDelay")
+    public int tickDelay = 1;
+
     @Setting("AutoSwitch")
     public boolean autoSwitch = false;
-    @Setting("AntiStuck")
-    public boolean antiStuck = true;
-    @Setting("MultiPlace")
-    public boolean multiPlace = false;
-    @Setting("Announcer")
-    public boolean announcer = true;
+
+    @Setting("Place")
+    public boolean place = true;
+
+    @Setting("pSilent")
+    public boolean pSilent = true;
+
+    @Setting("Raytrace")
+    public boolean rayTrace = false;
+
     @Setting("AntiSuicide")
-    public boolean antiSuicide = false;
+    public boolean antiSuicide = true;
+
+    @Setting("ChatMessages")
+    public boolean announcer = true;
+
     @Setting("Color")
-    public Color color = new Color(255,0,0);
-    @Setting("DmgColor")
-    public Color dmgColor = new Color(0, 0, 255);
+    public Color color = new Color(150, 110, 170);
+
+    @Setting("DamageColor")
+    public Color dmgColor = new Color(50, 160, 255);
+
+
+    private int tickCounter;
     private BlockPos render;
     private String dmg;
     private long placeSystemTime;
@@ -103,16 +119,23 @@ public class CrystalAura extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).map(entity -> entity).min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c))).orElse(null);
-        if (crystal != null && mc.player.getDistanceToEntity(crystal) <= breakRange) {
+        if (mc.world == null || mc.player == null) return;
+        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream()
+                .filter(entity -> entity instanceof EntityEnderCrystal)
+                .map(entity -> entity)
+                .min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c)))
+                .orElse(null);
+        if (crystal != null && mc.player.getDistanceToEntity(crystal) <= hitRange) {
+            if (!mc.player.canEntityBeSeen(crystal) && mc.player.getDistanceToEntity(crystal) >= wallRange) return;
             if (event.getType() == EventType.PRE) {
                 mc.playerController.attackEntity(mc.player, crystal);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
-                if (hitDelay > 0) {
-                    if (hitCounter > hitDelay) {
-                        hitCounter++;
-                        return; } else {
-                        hitCounter = 0;
+                if (tickDelay > 0) {
+                    if (tickCounter > tickDelay) {
+                        ++tickCounter;
+                        return;
+                    } else {
+                        tickCounter = 0;
                     }
                 }
             }
@@ -120,27 +143,29 @@ public class CrystalAura extends ToggleableModule {
 
         int crystalSlot = (mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL) ? mc.player.inventory.currentItem : -1;
         if (crystalSlot == -1) {
-            for (int l = 0; l < 9; ++l) {
-                if (mc.player.inventory.getStackInSlot(l).getItem() == Items.END_CRYSTAL) {
-                    crystalSlot = l;
+            for (int s = 0; s > 9; s++) {
+                if (mc.player.inventory.getStackInSlot(s).getItem() == Items.END_CRYSTAL) {
+                    crystalSlot = s;
                     break;
                 }
             }
         }
 
-        boolean offhand = false;
+        boolean offHand = false;
         if (mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
-            offhand = true;
+            offHand = true;
         } else if (crystalSlot == -1) {
             return;
         }
-
+        
         //place
         BlockPos finalPos = null;
         final List<BlockPos> blocks = findCrystalBlocks();
-        final List<Entity> entities = mc.world.playerEntities.stream().filter(entityPlayer -> entityPlayer != mc.player && entityPlayer.getEntityId() != -1488 && !IngrosWare.INSTANCE.friendManager.isFriend(entityPlayer.getName())).collect(Collectors.toList());
-        double damage = 0.5;
-        double prevSelf = 0.5;
+        final List<Entity> entities = mc.world.playerEntities
+                .stream()
+                .filter(entityPlayer -> entityPlayer != mc.player && entityPlayer.getEntityId() != -1488 && !IngrosWare.INSTANCE.friendManager.isFriend(entityPlayer.getName())).collect(Collectors.toList());
+        double damage = .5;
+        double prevSelf = .5;
         for (final Entity entity2 : entities) {
             if (((EntityLivingBase) entity2).getHealth() <= 0.0f || mc.player.getDistanceSqToEntity(entity2) > enemyRange * enemyRange) continue;
             for (final BlockPos blockPos : blocks) {
@@ -164,14 +189,14 @@ public class CrystalAura extends ToggleableModule {
             }
         }
 
-        if (damage == 0.5) {
+        if (damage == .5) {
             render = null;
             dmg = null;
             return;
         }
 
         if (place) {
-            if (!offhand && mc.player.inventory.currentItem != crystalSlot) {
+            if (!offHand && mc.player.inventory.currentItem != crystalSlot) {
                 if (autoSwitch) {
                     mc.player.inventory.currentItem = crystalSlot;
                     switchCooldown = true;
@@ -184,8 +209,8 @@ public class CrystalAura extends ToggleableModule {
                 switchCooldown = false;
                 return;
             }
-            if (System.nanoTime() / 1000000L - placeSystemTime >= placeDelay * 2) {
-                mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(finalPos, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
+            if (System.currentTimeMillis() / 1 - placeSystemTime >= placeDelay * 2) {
+                mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(finalPos, f, offHand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
                 this.placeLocations.add(new PlaceLocation(finalPos.getX(), finalPos.getY(), finalPos.getZ()));
                 render = finalPos;
                 dmg = MathHelper.floor(damage) + "dmg";
@@ -216,7 +241,7 @@ public class CrystalAura extends ToggleableModule {
         }
     }
 
-    //no sound desync
+    //anti desync
     @Subscribe
     public void onPacket(final PacketEvent event) {
         if (event.getType() == EventType.POST && event.getPacket() instanceof SPacketSoundEffect) {

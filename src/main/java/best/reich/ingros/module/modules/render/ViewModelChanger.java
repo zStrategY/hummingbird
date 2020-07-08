@@ -9,7 +9,7 @@ import net.minecraft.item.ItemSword;
 public class ViewModelChanger extends ToggleableModule {
 
     public void onUpdate(){
-        if(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && mc.entityRenderer.itemRenderer.prevEquippedProgressMainHand >= 0.9) {
+        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && mc.entityRenderer.itemRenderer.prevEquippedProgressMainHand >= 0.9) {
             mc.entityRenderer.itemRenderer.equippedProgressMainHand = 1;
             mc.entityRenderer.itemRenderer.itemStackMainHand = mc.player.getHeldItemMainhand();
         }

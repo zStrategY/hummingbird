@@ -201,7 +201,6 @@ public class Overlay extends PersistentModule {
         if (totems) {
             RenderUtil.drawText("Totems: " + ChatFormatting.WHITE + totemCount(), 2, y, getHudColor(), font);
             y += RenderUtil.getTextHeight(font) + 2;
-
         }
         if (ping) {
             final NetworkPlayerInfo networkPlayerInfo = mc.getConnection().getPlayerInfo(mc.player.getGameProfile().getId());

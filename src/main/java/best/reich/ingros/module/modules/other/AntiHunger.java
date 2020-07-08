@@ -19,7 +19,7 @@ public class AntiHunger extends ToggleableModule {
 
     @Subscribe
     public void onPacket(PacketEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer) {
+        if (mc.player != null && event.getPacket() instanceof CPacketPlayer) {
             if (mc.player.fallDistance > 0 || mc.playerController.isHittingBlock) {
                 mc.player.onGround = true;
             } else {
