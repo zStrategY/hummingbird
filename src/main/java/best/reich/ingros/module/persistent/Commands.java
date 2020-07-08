@@ -2,14 +2,20 @@ package best.reich.ingros.module.persistent;
 
 import best.reich.ingros.IngrosWare;
 import best.reich.ingros.events.network.PacketEvent;
+import best.reich.ingros.events.other.ProcessKeyBindsEvent;
+import me.xenforu.kelo.setting.annotation.Setting;
 import net.b0at.api.event.types.EventType;
 import best.reich.ingros.util.logging.Logger;
 import me.xenforu.kelo.command.Command;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.PersistentModule;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.b0at.api.event.Subscribe;
+import org.lwjgl.input.Keyboard;
 
 /**
  * made by Xen for IngrosWare
@@ -17,6 +23,20 @@ import net.b0at.api.event.Subscribe;
  **/
 @ModuleManifest(label = "Commands", category = ModuleCategory.OTHER)
 public class Commands extends PersistentModule {
+
+    @Setting("OpenChat")
+    public boolean chat = true;
+
+    @Subscribe
+    public void onProccessKeyBinds(ProcessKeyBindsEvent event) {
+        if (chat) {
+            if (Minecraft.getMinecraft().gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN) {
+                if (Minecraft.getMinecraft().currentScreen == null && Keyboard.isKeyDown(Keyboard.KEY_MINUS)) {
+                    Minecraft.getMinecraft().displayGuiScreen(new GuiChat("-"));
+                }
+            }
+        }
+    }
 
     @Subscribe
     public void onSendPacket(PacketEvent event) {

@@ -26,6 +26,14 @@ public class oHareElytraFly extends ToggleableModule {
     @Setting("VerticalSpeed")
     public float vspeed = 0.4F;
 
+    @Setting("InstaStop")
+    public boolean antiendzoom = true;
+
+    @Override
+    public void onDisable() {
+        if (antiendzoom) mc.player.setVelocity(0, 0, 0);
+    }
+
     @Subscribe
     private void onRecieve(PacketEvent event) {
         if (mc.player == null || !mc.player.isElytraFlying()) return;

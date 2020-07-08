@@ -86,4 +86,11 @@ public abstract class MixinMinecraft implements IMinecraft {
             callbackInfo.cancel();
         }
     }
+
+    @Inject(method = "processKeyBinds", at = @At("HEAD"), cancellable = true)
+    public void onProcessKeyBinds(CallbackInfo ci) {
+        ProcessKeyBindsEvent processKeyBindsEvent = new ProcessKeyBindsEvent();
+        IngrosWare.INSTANCE.bus.fireEvent(processKeyBindsEvent);
+        if (processKeyBindsEvent.isCancelled()) ci.cancel();
+    }
 }
