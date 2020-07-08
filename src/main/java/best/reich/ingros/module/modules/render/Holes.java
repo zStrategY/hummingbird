@@ -17,6 +17,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,6 @@ public class Holes extends ToggleableModule {
     @Setting("Mode")
     @Mode({"Both", "Fill", "Outline"})
     public String mode = "Both";
-
     @Setting("Bottom")
     public boolean bottom = true;
     @Setting("Void")

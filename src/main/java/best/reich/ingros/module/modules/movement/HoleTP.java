@@ -5,6 +5,8 @@ import best.reich.ingros.events.entity.UpdateEvent;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
+import me.xenforu.kelo.setting.annotation.Mode;
+import me.xenforu.kelo.setting.annotation.Setting;
 import net.b0at.api.event.Subscribe;
 import net.b0at.api.event.types.EventType;
 import net.minecraft.block.BlockLiquid;
@@ -18,14 +20,27 @@ import net.minecraft.util.math.MathHelper;
 
 @ModuleManifest(label = "HoleTP", category = ModuleCategory.MOVEMENT, color = 0xffffff33)
 public class HoleTP extends ToggleableModule {
+    @Setting("mode")
+    @Mode({"Ingros", "Yoink"})
+    public String mode = "Yoink";
     private final double[] oneblockPositions = {0.42D, 0.75D};
     private int packets;
     private boolean jumped = false;
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        if (mc.world == null || mc.player == null || IngrosWare.INSTANCE.moduleManager.getModule("Speed").isEnabled())return;
-        if (event.getType() == EventType.POST) {
+        if (mc.world == null || mc.player == null || IngrosWare.INSTANCE.moduleManager.getModule("Speed").isEnabled())
+            return;
+
+        if (mode.equals("Yoink")) {
+            if (mc.player.isInLava() || mc.player.isInWater()) return;
+                if (mc.player.onGround) {
+                    --mc.player.motionY;
+                }
+        }
+
+        if (mode.equals("Ingros")) {
+        if (event.getType() == EventType.POST)
             if (!mc.player.onGround) {
                 if (mc.gameSettings.keyBindJump.isKeyDown())
                     jumped = true;
