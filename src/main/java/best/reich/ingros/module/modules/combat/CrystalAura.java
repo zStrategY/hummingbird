@@ -7,6 +7,7 @@ import best.reich.ingros.events.render.Render3DEvent;
 import best.reich.ingros.mixin.accessors.IRenderManager;
 import best.reich.ingros.util.logging.Logger;
 import best.reich.ingros.util.render.RenderUtil;
+import best.reich.ingros.util.game.StopwatchUtil;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
@@ -45,6 +46,10 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * @author ohare da b0ss
+ * updated by h0lloww
+ */
 @ModuleManifest(label = "CrystalAura", category = ModuleCategory.COMBAT)
 public class CrystalAura extends ToggleableModule {
 
@@ -80,9 +85,10 @@ public class CrystalAura extends ToggleableModule {
     @Setting("MaxSelfDmg")
     public int maxDamage = 8;
 
-    @Clamp(maximum = "20")
-    @Setting("TickDelay")
-    public int tickDelay = 1;
+
+    @Clamp(minimum = "1", maximum = "20")
+    @Setting("FluffyAPS")
+    public int fluffyAps = 19;
 
     @Setting("AutoSwitch")
     public boolean autoSwitch = false;
@@ -108,7 +114,7 @@ public class CrystalAura extends ToggleableModule {
     @Setting("DamageColor")
     public Color dmgColor = new Color(50, 160, 255);
 
-
+    private final StopwatchUtil stopwatch = new StopwatchUtil();
     private int tickCounter;
     private BlockPos render;
     private String dmg;
@@ -128,14 +134,11 @@ public class CrystalAura extends ToggleableModule {
         if (crystal != null && mc.player.getDistanceToEntity(crystal) <= hitRange) {
             if (!mc.player.canEntityBeSeen(crystal) && mc.player.getDistanceToEntity(crystal) >= wallRange) return;
             if (event.getType() == EventType.PRE) {
-                mc.playerController.attackEntity(mc.player, crystal);
-                mc.player.swingArm(EnumHand.MAIN_HAND);
-                if (tickDelay > 0) {
-                    if (tickCounter > tickDelay) {
-                        ++tickCounter;
-                        return;
-                    } else {
-                        tickCounter = 0;
+                if (event.getType() == EventType.PRE) {
+                    if(StopwatchUtil.hasCompleted((long) (1000L / fluffyAps))) {
+                        mc.playerController.attackEntity(mc.player, crystal);
+                        mc.player.swingArm(EnumHand.MAIN_HAND);
+                        stopwatch.reset();
                     }
                 }
             }
