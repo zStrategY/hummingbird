@@ -22,6 +22,10 @@ import net.minecraft.util.math.BlockPos;
 
 @ModuleManifest(label = "PacketMine", category = ModuleCategory.OTHER, color = 0xfffED3)
 public class PacketMine extends ToggleableModule {
+
+    @Mode({"Smart", "Normal"})
+    public String mode = "Smart";
+
     @Setting("Reset")
     public boolean reset = true;
 
@@ -46,7 +50,7 @@ public class PacketMine extends ToggleableModule {
                     if (mc.player != null);
                     mc.player.swingArm(EnumHand.MAIN_HAND);
                     final boolean canSwing = mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_PICKAXE;
-                    if (!canSwing) return;
+                    if (mode.equals("Smart") && !canSwing) return;
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.getPos(), event.getFacing()));
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.getPos(), event.getFacing()));
                     event.setCancelled(true);

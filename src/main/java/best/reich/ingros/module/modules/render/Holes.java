@@ -33,9 +33,11 @@ public class Holes extends ToggleableModule {
     public boolean voidholes = true;
     @Setting("Weak")
     public boolean weak = true;
+
     @Setting("Radius")
     @Clamp(maximum = "32")
     public int radius = 8;
+
     public final List<Hole> holes = new ArrayList<>();
 
     @Subscribe

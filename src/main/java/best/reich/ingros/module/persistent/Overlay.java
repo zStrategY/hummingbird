@@ -54,11 +54,14 @@ public class Overlay extends PersistentModule {
     @Setting("Watermark")
     public boolean watermark = true;
 
-    @Setting("Font")
-    public boolean font = true;
+    @Setting("Logo")
+    public boolean logo = true;
 
     @Setting("Version")
     public boolean version = true;
+
+    @Setting("Font")
+    public boolean font = true;
 
     @Setting("ArrayList")
     public boolean arraylist = true;
@@ -113,6 +116,7 @@ public class Overlay extends PersistentModule {
     private int initialRenderPos = 2;
     private final ResourceLocation INVENTORY_RESOURCE = new ResourceLocation("textures/gui/container/inventory.png");
     private final ResourceLocation TOTEM_RESOURCE = new ResourceLocation("textures/item/totem.png");
+    private final ResourceLocation Logo = new ResourceLocation("cockandballs/logo.png");
     private Gui gui = new Gui();
 
     @Subscribe
@@ -130,6 +134,8 @@ public class Overlay extends PersistentModule {
         RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
         if (version)
         RenderUtil.drawText(IngrosWare.INSTANCE.getVersion() + ChatFormatting.WHITE, 60, 2, getHudColor(), font);
+        if (logo)
+        mc.getTextureManager().bindTexture(Logo);
         if (arraylist) {
             int togglesY = (int) (initialRenderPos - RenderUtil.getTextHeight(font) - 2);
             ArrayList<ToggleableModule> modules;

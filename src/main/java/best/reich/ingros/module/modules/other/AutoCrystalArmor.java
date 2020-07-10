@@ -39,7 +39,7 @@ public class AutoCrystalArmor extends ToggleableModule {
                 .orElse(null);
         if (crystal != null && event.getType() == EventType.PRE) {
             int selectedSlotId = -1;
-            if (timer.reach(2)) {
+            if (timer.reach(1)) {
                 if (mc.player.inventory.armorItemInSlot(2).getItem() == Items.AIR) {
                     for (Item item : CHESTPLATES) {
                         int slotId = getSlotID(item);

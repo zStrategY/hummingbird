@@ -12,7 +12,9 @@ public class XCarry extends ToggleableModule {
     @Subscribe
     public void onWindow(PacketEvent event) {
         if (event.getPacket() instanceof CPacketCloseWindow) {
-            event.setCancelled(true);
+            if (((CPacketCloseWindow) event.getPacket()).windowId == mc.player.inventoryContainer.windowId) {
+                event.setCancelled(true);
+            }
         }
     }
 }

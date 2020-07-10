@@ -48,18 +48,19 @@ import java.util.stream.Collectors;
 
 /**
  * @author ohare da b0ss
- * updated by h0lloww
+ * updated by h0lloww and fluffycq
  */
+
 @ModuleManifest(label = "CrystalAura", category = ModuleCategory.COMBAT)
 public class CrystalAura extends ToggleableModule {
 
     @Clamp(minimum = "1", maximum = "6")
     @Setting("EnemyRange")
-    public int enemyRange = 6;
+    public float enemyRange = 6;
 
     @Clamp(minimum = "1", maximum = "6")
     @Setting("PlaceRange")
-    public int placeRange = 6;
+    public float placeRange = 6;
 
     @Clamp(maximum = "20")
     @Setting("PlaceDelay")
@@ -67,7 +68,7 @@ public class CrystalAura extends ToggleableModule {
 
     @Clamp(maximum = "6")
     @Setting("HitRange")
-    public int hitRange = 6;
+    public float hitRange = 6;
 
     @Clamp(maximum = "6")
     @Setting("WallRange")
@@ -84,7 +85,6 @@ public class CrystalAura extends ToggleableModule {
     @Clamp(minimum = "1", maximum = "20")
     @Setting("MaxSelfDmg")
     public int maxDamage = 8;
-
 
     @Clamp(minimum = "1", maximum = "20")
     @Setting("FluffyAPS")
@@ -115,11 +115,9 @@ public class CrystalAura extends ToggleableModule {
     public Color dmgColor = new Color(50, 160, 255);
 
     private final StopwatchUtil stopwatch = new StopwatchUtil();
-    private int tickCounter;
     private BlockPos render;
     private String dmg;
     private long placeSystemTime;
-    private int hitCounter;
     private boolean switchCooldown;
     private final List<PlaceLocation> placeLocations = new CopyOnWriteArrayList<>();
 
@@ -134,12 +132,10 @@ public class CrystalAura extends ToggleableModule {
         if (crystal != null && mc.player.getDistanceToEntity(crystal) <= hitRange) {
             if (!mc.player.canEntityBeSeen(crystal) && mc.player.getDistanceToEntity(crystal) >= wallRange) return;
             if (event.getType() == EventType.PRE) {
-                if (event.getType() == EventType.PRE) {
-                    if(StopwatchUtil.hasCompleted((long) (1000L / fluffyAps))) {
-                        mc.playerController.attackEntity(mc.player, crystal);
-                        mc.player.swingArm(EnumHand.MAIN_HAND);
-                        stopwatch.reset();
-                    }
+                if (StopwatchUtil.hasCompleted((long) (1000L / fluffyAps))) {
+                    mc.playerController.attackEntity(mc.player, crystal);
+                    mc.player.swingArm(EnumHand.MAIN_HAND);
+                    stopwatch.reset();
                 }
             }
         }
@@ -226,7 +222,7 @@ public class CrystalAura extends ToggleableModule {
     @Subscribe
     public void onRender3D(Render3DEvent event) {
         if (render != null) {
-            final AxisAlignedBB bb = new AxisAlignedBB(render.getX() - mc.getRenderManager().viewerPosX, render.getY() - mc.getRenderManager().viewerPosY + 1, render.getZ() - mc.getRenderManager().viewerPosZ, render.getX() + 1 - mc.getRenderManager().viewerPosX, render.getY() + 1.2 - mc.getRenderManager().viewerPosY, render.getZ() + 1 - mc.getRenderManager().viewerPosZ);
+            final AxisAlignedBB bb = new AxisAlignedBB(render.getX() - mc.getRenderManager().viewerPosX, render.getY() - mc.getRenderManager().viewerPosY + 2.0, render.getZ() - mc.getRenderManager().viewerPosZ, render.getX() + 1 - mc.getRenderManager().viewerPosX, render.getY() + 1 - mc.getRenderManager().viewerPosY, render.getZ() + 1 - mc.getRenderManager().viewerPosZ);
             if (RenderUtil.isInViewFrustrum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ))) {
                 RenderUtil.drawESP(bb, color.getRed(), color.getGreen(), color.getBlue(), 40F);
                 RenderUtil.drawESPOutline(bb, color.getRed(), color.getGreen(), color.getBlue(), 255f, 1f);

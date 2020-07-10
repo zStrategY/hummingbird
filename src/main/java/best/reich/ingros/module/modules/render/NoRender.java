@@ -1,6 +1,7 @@
 package best.reich.ingros.module.modules.render;
 
 
+import best.reich.ingros.events.entity.UpdateEvent;
 import best.reich.ingros.events.render.*;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
@@ -27,6 +28,8 @@ public class NoRender extends ToggleableModule {
     public boolean noItem = false;
     @Setting("NoFog")
     public boolean noFog = true;
+    @Setting("NoViewBob")
+    public boolean noBob = true;
 
     @Subscribe
     public void onHurtcam(HurtcamEvent event) {
@@ -71,6 +74,12 @@ public class NoRender extends ToggleableModule {
     public void onFog(FogEvent event) {
         if (mc.world != null);
         if (noFog) event.setCancelled(true);
+    }
+
+    @Subscribe //salhack https://github.com/ionar2/salhack/blob/master/src/main/java/me/ionar/salhack/module/render/NoBobModule.java
+    public void onBob(UpdateEvent event) {
+        if (noBob)
+        mc.player.distanceWalkedModified = 4.0f;
     }
 
 }

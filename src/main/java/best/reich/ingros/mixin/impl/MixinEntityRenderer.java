@@ -2,6 +2,7 @@ package best.reich.ingros.mixin.impl;
 
 import best.reich.ingros.IngrosWare;
 import best.reich.ingros.events.other.TraceEntityEvent;
+import best.reich.ingros.events.render.FogEvent;
 import best.reich.ingros.events.render.HurtcamEvent;
 import best.reich.ingros.events.render.Render2DEvent;
 import best.reich.ingros.events.render.Render3DEvent;
@@ -59,6 +60,19 @@ public abstract class MixinEntityRenderer {
         if (event.isCancelled())
             ci.cancel();
     }
+
+
+    @Inject(method = "setupFog", at = @At("HEAD"), cancellable = true)
+    public void setupFog(int startCoords, float partialTicks, CallbackInfo ci) {
+        FogEvent event = new FogEvent();
+        IngrosWare.INSTANCE.bus.fireEvent(event);
+        if (event.isCancelled()) ci.cancel();
+    }
+
+
+
+
+
     @Inject(method = "renderWorldPass", at = @At(value = "INVOKE_STRING", target = "net/minecraft/profiler/Profiler.endStartSection(Ljava/lang/String;)V", args = {"ldc=hand"}))
     private void onStartHand(int pass, float partialTicks, long finishTimeNano, CallbackInfo ci) {
         final GLUProjection projection = GLUProjection.getInstance();
