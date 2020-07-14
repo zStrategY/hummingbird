@@ -40,6 +40,7 @@ public class IngrosWare extends Client {
         macroManager.load();
         hudEditorGUI.load();
         System.out.println("[hummingbird] Loaded!");
+
     }
 
     @Override

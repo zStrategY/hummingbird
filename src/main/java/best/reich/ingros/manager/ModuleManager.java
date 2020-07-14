@@ -45,20 +45,23 @@ public class ModuleManager extends AbstractModuleManager {
         String name = getClass().getName().replace('.', '/');
         name = getClass().getResource("/" + name + ".class").toString();
         // remove junk
+        System.out.println("Begin junk remove: " + name);
         name = name.substring(0, name.indexOf(".jar") + 4);
+        System.out.println("Mid junk remove: " + name);
         name = name.substring(name.lastIndexOf(':')-1).replace('%', ' ');
         String s = "";
         for (int k=0; k<name.length(); k++) {
             s += name.charAt(k);
             if (name.charAt(k) == ' ') k += 2;
         }
+        System.out.println("End: " + name);
         return s.replace('/', File.separatorChar);
     }
 
     private void loadInternalModules() {
         try {
-            System.out.println("DIR: " + getJarFolder());
             if (ClassUtil.getClassesIn(getJarFolder()).isEmpty()) System.out.println("[hummingbird] No internal modules found!");
+            System.out.println("DIR: " + getJarFolder());
             for (Class clazz : ClassUtil.getClassesIn(getJarFolder())) {
                 if (clazz != null && ToggleableModule.class.isAssignableFrom(clazz)) {
                     final ToggleableModule module = (ToggleableModule) clazz.newInstance();

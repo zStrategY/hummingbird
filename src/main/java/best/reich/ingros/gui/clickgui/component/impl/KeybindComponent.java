@@ -33,7 +33,7 @@ public class KeybindComponent extends Component {
         final ClickGui clickGui = (ClickGui) IngrosWare.INSTANCE.moduleManager.getModule("ClickGui");
         RenderUtil.drawRect(getFinishedX(), getFinishedY(), getWidth(), getHeight(), 0x92000000);
         RenderUtil.drawBorderedRect(getFinishedX() + 5, getFinishedY() + 1f, getWidth() - 10, getHeight() - 2,0.5f,0x40000000, clickGui.color.getRGB());
-        Fonts.caviarFont.drawStringWithShadow(isBinding() ? "Press a key...":"Bind: " + Keyboard.getKeyName(getToggleableModule().getBind()), getFinishedX() + 6, getFinishedY() + 0.5f+ getHeight() / 2 - Fonts.caviarFont.getStringHeight(getLabel()) / 2, 0xFFFFFFFF);
+        Fonts.alataFont.drawStringWithShadow(isBinding() ? "Press a key...":"Bind: " + Keyboard.getKeyName(getToggleableModule().getBind()), getFinishedX() + 6, getFinishedY() + 0.5f+ getHeight() / 2 - Fonts.alataFont.getStringHeight(getLabel()) / 2, 0xFFFFFFFF);
     }
 
     @Override

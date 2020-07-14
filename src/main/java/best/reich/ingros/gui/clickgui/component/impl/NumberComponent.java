@@ -33,7 +33,7 @@ public class NumberComponent extends Component {
         super.drawScreen(mouseX, mouseY, partialTicks);
         final ClickGui clickGui = (ClickGui) IngrosWare.INSTANCE.moduleManager.getModule("ClickGui");
         RenderUtil.drawRect(getFinishedX(), getFinishedY(), getWidth(), getHeight(), 0x92000000);
-        Fonts.caviarFont.drawStringWithShadow(getLabel() + ": " + getNumberSetting().getValue(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - Fonts.caviarFont.getStringHeight(getLabel()) / 2, 0xFFFFFFFF);
+        Fonts.alataFont.drawStringWithShadow(getLabel() + ": " + getNumberSetting().getValue(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - Fonts.alataFont.getStringHeight(getLabel()) / 2, 0xFFFFFFFF);
         float length = MathHelper.floor(((getNumberSetting().getValue()).floatValue() - getNumberSetting().getMinimum().floatValue()) / (getNumberSetting().getMaximum().floatValue() - getNumberSetting().getMinimum().floatValue()) * (getWidth() - 10));
         RenderUtil.drawRect(getFinishedX() + 5, getFinishedY() + getHeight() - 2, length, 2, clickGui.color.getRGB());
         if (sliding) {

@@ -15,6 +15,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
+import me.xenforu.kelo.setting.annotation.Clamp;
 import me.xenforu.kelo.setting.annotation.Mode;
 import me.xenforu.kelo.setting.annotation.Setting;
 import me.xenforu.kelo.util.math.MathUtil;
@@ -52,9 +53,17 @@ import java.util.List;
 import java.util.*;
 
 @ModuleManifest(label = "Visuals", category = ModuleCategory.RENDER, color = 0xFF0030FF, hidden = true)
-public class    Visuals extends ToggleableModule {
+public class Visuals extends ToggleableModule {
     @Setting("PlayerColor")
     public Color playerColor = new Color(255, 0, 0);
+
+    @Setting("VisibleColor")
+    public Color visibleColor = new Color(255, 0, 0);
+    @Setting("InvisibleColor")
+    public Color invisibleColor = new Color(255, 255, 0);
+    @Setting("Alpha")
+    @Clamp(minimum = "1", maximum = "255")
+    public int alpha = 255;
     @Setting("Tracers")
     public boolean tracers = true;
     @Setting("BoundingBox")
@@ -71,13 +80,15 @@ public class    Visuals extends ToggleableModule {
     @Setting("Ping")
     public boolean ping = true;
     @Setting("Outline")
-    public boolean outline;
-    @Setting("Wallhack")
-    public boolean wallHack;
+    public boolean outline = false;
+    @Setting("Chams")
+    public boolean chams = true;
+    @Setting("ColorChams")
+    public boolean colorChams = true;
     @Setting("Skeleton")
     public boolean skeleton = true;
     @Setting("Invisibles")
-    public boolean invisibles;
+    public boolean invisibles = true;
     @Setting("Players")
     public boolean players = true;
     @Setting("Animals")
@@ -87,11 +98,11 @@ public class    Visuals extends ToggleableModule {
     @Setting("Passives")
     public boolean passives;
     @Setting("Chests")
-    public boolean chests;
+    public boolean chests = true;
     @Setting("Furnaces")
     public boolean furnaces;
     @Setting("Shulkers")
-    public boolean shuklers;
+    public boolean shuklers = true;
     @Setting("EnchantTable")
     public boolean enchanttable;
     @Setting("BrewingStands")
@@ -152,7 +163,7 @@ public class    Visuals extends ToggleableModule {
                             RenderUtil.drawBorderedRect(x - 2, y - 2, w + 4, h + 4, 1, 0x00000000, 0xff000000);
                         }
                         if (health) {
-                            final float height = (h / ent.getMaxHealth()) * Math.min(ent.getHealth() + ent.getAbsorptionAmount(), ent.getMaxHealth());
+                            final float height = (h / ent.getMaxHealth()) * Math.min(ent.getHealth(), ent.getMaxHealth());
                             RenderUtil.drawBorderedRect(x - 6, y - 1, 3, h + 2, 1, 0x20000000, 0xff000000);
                             RenderUtil.drawRect(x - 5, y + h, 1, -height, getHealthColor(ent));
                             if (ent.getMaxHealth() > ent.getHealth()) {
@@ -182,7 +193,7 @@ public class    Visuals extends ToggleableModule {
         if (mc.world == null || mc.player == null) return;
         if (event.getEntity() instanceof EntityLivingBase && isValid((EntityLivingBase) event.getEntity())) {
             if (event.getEventType() == EventType.PRE) {
-                if (wallHack) {
+                if (chams) {
                     GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
                     GL11.glPolygonOffset(1.0F, -20000F);
                 }
@@ -201,7 +212,7 @@ public class    Visuals extends ToggleableModule {
                     event.setCancelled(true);
                 }
             } else {
-                if (wallHack) {
+                if (chams) {
                     GL11.glPolygonOffset(1.0F, 20000F);
                     GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
                 }
@@ -346,7 +357,7 @@ public class    Visuals extends ToggleableModule {
 
     private void drawArmor(EntityPlayer player, int x, int y) {
         if (!player.inventory.armorInventory.isEmpty()) {
-            List<ItemStack> items = new ArrayList<> ();
+            List<ItemStack> items = new ArrayList<>();
             if (player.getHeldItem(EnumHand.OFF_HAND) != ItemStack.EMPTY) {
                 items.add(player.getHeldItem(EnumHand.OFF_HAND));
             }
@@ -581,7 +592,7 @@ public class    Visuals extends ToggleableModule {
         GlStateManager.depthMask(!revert);
     }
 
-    private boolean isValid(EntityLivingBase entity) {
+    public boolean isValid(EntityLivingBase entity) {
         return mc.player != entity && entity.getEntityId() != -1488 && isValidType(entity) && entity.isEntityAlive() && (!entity.isInvisible() || invisibles);
     }
 

@@ -28,6 +28,7 @@
     "MixinWorldClient",
     "MixinMovementInputFromOptions",
     "MixinGuiNewChat",
-    "MixinItemRenderer"
+    "MixinItemRenderer",
+    "MixinRenderLivingBase"
   ]
 }
