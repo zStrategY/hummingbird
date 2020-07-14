@@ -4,6 +4,9 @@ import best.reich.ingros.events.entity.UpdateEvent;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
+import me.xenforu.kelo.setting.annotation.Clamp;
+import me.xenforu.kelo.setting.annotation.Mode;
+import me.xenforu.kelo.setting.annotation.Setting;
 import net.b0at.api.event.Subscribe;
 import net.b0at.api.event.types.EventType;
 import net.minecraft.block.*;
@@ -17,6 +20,14 @@ import java.util.ArrayList;
 
 @ModuleManifest(label = "Step", category = ModuleCategory.MOVEMENT, color = 0xffffff33)
 public class Step extends ToggleableModule {
+    @Mode({"Vanilla", "Normal"})
+    @Setting("Mode")
+    public String mode = "Vanilla";
+
+    @Clamp(maximum = "4")
+    @Setting("Height")
+    public int height = 2;
+
     private final double[] oneblockPositions = {0.42D, 0.75D};
     private final double[] twoblockPositions = {0.4D, 0.75D, 0.5D, 0.41D, 0.83D, 1.16D, 1.41D, 1.57D, 1.58D, 1.42D};
     private int packets;
@@ -24,6 +35,9 @@ public class Step extends ToggleableModule {
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         if (event.getType() == EventType.POST) {
+            if (mode.equalsIgnoreCase("Vanilla")) {
+                mc.player.stepHeight = height;
+            }
             if (mc.player.isCollidedHorizontally && mc.player.onGround && (isStepableOne(mc.player) || isStepableTwo(mc.player))) {
                 this.packets++;
             }
@@ -102,5 +116,11 @@ public class Step extends ToggleableModule {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+        mc.player.stepHeight = 0.5f;
     }
 }

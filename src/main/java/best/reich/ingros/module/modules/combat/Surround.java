@@ -83,45 +83,6 @@ public class Surround extends ToggleableModule {
         final Vec3d minusPlus = new Vec3d(x - .5, y, z + .5);
         final int oldSlot = mc.player.inventory.currentItem;
         mc.player.inventory.currentItem = newSlot;
-        if (!hasNeighbour(northBlockPos)) {
-            for (EnumFacing side : EnumFacing.values()) {
-                BlockPos neighbour = northBlockPos.offset(side);
-                if (hasNeighbour(neighbour)) {
-                    northBlockPos = neighbour;
-                    break;
-                }
-            }
-        }
-
-        if (!hasNeighbour(southBlockPos)) {
-            for (EnumFacing side : EnumFacing.values()) {
-                BlockPos neighbour = southBlockPos.offset(side);
-                if (hasNeighbour(neighbour)) {
-                    southBlockPos = neighbour;
-                    break;
-                }
-            }
-        }
-
-        if (!hasNeighbour(eastBlockPos)) {
-            for (EnumFacing side : EnumFacing.values()) {
-                BlockPos neighbour = eastBlockPos.offset(side);
-                if (hasNeighbour(neighbour)) {
-                    eastBlockPos = neighbour;
-                    break;
-                }
-            }
-        }
-
-        if (!hasNeighbour(westBlockPos)) {
-            for (EnumFacing side : EnumFacing.values()) {
-                BlockPos neighbour = westBlockPos.offset(side);
-                if (hasNeighbour(neighbour)) {
-                    westBlockPos = neighbour;
-                    break;
-                }
-            }
-        }
 
         if (mc.world.getBlockState(northBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(northBlockPos)) {
             if (mc.player.onGround) {

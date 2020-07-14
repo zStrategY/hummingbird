@@ -52,7 +52,7 @@ import java.util.List;
 import java.util.*;
 
 @ModuleManifest(label = "Visuals", category = ModuleCategory.RENDER, color = 0xFF0030FF, hidden = true)
-public class Visuals extends ToggleableModule {
+public class    Visuals extends ToggleableModule {
     @Setting("PlayerColor")
     public Color playerColor = new Color(255, 0, 0);
     @Setting("Tracers")
@@ -71,13 +71,13 @@ public class Visuals extends ToggleableModule {
     @Setting("Ping")
     public boolean ping = true;
     @Setting("Outline")
-    public boolean outline = true;
+    public boolean outline;
     @Setting("Wallhack")
-    public boolean wallHack = true;
+    public boolean wallHack;
     @Setting("Skeleton")
     public boolean skeleton = true;
     @Setting("Invisibles")
-    public boolean invisibles = true;
+    public boolean invisibles;
     @Setting("Players")
     public boolean players = true;
     @Setting("Animals")
@@ -87,11 +87,11 @@ public class Visuals extends ToggleableModule {
     @Setting("Passives")
     public boolean passives;
     @Setting("Chests")
-    public boolean chests = true;
+    public boolean chests;
     @Setting("Furnaces")
     public boolean furnaces;
     @Setting("Shulkers")
-    public boolean shuklers = true;
+    public boolean shuklers;
     @Setting("EnchantTable")
     public boolean enchanttable;
     @Setting("BrewingStands")
@@ -152,7 +152,7 @@ public class Visuals extends ToggleableModule {
                             RenderUtil.drawBorderedRect(x - 2, y - 2, w + 4, h + 4, 1, 0x00000000, 0xff000000);
                         }
                         if (health) {
-                            final float height = (h / ent.getMaxHealth()) * Math.min(ent.getHealth(), ent.getMaxHealth());
+                            final float height = (h / ent.getMaxHealth()) * Math.min(ent.getHealth() + ent.getAbsorptionAmount(), ent.getMaxHealth());
                             RenderUtil.drawBorderedRect(x - 6, y - 1, 3, h + 2, 1, 0x20000000, 0xff000000);
                             RenderUtil.drawRect(x - 5, y + h, 1, -height, getHealthColor(ent));
                             if (ent.getMaxHealth() > ent.getHealth()) {
@@ -346,7 +346,7 @@ public class Visuals extends ToggleableModule {
 
     private void drawArmor(EntityPlayer player, int x, int y) {
         if (!player.inventory.armorInventory.isEmpty()) {
-            List<ItemStack> items = new ArrayList<>();
+            List<ItemStack> items = new ArrayList<> ();
             if (player.getHeldItem(EnumHand.OFF_HAND) != ItemStack.EMPTY) {
                 items.add(player.getHeldItem(EnumHand.OFF_HAND));
             }

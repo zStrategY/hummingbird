@@ -87,6 +87,9 @@ public class Overlay extends PersistentModule {
     @Setting("Totems")
     public boolean totems = true;
 
+    @Setting("Crystals")
+    public boolean crystals = true;
+
     @Setting("Inventory")
     public boolean inventory = true;
 
@@ -118,7 +121,6 @@ public class Overlay extends PersistentModule {
     private final ResourceLocation TOTEM_RESOURCE = new ResourceLocation("textures/item/totem.png");
     private final ResourceLocation Logo = new ResourceLocation("cockandballs/logo.png");
     private Gui gui = new Gui();
-
     @Subscribe
     public void onPacket(PacketEvent event) {
         if (event.getType() == EventType.POST) {
@@ -172,6 +174,7 @@ public class Overlay extends PersistentModule {
             }
         }
         if (getTarget() != null && getTarget() instanceof EntityPlayer && targetHUD) {
+            final EntityLivingBase ent = (EntityLivingBase) getTarget();
                 Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 14, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 14, event.getScaledResolution().getScaledHeight() / 2 - 1 + 50, new Color(230, 190, 190, 255).getRGB());
                 Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 52, event.getScaledResolution().getScaledHeight() / 2 + 23 + 50, event.getScaledResolution().getScaledWidth() / 2 + 52, event.getScaledResolution().getScaledHeight() / 2 + 52 + 50, new Color(230, 100, 255, 255).getRGB());
                 Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 51, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 51, event.getScaledResolution().getScaledHeight() / 2 + 51 + 50, new Color(230, 190, 210, 255).getRGB());
@@ -186,6 +189,8 @@ public class Overlay extends PersistentModule {
                     RenderUtil.drawText("pops:" + TotemPopCounter.popList.get(getTarget().getName()), event.getScaledResolution().getScaledWidth() - 150 / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
 
                 RenderUtil.drawText("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), font) / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
+                GlStateManager.scale(1.0f, 1.0f, 1.0f);
+                GlStateManager.popMatrix();
                 GlStateManager.scale(1, 1, 1);
                 GlStateManager.popMatrix();
                 RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 48, (event.getScaledResolution().getScaledHeight() / 2) + 45 + 50, (((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.60f), 3, new Color(255, 255, 255, 255).getRGB());
@@ -205,8 +210,11 @@ public class Overlay extends PersistentModule {
             RenderUtil.drawText((fps ? ", TPS: " : "TPS: ") + ChatFormatting.WHITE + TickRate.TPS, 2 + (fps ? RenderUtil.getTextWidth("FPS: " + ChatFormatting.WHITE + Minecraft.getDebugFPS(), font) : 0), event.getScaledResolution().getScaledHeight() - (mc.ingameGUI.getChatGUI().getChatOpen() ? RenderUtil.getTextHeight(font) + 14 : RenderUtil.getTextHeight(font) + 2) - (xyz ? RenderUtil.getTextHeight(font) + 2 : 0), getHudColor(), font);
         float y = 4 + RenderUtil.getTextHeight(font);
         if (totems) {
-            RenderUtil.drawText("Totems: " + ChatFormatting.WHITE + totemCount(), 2, y, getHudColor(), font);
+            RenderUtil.drawText("TOT: " + ChatFormatting.WHITE + totemCount(), 2, y, getHudColor(), font);
             y += RenderUtil.getTextHeight(font) + 2;
+        }
+        if (crystals) {
+            RenderUtil.drawText("CRY: " + ChatFormatting.WHITE + crystalCount(), 2, y, getHudColor(), font);
         }
         if (ping) {
             final NetworkPlayerInfo networkPlayerInfo = mc.getConnection().getPlayerInfo(mc.player.getGameProfile().getId());
@@ -393,6 +401,16 @@ public class Overlay extends PersistentModule {
         int count = 0;
         for (int i = 0; i < 45; ++i) {
             if (!mc.player.inventory.getStackInSlot(i).isEmpty() && mc.player.inventory.getStackInSlot(i).getItem() == Items.TOTEM_OF_UNDYING) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int crystalCount() {
+        int count = 0;
+        for (int c = 0; c < 45; ++c) {
+            if (!mc.player.inventory.getItemStack().isStackable() && mc.player.inventory.getStackInSlot(c).getItem() == Items.END_CRYSTAL) {
                 count++;
             }
         }

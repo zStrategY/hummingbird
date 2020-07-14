@@ -5,14 +5,13 @@ import best.reich.ingros.events.entity.UpdateEvent;
 import best.reich.ingros.events.network.PacketEvent;
 import best.reich.ingros.events.render.Render3DEvent;
 import best.reich.ingros.mixin.accessors.IRenderManager;
+import best.reich.ingros.util.game.StopwatchUtil;
 import best.reich.ingros.util.logging.Logger;
 import best.reich.ingros.util.render.RenderUtil;
-import best.reich.ingros.util.game.StopwatchUtil;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
 import me.xenforu.kelo.setting.annotation.Clamp;
-import me.xenforu.kelo.setting.annotation.Mode;
 import me.xenforu.kelo.setting.annotation.Setting;
 import me.xenforu.kelo.util.math.MathUtil;
 import net.b0at.api.event.Subscribe;
@@ -29,6 +28,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemFood;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
@@ -46,73 +46,71 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-/**
- * @author ohare da b0ss
- * updated by h0lloww and fluffycq
- */
 
-@ModuleManifest(label = "CrystalAura", category = ModuleCategory.COMBAT)
+@ModuleManifest(label = "CrystalAura", category = ModuleCategory.COMBAT, color = 0x4BF7FF)
 public class CrystalAura extends ToggleableModule {
 
-    @Clamp(minimum = "1", maximum = "6")
+    @Clamp(minimum = "1.0", maximum = "6.0")
     @Setting("EnemyRange")
-    public float enemyRange = 6;
+    public float enemyRange = 6.0f;
 
-    @Clamp(minimum = "1", maximum = "6")
+    @Clamp(minimum = "1.0", maximum = "6.0")
     @Setting("PlaceRange")
-    public float placeRange = 6;
+    public float placeRange = 6.0f;
 
-    @Clamp(maximum = "20")
+    @Clamp(maximum = "50")
     @Setting("PlaceDelay")
     public int placeDelay = 0;
 
-    @Clamp(maximum = "6")
-    @Setting("HitRange")
-    public float hitRange = 6;
+    @Clamp(minimum = "1.0", maximum = "6.0")
+    @Setting("BreakRange")
+    public float breakRange = 6.0f;
 
-    @Clamp(maximum = "6")
+    @Clamp(minimum = "1.0", maximum = "6.0")
     @Setting("WallRange")
-    public float wallRange = 0f;
+    public float wallRange = 3.5f;
 
-    @Clamp(maximum = "15")
-    @Setting("MinDamage")
+    @Clamp(minimum = "1", maximum = "20")
+    @Setting("Aps")
+    public int aps = 20;
+
+
+    @Clamp(minimum = "1", maximum = "16")
+    @Setting("MinimumDamage")
     public int minDamage = 4;
 
-    @Clamp(minimum = "1", maximum = "36")
-    @Setting("FacePlace")
-    public int facePlace = 10;
+    @Clamp(minimum = "1", maximum = "16")
+    @Setting("Faceplace")
+    public int facePlace = 4;
 
-    @Clamp(minimum = "1", maximum = "20")
-    @Setting("MaxSelfDmg")
-    public int maxDamage = 8;
-
-    @Clamp(minimum = "1", maximum = "20")
-    @Setting("FluffyAPS")
-    public int fluffyAps = 19;
-
-    @Setting("AutoSwitch")
-    public boolean autoSwitch = false;
+    @Clamp(minimum = "1")
+    @Setting("MaxSelfDamage")
+    public int maxDamage = 11;
 
     @Setting("Place")
     public boolean place = true;
 
     @Setting("pSilent")
-    public boolean pSilent = true;
+    public boolean pSilent = false;
 
-    @Setting("Raytrace")
-    public boolean rayTrace = false;
+    @Setting("RayTrace")
+    public boolean rayTrace = true;
+
+    @Setting("AutoSwitch")
+    public boolean autoSwitch = true;
+
+    @Setting("Announcer")
+    public boolean announcer = true;
 
     @Setting("AntiSuicide")
     public boolean antiSuicide = true;
 
-    @Setting("ChatMessages")
-    public boolean announcer = true;
-
     @Setting("Color")
-    public Color color = new Color(150, 110, 170);
+    public Color color = new Color(255,0,0);
 
-    @Setting("DamageColor")
-    public Color dmgColor = new Color(50, 160, 255);
+    @Setting("DmgRenderColor")
+    public Color dmgColor = new Color(255, 0, 0);
+
 
     private final StopwatchUtil stopwatch = new StopwatchUtil();
     private BlockPos render;
@@ -123,55 +121,48 @@ public class CrystalAura extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        if (mc.world == null || mc.player == null) return;
-        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream()
-                .filter(entity -> entity instanceof EntityEnderCrystal)
-                .map(entity -> entity)
-                .min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c)))
-                .orElse(null);
-        if (crystal != null && mc.player.getDistanceToEntity(crystal) <= hitRange) {
+        if (mc.player == null || mc.world == null) return;
+        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).map(entity -> entity).min(Comparator.comparing(c -> mc.player.getDistanceToEntity(c))).orElse(null);
+        if (crystal != null && mc.player.getDistanceToEntity(crystal) <= breakRange) {
             if (!mc.player.canEntityBeSeen(crystal) && mc.player.getDistanceToEntity(crystal) >= wallRange) return;
-            if (event.getType() == EventType.PRE) {
-                if (StopwatchUtil.hasCompleted((long) (1000L / fluffyAps))) {
-                    mc.playerController.attackEntity(mc.player, crystal);
-                    mc.player.swingArm(EnumHand.MAIN_HAND);
-                    stopwatch.reset();
-                }
+            if (StopwatchUtil.hasCompleted((1000L / aps))) {
+                mc.playerController.attackEntity(mc.player, crystal);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                stopwatch.reset();
             }
         }
 
         int crystalSlot = (mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL) ? mc.player.inventory.currentItem : -1;
         if (crystalSlot == -1) {
-            for (int s = 0; s > 9; s++) {
-                if (mc.player.inventory.getStackInSlot(s).getItem() == Items.END_CRYSTAL) {
-                    crystalSlot = s;
+            for (int l = 0; l < 9; ++l) {
+                if (mc.player.inventory.getStackInSlot(l).getItem() == Items.END_CRYSTAL) {
+                    crystalSlot = l;
                     break;
                 }
             }
         }
 
-        boolean offHand = false;
+        boolean offhand = false;
         if (mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
-            offHand = true;
+            offhand = true;
         } else if (crystalSlot == -1) {
             return;
         }
-        
-        //place
+
         BlockPos finalPos = null;
         final List<BlockPos> blocks = findCrystalBlocks();
-        final List<Entity> entities = mc.world.playerEntities
-                .stream()
-                .filter(entityPlayer -> entityPlayer != mc.player && entityPlayer.getEntityId() != -1488 && !IngrosWare.INSTANCE.friendManager.isFriend(entityPlayer.getName())).collect(Collectors.toList());
-        double damage = .5;
-        double prevSelf = .5;
+        final List<Entity> entities = mc.world.playerEntities.stream().filter(entityPlayer -> entityPlayer != mc.player && entityPlayer.getEntityId() != -1488 && !IngrosWare.INSTANCE.friendManager.isFriend(entityPlayer.getName())).collect(Collectors.toList());
+        double damage = 0.5;
+        double prevSelf = 0.5;
         for (final Entity entity2 : entities) {
             if (((EntityLivingBase) entity2).getHealth() <= 0.0f || mc.player.getDistanceSqToEntity(entity2) > enemyRange * enemyRange) continue;
             for (final BlockPos blockPos : blocks) {
                 final double d = calculateDamage(blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, entity2);
                 final double self = calculateDamage(blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, mc.player);
                 final double b = entity2.getDistanceSq(blockPos);
-                if ((!canBlockBeSeen(blockPos) && mc.player.getDistanceSq(blockPos) > 25.0 && rayTrace)
+                if ((!canBlockBeSeen(blockPos)
+                        && mc.player.getDistanceSq(blockPos) > 25.0
+                        && rayTrace)
                         || b > 56.2
                         || d < minDamage
                         && ((EntityLivingBase) entity2).getHealth() + ((EntityLivingBase) entity2).getAbsorptionAmount() > facePlace
@@ -180,22 +171,21 @@ public class CrystalAura extends ToggleableModule {
                         || self > d
                         || self >= mc.player.getHealth() + mc.player.getAbsorptionAmount()))
                         || d <= damage && (Math.round(d) != Math.round(damage)
-                        || self >= prevSelf))
-                    continue;
+                        || self >= prevSelf)) continue;
                 damage = d;
                 finalPos = blockPos;
                 prevSelf = self;
             }
         }
 
-        if (damage == .5) {
+        if (damage == 0.5) {
             render = null;
             dmg = null;
             return;
         }
 
         if (place) {
-            if (!offHand && mc.player.inventory.currentItem != crystalSlot) {
+            if (!offhand && mc.player.inventory.currentItem != crystalSlot) {
                 if (autoSwitch) {
                     mc.player.inventory.currentItem = crystalSlot;
                     switchCooldown = true;
@@ -208,21 +198,19 @@ public class CrystalAura extends ToggleableModule {
                 switchCooldown = false;
                 return;
             }
-            if (System.currentTimeMillis() / 1 - placeSystemTime >= placeDelay * 2) {
-                mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(finalPos, f, offHand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
+            if (System.nanoTime() / 1000000L - placeSystemTime >= placeDelay * 2) {
+                mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(finalPos, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
                 this.placeLocations.add(new PlaceLocation(finalPos.getX(), finalPos.getY(), finalPos.getZ()));
                 render = finalPos;
-                dmg = MathHelper.floor(damage) + "dmg";
-                placeSystemTime = System.nanoTime() / 1000000L;
+                dmg = MathHelper.floor(damage) + "hp";
             }
         }
     }
 
-    //render
     @Subscribe
     public void onRender3D(Render3DEvent event) {
         if (render != null) {
-            final AxisAlignedBB bb = new AxisAlignedBB(render.getX() - mc.getRenderManager().viewerPosX, render.getY() - mc.getRenderManager().viewerPosY + 2.0, render.getZ() - mc.getRenderManager().viewerPosZ, render.getX() + 1 - mc.getRenderManager().viewerPosX, render.getY() + 1 - mc.getRenderManager().viewerPosY, render.getZ() + 1 - mc.getRenderManager().viewerPosZ);
+            final AxisAlignedBB bb = new AxisAlignedBB(render.getX() - mc.getRenderManager().viewerPosX, render.getY() - mc.getRenderManager().viewerPosY + 1, render.getZ() - mc.getRenderManager().viewerPosZ, render.getX() + 1 - mc.getRenderManager().viewerPosX, render.getY() + 1.2 - mc.getRenderManager().viewerPosY, render.getZ() + 1 - mc.getRenderManager().viewerPosZ);
             if (RenderUtil.isInViewFrustrum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ))) {
                 RenderUtil.drawESP(bb, color.getRed(), color.getGreen(), color.getBlue(), 40F);
                 RenderUtil.drawESPOutline(bb, color.getRed(), color.getGreen(), color.getBlue(), 255f, 1f);
@@ -240,7 +228,6 @@ public class CrystalAura extends ToggleableModule {
         }
     }
 
-    //anti desync
     @Subscribe
     public void onPacket(final PacketEvent event) {
         if (event.getType() == EventType.POST && event.getPacket() instanceof SPacketSoundEffect) {
@@ -255,7 +242,6 @@ public class CrystalAura extends ToggleableModule {
         }
     }
 
-    //place
     @Subscribe
     public void onReceivePacket(final PacketEvent event) {
         if (event.getPacket() instanceof SPacketSpawnObject) {
@@ -369,7 +355,7 @@ public class CrystalAura extends ToggleableModule {
     public void onEnable() {
         super.onEnable();
         if (announcer) {
-            Logger.printMessage("CA On!", true);
+            Logger.printMessage("CA Enabled!", true);
         }
     }
 
@@ -379,7 +365,7 @@ public class CrystalAura extends ToggleableModule {
         dmg = null;
         render = null;
         if (announcer) {
-            Logger.printMessage("CA Off!", true);
+            Logger.printMessage("CA Disabled!", true);
         }
     }
 }

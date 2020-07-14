@@ -28,25 +28,25 @@ public class NoRender extends ToggleableModule {
     public boolean noItem = false;
     @Setting("NoFog")
     public boolean noFog = true;
-    @Setting("NoViewBob")
-    public boolean noBob = true;
+    @Setting("NoLightLag")
+    public boolean nolight = true;
 
     @Subscribe
     public void onHurtcam(HurtcamEvent event) {
-        if (mc.player != null);
-        if (noHurtCam) event.setCancelled(true);
+        if (noHurtCam)
+            event.setCancelled(true);
     }
 
     @Subscribe
     public void onBossbar(BossbarEvent event) {
-        if (mc.world != null);
-        if (noBossBar) event.setCancelled(true);
+        if (noBossBar)
+            event.setCancelled(true);
     }
 
     @Subscribe
     public void onArmorRender(RenderArmorEvent event) {
-        if (mc.world != null);
-        if (noArmor) event.setCancelled(true);
+        if (noArmor)
+            event.setCancelled(true);
     }
 
     /**
@@ -54,32 +54,34 @@ public class NoRender extends ToggleableModule {
      */
     @Subscribe
     public void RenderBlockEvent(OverlayEvent event) {
-        if (mc.player != null);
-        if (noFire) event.setCancelled(true);
+        if (noFire)
+            event.setCancelled(true);
     }
 
     @Subscribe
     public void onArmRender(RenderArmEvent event) {
-        if (mc.player != null);
-        if (noHands) event.setCancelled(true);
+        if (noHands)
+            event.setCancelled(true);
     }
 
     @Subscribe
     public void onItemRender(ItemRenderEvent event) {
-        if (mc.player != null);
-        if (noItem) event.setCancelled(true);
+        if (noItem)
+            event.setCancelled(true);
     }
 
     @Subscribe
     public void onFog(FogEvent event) {
-        if (mc.world != null);
-        if (noFog) event.setCancelled(true);
+        if (noFog)
+            event.setCancelled(true);
     }
 
-    @Subscribe //salhack https://github.com/ionar2/salhack/blob/master/src/main/java/me/ionar/salhack/module/render/NoBobModule.java
-    public void onBob(UpdateEvent event) {
-        if (noBob)
-        mc.player.distanceWalkedModified = 4.0f;
+
+    @Subscribe
+    public void onLight(UpdateLightEvent event) {
+        if (nolight) {
+            event.setCancelled(true);
+        }
     }
 
 }

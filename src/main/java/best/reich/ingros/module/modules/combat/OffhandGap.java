@@ -20,43 +20,44 @@ import net.minecraft.util.math.BlockPos;
 
 @ModuleManifest(label = "OffhandGap", category = ModuleCategory.COMBAT, color = 0xffAEEA1E)
 public class OffhandGap extends ToggleableModule {
+
     @Clamp(minimum = "1", maximum = "22")
     @Setting("Health")
     public int health = 7;
 
-    @Setting("ToggleTotem")
-    public boolean toggletotem = true;
-
     @Setting("CrystalCheck")
     public boolean crystalCheck = true;
 
+    int gaps = -1;
+
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        if (mc.currentScreen instanceof GuiContainer)
-            return;
-        if (!shouldTotem()) {
-            if (!(mc.player.getHeldItemOffhand() != ItemStack.EMPTY && mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE)) {
-                final int slot = getGappleSlot() < 9 ? getGappleSlot() + 36 : getGappleSlot();
+        if (!(mc.currentScreen instanceof GuiContainer) && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD && mc.gameSettings.keyBindUseItem.isKeyDown()) {
+            if (!shouldTotem()) {
+                if (!(mc.player.getHeldItemOffhand() != ItemStack.EMPTY && mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE)) {
+                    final int slot = getGappleSlot() < 9 ? getGappleSlot() + 36 : getGappleSlot();
+                    if (slot != -1) {
+                        mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
+                        mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
+                        mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
+                    }
+                }
+            } else if (!(mc.player.getHeldItemOffhand() != ItemStack.EMPTY && mc.player.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING && !(mc.gameSettings.keyBindUseItem.isKeyDown()))) {
+                final int slot = getTotemSlot() < 9 ? getTotemSlot() + 36 : getTotemSlot();
                 if (slot != -1) {
                     mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
                     mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
                     mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
                 }
             }
-        } else if (!(mc.player.getHeldItemOffhand() != ItemStack.EMPTY && mc.player.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING)) {
-            final int slot = getTotemSlot() < 9 ? getTotemSlot() + 36 : getTotemSlot();
-            if (slot != -1) {
-                mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
-                mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
-                mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
-            }
         }
     }
 
 
 
+
     private boolean shouldTotem() {
-        return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= health || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA || mc.player.fallDistance >= 3 || (crystalCheck && !isCrystalsAABBEmpty());
+        return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= health || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA || !mc.gameSettings.keyBindUseItem.isKeyDown() ||mc.player.fallDistance >= 3 || (crystalCheck && !isCrystalsAABBEmpty());
     }
 
     private boolean isEmpty(BlockPos pos){
@@ -90,15 +91,4 @@ public class OffhandGap extends ToggleableModule {
         return totemSlot;
     }
 
-    @Override
-    public void onEnable() {
-        if (toggletotem && IngrosWare.INSTANCE.moduleManager.getModule("AutoTotem").isEnabled())
-            ((AutoTotem) IngrosWare.INSTANCE.moduleManager.getModule("AutoTotem")).toggle();
-    }
-
-    @Override
-    public void onDisable() {
-        if (toggletotem && !IngrosWare.INSTANCE.moduleManager.getModule("AutoTotem").isEnabled())
-            ((AutoTotem) IngrosWare.INSTANCE.moduleManager.getModule("AutoTotem")).toggle();
-    }
 }

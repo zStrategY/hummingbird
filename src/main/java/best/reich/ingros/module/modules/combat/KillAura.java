@@ -48,6 +48,8 @@ public class KillAura extends ToggleableModule {
     public double range = 3.4;
     @Setting("Criticals")
     public boolean criticals;
+    @Setting("SwordOnly")
+    public boolean swordOnly = true;
     @Setting("Invisibles")
     public boolean invisibles = true;
     @Setting("Players")

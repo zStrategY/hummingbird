@@ -39,8 +39,5 @@ public class CapeManager extends MapManager<String, UUID> {
             e.printStackTrace();
         }
     }
-
-
-
-
+    
 }

@@ -40,12 +40,13 @@ public class Commands extends PersistentModule {
 
     @Subscribe
     public void onSendPacket(PacketEvent event) {
-        if(event.getType() == EventType.PRE) {
+        if (event.getType() == EventType.PRE) {
             if (event.getPacket() instanceof CPacketChatMessage) {
                 checkCommands(((CPacketChatMessage) event.getPacket()).getMessage(), event);
             }
         }
     }
+
 
     private void checkCommands(String message, PacketEvent event) {
         if (message.startsWith("-")) {

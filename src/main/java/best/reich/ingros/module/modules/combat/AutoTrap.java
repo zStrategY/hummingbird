@@ -9,6 +9,7 @@ import me.xenforu.kelo.setting.annotation.Clamp;
 import me.xenforu.kelo.setting.annotation.Setting;
 import me.xenforu.kelo.util.math.TimerUtil;
 import net.b0at.api.event.Subscribe;
+import net.b0at.api.event.types.EventType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
@@ -28,10 +29,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @ModuleManifest(label = "AutoTrap", category = ModuleCategory.COMBAT, color = 0x4BF7FF)
@@ -47,12 +46,31 @@ public class AutoTrap extends ToggleableModule {
     @Clamp(maximum = "10")
     @Setting("BlocksPerTick")
     public int blockPerTick = 4;
-    private final Vec3d[] offsetsDefault = new Vec3d[]{new Vec3d(0.0, 0.0, -1.0), new Vec3d(0.0, 0.0, 1.0), new Vec3d(-1.0, 0.0, 0.0), new Vec3d(1.0, 0.0, 0.0), new Vec3d(-1.0, 0.0, -1.0), new Vec3d(1.0, 0.0, 1.0), new Vec3d(-1.0, 0.0, 1.0), new Vec3d(1.0, 0.0, -1.0),
-            new Vec3d(-1.0, 1.0, -1.0), new Vec3d(1.0, 1.0, 1.0), new Vec3d(-1.0, 1.0, 1.0), new Vec3d(1.0, 1.0, -1.0),
-            new Vec3d(-1.0, 2.0, -1.0), new Vec3d(1.0, 2.0, 1.0), new Vec3d(-1.0, 2.0, 1.0), new Vec3d(1.0, 2.0, -1.0), new Vec3d(0.0, 2.0, -1.0), new Vec3d(0.0, 2.0, 1.0), new Vec3d(-1.0, 2.0, 0.0), new Vec3d(1.0, 2.0, 0.0),
-            new Vec3d(0.0, 3.0, -1.0), new Vec3d(0.0, 3.0, 1.0), new Vec3d(-1.0, 3.0, 0.0), new Vec3d(1.0, 3.0, 0.0), new Vec3d(0.0, 3.0, 0.0),
-            new Vec3d(0.0, 4.0, 0.0)
-    };
+
+
+    /**
+     * @author offsets made by ionar2 https://github.com/ionar2/salhack/blob/master/src/main/java/me/ionar/salhack/module/combat/AutoTrap.java
+     * everything else made by ohare
+     */
+
+
+    private final Vec3d[] offsetsDefault = new Vec3d[]
+            {
+                    new Vec3d(0.0, 0.0, -1.0), // left
+                    new Vec3d(1.0, 0.0, 0.0),  // right
+                    new Vec3d(0.0, 0.0, 1.0), // forwards
+                    new Vec3d(-1.0, 0.0, 0.0), // back
+                    new Vec3d(0.0, 1.0, -1.0), // +1 left
+                    new Vec3d(1.0, 1.0, 0.0), // +1 right
+                    new Vec3d(0.0, 1.0, 1.0), // +1 forwards
+                    new Vec3d(-1.0, 1.0, 0.0), // +1 back
+                    new Vec3d(0.0, 2.0, -1.0), // +2 left
+                    new Vec3d(1.0, 2.0, 0.0), // +2 right
+                    new Vec3d(0.0, 2.0, 1.0), // +2 forwards
+                    new Vec3d(-1.0, 2.0, 0.0), // +2 backwards
+                    new Vec3d(0.0, 3.0, -1.0), // +3 left
+                    new Vec3d(0.0, 3.0, 0.0) // +3 middle
+            };
     private EntityPlayer closestTarget;
     private String lastTickTargetName;
     private int playerHotbarSlot = -1;

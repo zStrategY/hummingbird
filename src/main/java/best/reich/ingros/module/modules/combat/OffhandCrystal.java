@@ -27,16 +27,10 @@ public class OffhandCrystal extends ToggleableModule {
     @Clamp(minimum = "1", maximum = "30")
     @Setting("EnemyRange")
     public int enemyRange = 10;
-
-    @Setting("ToggleTotem")
-    public boolean toggletotem = true;
-
     @Setting("CrystalCheck")
     public boolean crystalCheck = true;
-
     @Setting("HoleCheck")
     public boolean holeCheck = true;
-
     @Clamp(minimum = "1", maximum = "22")
     @Setting("HoleHealth")
     public int holeHealth = 8;
@@ -105,15 +99,4 @@ public class OffhandCrystal extends ToggleableModule {
         return totemSlot;
     }
 
-    @Override
-    public void onEnable() {
-        if (toggletotem && IngrosWare.INSTANCE.moduleManager.getModule("AutoTotem").isEnabled())
-            ((AutoTotem) IngrosWare.INSTANCE.moduleManager.getModule("AutoTotem")).toggle();
-    }
-
-    @Override
-    public void onDisable() {
-        if (toggletotem && !IngrosWare.INSTANCE.moduleManager.getModule("AutoTotem").isEnabled())
-            ((AutoTotem) IngrosWare.INSTANCE.moduleManager.getModule("AutoTotem")).toggle();
-    }
 }
