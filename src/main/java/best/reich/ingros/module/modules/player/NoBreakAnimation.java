@@ -25,7 +25,7 @@ public class NoBreakAnimation extends ToggleableModule {
 
     @Subscribe
     public void onPacket(PacketEvent event) {
-        if (mc.player == null) return;
+        if (mc.player == null || mc.world == null) return;
         if (event.getType() == EventType.PRE) {
             if (event.getPacket() instanceof CPacketPlayerDigging) {
                 final CPacketPlayerDigging cPacketPlayerDigging = (CPacketPlayerDigging) event.getPacket();

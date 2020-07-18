@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 @ModuleManifest(label = "Step", category = ModuleCategory.MOVEMENT, color = 0xffffff33)
 public class Step extends ToggleableModule {
-    @Mode({"Vanilla", "Normal"})
+    @Mode({"Normal"})
     @Setting("Mode")
-    public String mode = "Vanilla";
+    public String mode = "Normal";
 
     @Clamp(maximum = "4")
     @Setting("Height")
@@ -35,10 +35,11 @@ public class Step extends ToggleableModule {
     @Subscribe
     public void onUpdate(UpdateEvent event) {
         if (event.getType() == EventType.POST) {
-            if (mode.equalsIgnoreCase("Vanilla")) {
+            if (mc.player.getServer().getServer().equals("crystalpvp.cc")) {
                 mc.player.stepHeight = height;
             }
-            if (mc.player.isCollidedHorizontally && mc.player.onGround && (isStepableOne(mc.player) || isStepableTwo(mc.player))) {
+
+            if (mode.equalsIgnoreCase("Normal") && mc.player.isCollidedHorizontally && mc.player.onGround && (isStepableOne(mc.player) || isStepableTwo(mc.player))) {
                 this.packets++;
             }
             if (mc.player.onGround && isStepableOne(mc.player) && !mc.player.isInsideOfMaterial(Material.WATER) && !mc.player.isInsideOfMaterial(Material.LAVA) && mc.player.fallDistance == 0 && !mc.gameSettings.keyBindJump.isKeyDown() && mc.player.isCollidedHorizontally && !mc.player.isOnLadder() && this.packets > 0) {

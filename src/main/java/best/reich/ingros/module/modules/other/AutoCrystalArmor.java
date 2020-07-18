@@ -14,7 +14,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 
 import java.util.Comparator;
 

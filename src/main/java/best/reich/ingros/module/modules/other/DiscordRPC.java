@@ -9,6 +9,7 @@ import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
 import me.xenforu.kelo.setting.annotation.Setting;
+import me.xenforu.kelo.util.math.MathUtil;
 import me.xenforu.kelo.util.math.TimerUtil;
 import net.b0at.api.event.Subscribe;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -16,6 +17,7 @@ import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.multiplayer.ServerData;
 
 import java.util.Objects;
+import java.util.Random;
 
 @ModuleManifest(label = "DiscordRPC", category = ModuleCategory.OTHER, hidden = true)
 public class DiscordRPC extends ToggleableModule {
@@ -43,9 +45,8 @@ public class DiscordRPC extends ToggleableModule {
             while (!Thread.currentThread().isInterrupted()) {
                 this.presence = new DiscordRichPresence();
                 this.presence.startTimestamp = lastTime;
+                this.presence.largeImageKey = String.format("d%s".replace("%s", String.valueOf(1 + new Random().nextInt(16))));
                 this.presence.largeImageText = String.format("%s %s | 1.12.2", IngrosWare.INSTANCE.getLabel(), IngrosWare.INSTANCE.getVersion());
-                this.presence.smallImageKey = "small";
-                this.presence.smallImageText = "https://discord.gg/45EDt3B";
                 this.presence.details = (afk || mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiMultiplayer) ? "Currently AFK" : "Currently Exploring";
                 serverData = mc.getCurrentServerData();
                 if (serverData != null) {

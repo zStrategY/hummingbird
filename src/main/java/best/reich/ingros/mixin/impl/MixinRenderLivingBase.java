@@ -28,6 +28,13 @@ public abstract class MixinRenderLivingBase extends Render {
         super(renderManager);
     }
 
+    /**
+     * @author auto 14/07/2020
+     * for hummingbird
+     * @reason chams
+     */
+
+
     @Overwrite
     protected void renderModel(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         boolean flag = this.isVisible(entitylivingbaseIn);

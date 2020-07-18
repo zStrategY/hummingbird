@@ -53,7 +53,7 @@ public class Surround extends ToggleableModule {
     }
 
     @Subscribe
-    public void onT(TeleportEvent event) {
+    public void onTeleport(TeleportEvent event) {
         if (disableOnChorus) toggle();
     }
 

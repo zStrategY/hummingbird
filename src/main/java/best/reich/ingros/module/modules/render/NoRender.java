@@ -14,6 +14,11 @@ import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 @ModuleManifest(label = "NoRender", category = ModuleCategory.RENDER)
 public class NoRender extends ToggleableModule {
 
+    @Subscribe
+    public void stuff(UpdateEvent e) {
+        if (mc.player == null | mc.world == null) return;
+    }
+
     @Setting("NoHurtCam")
     public boolean noHurtCam = true;
     @Setting("NoBossBar")
@@ -22,31 +27,33 @@ public class NoRender extends ToggleableModule {
     public boolean noArmor = false;
     @Setting("NoFire")
     public boolean noFire = true;
-    @Setting("NoHands")
-    public boolean noHands = false;
-    @Setting("NoItem")
-    public boolean noItem = false;
     @Setting("NoFog")
-    public boolean noFog = true;
+    public boolean noFog = false;
     @Setting("NoLightLag")
     public boolean nolight = true;
 
     @Subscribe
     public void onHurtcam(HurtcamEvent event) {
-        if (noHurtCam)
+        if (mc.player == null || mc.world == null) return;
+        if (noHurtCam) {
             event.setCancelled(true);
+        }
     }
 
     @Subscribe
     public void onBossbar(BossbarEvent event) {
-        if (noBossBar)
+        if (mc.player == null || mc.world == null) return;
+        if (noBossBar) {
             event.setCancelled(true);
+        }
     }
 
     @Subscribe
     public void onArmorRender(RenderArmorEvent event) {
-        if (noArmor)
+        if (mc.player == null || mc.world == null) return;
+        if (noArmor) {
             event.setCancelled(true);
+        }
     }
 
     /**
@@ -54,34 +61,26 @@ public class NoRender extends ToggleableModule {
      */
     @Subscribe
     public void RenderBlockEvent(OverlayEvent event) {
-        if (noFire)
+        if (mc.player == null || mc.world == null) return;
+        if (noFire) {
             event.setCancelled(true);
-    }
-
-    @Subscribe
-    public void onArmRender(RenderArmEvent event) {
-        if (noHands)
-            event.setCancelled(true);
-    }
-
-    @Subscribe
-    public void onItemRender(ItemRenderEvent event) {
-        if (noItem)
-            event.setCancelled(true);
+        }
     }
 
     @Subscribe
     public void onFog(FogEvent event) {
-        if (noFog)
+        if (mc.player == null || mc.world == null) return;
+        if (noFog) {
             event.setCancelled(true);
+        }
     }
 
 
     @Subscribe
     public void onLight(UpdateLightEvent event) {
+        if (mc.player == null || mc.world == null) return;
         if (nolight) {
             event.setCancelled(true);
         }
     }
-
 }

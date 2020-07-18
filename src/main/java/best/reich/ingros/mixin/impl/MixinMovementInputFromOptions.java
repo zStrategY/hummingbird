@@ -23,6 +23,11 @@ public class MixinMovementInputFromOptions extends MovementInput {
         return this.gameSettings.keyBindSneak.isKeyDown() && !(Mercury.INSTANCE.getModuleManager().find(Scaffold.class).isEnabled() && Scaffold.down);
     }*/
 
+    /**
+     * @author auto??? or ohare for ingros
+     * @reason stuff
+     */
+
     @Overwrite
     public void updatePlayerMoveState()
     {

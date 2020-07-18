@@ -1,6 +1,5 @@
 package best.reich.ingros.module.modules.render;
 
-import best.reich.ingros.events.entity.UpdateEvent;
 import best.reich.ingros.events.render.ClipViewEvent;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;

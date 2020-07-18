@@ -17,6 +17,14 @@ import static me.xenforu.kelo.traits.Minecraftable.mc;
 @ModuleManifest(label = "DonkFinder", category = ModuleCategory.OTHER, hidden = true)
 public class DonkFinder extends ToggleableModule {
 
+    /**
+     *
+     * @author proto
+     *
+     */
+
+
+
     @Setting("FindChestEntities")
     public boolean FindChestableEntities = true;
 

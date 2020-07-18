@@ -19,6 +19,7 @@ public class GuiMove extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
+        if (mc.player == null || mc.world == null) return;
         if (event.getType() == EventType.PRE) {
             if (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)) {
 

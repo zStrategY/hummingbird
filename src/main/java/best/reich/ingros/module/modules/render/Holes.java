@@ -27,12 +27,15 @@ public class Holes extends ToggleableModule {
     @Setting("Mode")
     @Mode({"Both", "Fill", "Outline"})
     public String mode = "Both";
+
     @Setting("Bottom")
-    public boolean bottom = true;
-    @Setting("Void")
-    public boolean voidholes = true;
-    @Setting("Weak")
-    public boolean weak = true;
+    public boolean bottom;
+
+    @Setting("ObbyColor")
+    public Color obiColor = new Color(0, 255, 0);
+
+    @Setting("BedRockColor")
+    public Color bedrockColor = new Color(0, 255, 0);
 
     @Setting("Radius")
     @Clamp(maximum = "32")
@@ -42,7 +45,7 @@ public class Holes extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        if (mc.player == null) {
+        if (mc.player == null || mc.world == null) {
             return;
         }
         this.holes.clear();
@@ -67,32 +70,17 @@ public class Holes extends ToggleableModule {
             if (RenderUtil.isInViewFrustrum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ))) {
                 if (isBedrockHole(new BlockPos(hole.getX(), hole.getY(), hole.getZ()))) {
                     if (mode.equalsIgnoreCase("fill") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESP(bb, 0f, 255, 0f, 40F);
+                        RenderUtil.drawESP(bb, bedrockColor.getRed(), bedrockColor.getGreen(), bedrockColor.getBlue(), 40F);
 
                     if (mode.equalsIgnoreCase("outline") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESPOutline(bb, 0f, 255, 0f, 255f, 1f);
+                       RenderUtil.drawESPOutline(bb, bedrockColor.getRed(), bedrockColor.getGreen(), bedrockColor.getBlue(), 255f, 1f);
 
                 } else if (isObbyHole(new BlockPos(hole.getX(), hole.getY(), hole.getZ())) || isBothHole(new BlockPos(hole.getX(), hole.getY(), hole.getZ()))) {
                     if (mode.equalsIgnoreCase("fill") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESP(bb, 255f, 0f, 230f, 40F);
+                      RenderUtil.drawESP(bb, obiColor.getRed(), obiColor.getGreen(), obiColor.getBlue(), 40F);
 
                     if (mode.equalsIgnoreCase("outline") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESPOutline(bb, 255f, 0f, 230f, 255f, 1f);
-
-                } else if (weak && isElseHole(new BlockPos(hole.getX(), hole.getY(), hole.getZ()))) {
-                    if (mode.equalsIgnoreCase("fill") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESP(bb, 255f, 0, 0, 40F);
-
-                    if (mode.equalsIgnoreCase("outline") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESPOutline(bb, 255f, 0, 0, 255f, 1f);
-
-                } else if (voidholes) {
-                    if (mode.equalsIgnoreCase("fill") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESP(bb, 255f,255,255f, 40F);
-
-                    if (mode.equalsIgnoreCase("outline") || mode.equalsIgnoreCase("both"))
-                        RenderUtil.drawESPOutline(bb, 255f,255,255f,255f, 1f);
-
+                        RenderUtil.drawESPOutline(bb, obiColor.getRed(), obiColor.getGreen(), obiColor.getBlue(), 255f, 1f);
                 }
             }
         }
@@ -114,7 +102,7 @@ public class Holes extends ToggleableModule {
         if (mc.world.getBlockState(blockPos.up(2)).getBlock() != Blocks.AIR) {
             return false;
         }
-        return isBedrockHole(blockPos) || isObbyHole(blockPos) || isBothHole(blockPos) || (isElseHole(blockPos) && weak) || (isVoidHole(blockPos) && voidholes);
+        return isBedrockHole(blockPos) || isObbyHole(blockPos) || isBothHole(blockPos);
     }
 
     private boolean isObbyHole(BlockPos blockPos) {
@@ -147,19 +135,7 @@ public class Holes extends ToggleableModule {
         return true;
     }
 
-    private boolean isElseHole(BlockPos blockPos) {
-        final BlockPos[] touchingBlocks = {blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()};
-        for (final BlockPos touching : touchingBlocks) {
-            final IBlockState touchingState = mc.world.getBlockState(touching);
-            if (touchingState.getBlock() == Blocks.AIR || !touchingState.isFullBlock())
-                return false;
-        }
-        return true;
-    }
 
-    private boolean isVoidHole(BlockPos blockPos) {
-        return blockPos.getY() == 0 && mc.world.getBlockState(blockPos.down()).getBlock() instanceof BlockAir;
-    }
 
     private class Hole extends Vec3i {
         Hole(final int x, final int y, final int z) {

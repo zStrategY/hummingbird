@@ -117,7 +117,7 @@ public class FloppaESP extends ToggleableModule {
                 () -> {
                     try {
                         BufferedImage image;
-                        if (FlopCache.exists()) { // TODO: download async
+                        if (FlopCache.exists()) {
                             image = getImage(FlopCache, ImageIO::read); // from cache
                         } else {
                             image = getImage(new URL(FlopUrl), ImageIO::read); // from internet

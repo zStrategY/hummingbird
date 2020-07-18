@@ -22,6 +22,7 @@ public class NoWeb extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
+        if (mc.player == null || mc.world == null) return;
         if (mc.player.isInWeb) {
             if (mode.equalsIgnoreCase("aac")) {
                 mc.player.jumpMovementFactor = 0.59f;

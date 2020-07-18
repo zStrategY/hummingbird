@@ -27,7 +27,7 @@ public class CategoryFrame extends Frame {
         float offsetY = getHeight() + 1;
         for (IModule module : IngrosWare.INSTANCE.moduleManager.getModulesFromCategory(getModuleCategory())) {
             getComponents().add(new ModuleComponent(module, getPosX(), getPosY(), 0, offsetY, getWidth(), 14));
-            offsetY += 20;
+            offsetY += 15;
         }
         super.init();
     }

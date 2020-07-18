@@ -8,10 +8,8 @@ import net.b0at.api.event.Subscribe;
 
 @ModuleManifest(label = "ClearChat", category = ModuleCategory.RENDER, color = 0xFF05BAEC, hidden = true)
 public class ClearChat extends ToggleableModule {
-
     @Subscribe
     public void onChatRender(RenderChatBackgroundEvent event) {
         event.setCancelled(true);
     }
-
 }

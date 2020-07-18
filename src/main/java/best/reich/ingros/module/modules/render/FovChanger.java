@@ -1,6 +1,7 @@
 package best.reich.ingros.module.modules.render;
 
 import best.reich.ingros.events.entity.UpdateEvent;
+import best.reich.ingros.events.render.DisplayGuiEvent;
 import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.ToggleableModule;
@@ -21,7 +22,7 @@ public class FovChanger extends ToggleableModule {
     private float oldFov;
 
     @Subscribe
-    public void onUpdate(UpdateEvent event) {
+    public void onUpdate(DisplayGuiEvent event) {
         mc.gameSettings.fovSetting = fov;
     }
 

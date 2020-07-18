@@ -49,7 +49,7 @@ public class ItemStacker extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        if (mc.player == null) {
+        if (mc.player == null || mc.world == null) {
             return;
         }
         if (mc.currentScreen instanceof GuiContainer) {

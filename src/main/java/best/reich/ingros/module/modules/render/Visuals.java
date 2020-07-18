@@ -79,8 +79,6 @@ public class Visuals extends ToggleableModule {
     public boolean armor = true;
     @Setting("Ping")
     public boolean ping = true;
-    @Setting("Outline")
-    public boolean outline = false;
     @Setting("Chams")
     public boolean chams = true;
     @Setting("ColorChams")
@@ -194,27 +192,11 @@ public class Visuals extends ToggleableModule {
         if (event.getEntity() instanceof EntityLivingBase && isValid((EntityLivingBase) event.getEntity())) {
             if (event.getEventType() == EventType.PRE) {
                 if (chams) {
-                    GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
                     GL11.glPolygonOffset(1.0F, -20000F);
-                }
-                if (outline) {
-                    final Color clr = getEntityColor(event.getEntity());
-                    GlStateManager.depthMask(true);
-                    event.getRenderer().doRender(event.getEntity(), event.getX(), event.getY(), event.getZ(), event.getEntityYaw(), event.getPartialTicks());
-                    OutlineUtil.renderOne();
-                    event.getRenderer().doRender(event.getEntity(), event.getX(), event.getY(), event.getZ(), event.getEntityYaw(), event.getPartialTicks());
-                    OutlineUtil.renderTwo();
-                    event.getRenderer().doRender(event.getEntity(), event.getX(), event.getY(), event.getZ(), event.getEntityYaw(), event.getPartialTicks());
-                    OutlineUtil.renderThree();
-                    OutlineUtil.renderFour(clr);
-                    event.getRenderer().doRender(event.getEntity(), event.getX(), event.getY(), event.getZ(), event.getEntityYaw(), event.getPartialTicks());
-                    OutlineUtil.renderFive();
-                    event.setCancelled(true);
                 }
             } else {
                 if (chams) {
                     GL11.glPolygonOffset(1.0F, 20000F);
-                    GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
                 }
             }
         }
@@ -404,6 +386,7 @@ public class Visuals extends ToggleableModule {
                         }
                     }
                 }
+
                 if (stack.isItemStackDamageable()) {
                     final float green = ((float) stack.getMaxDamage() - (float) stack.getItemDamage()) / (float) stack.getMaxDamage();
                     final float red = 1.0f - green;

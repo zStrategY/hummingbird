@@ -24,6 +24,9 @@ public class OffhandCrystal extends ToggleableModule {
     @Clamp(minimum = "1", maximum = "22")
     @Setting("Health")
     public int health = 20;
+    @Clamp(minimum = "1", maximum = "60")
+    @Setting("FallDistance")
+    public int fallDistance = 30;
     @Clamp(minimum = "1", maximum = "30")
     @Setting("EnemyRange")
     public int enemyRange = 10;
@@ -37,7 +40,7 @@ public class OffhandCrystal extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        if (mc.currentScreen instanceof GuiContainer)
+        if (mc.currentScreen instanceof GuiContainer || mc.world == null || mc.player == null)
             return;
         if (!shouldTotem()) {
             if (!(mc.player.getHeldItemOffhand() != ItemStack.EMPTY && mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL)) {
@@ -64,9 +67,9 @@ public class OffhandCrystal extends ToggleableModule {
 
     private boolean shouldTotem() {
         if (holeCheck && GameUtil.isInHole(mc.player)) {
-            return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= holeHealth || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA || !nearPlayers() || mc.player.fallDistance >= 3 || (crystalCheck && !isCrystalsAABBEmpty());
+            return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= holeHealth || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA || !nearPlayers() || mc.player.fallDistance >= fallDistance || (crystalCheck && !isCrystalsAABBEmpty());
         }
-        return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= health || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA || !nearPlayers() || mc.player.fallDistance >= 3 || (crystalCheck && !isCrystalsAABBEmpty());
+        return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= health || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA || !nearPlayers() || mc.player.fallDistance >= fallDistance || (crystalCheck && !isCrystalsAABBEmpty());
     }
 
     private boolean isEmpty(BlockPos pos){

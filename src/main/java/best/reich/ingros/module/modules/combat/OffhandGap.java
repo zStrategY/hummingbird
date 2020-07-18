@@ -21,14 +21,17 @@ import net.minecraft.util.math.BlockPos;
 @ModuleManifest(label = "OffhandGap", category = ModuleCategory.COMBAT, color = 0xffAEEA1E)
 public class OffhandGap extends ToggleableModule {
 
+    @Clamp(minimum = "1", maximum = "60")
+    @Setting("FallDistance")
+    public int fallDistance = 30;
+
+
     @Clamp(minimum = "1", maximum = "22")
     @Setting("Health")
     public int health = 7;
 
     @Setting("CrystalCheck")
     public boolean crystalCheck = true;
-
-    int gaps = -1;
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
@@ -57,7 +60,7 @@ public class OffhandGap extends ToggleableModule {
 
 
     private boolean shouldTotem() {
-        return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= health || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA || !mc.gameSettings.keyBindUseItem.isKeyDown() ||mc.player.fallDistance >= 3 || (crystalCheck && !isCrystalsAABBEmpty());
+        return (mc.player.getHealth() + mc.player.getAbsorptionAmount()) <= health || mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.ELYTRA || !(mc.gameSettings.keyBindUseItem.isKeyDown() ||mc.player.fallDistance >= fallDistance || (crystalCheck && !isCrystalsAABBEmpty()));
     }
 
     private boolean isEmpty(BlockPos pos){

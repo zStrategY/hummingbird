@@ -35,20 +35,16 @@ public class FastInteract extends ToggleableModule {
 
     @Subscribe
     public void onUpdate(UpdateEvent event) {
-        if (mc.player != null || mc.world != null) {
-
+        if (event.getType() == EventType.PRE) {
             if (all) {
                 ((IMinecraft) mc).setRightClickDelayTimer(0);
             }
-
             if (xp && mc.player.getHeldItemMainhand().getItem() == Items.EXPERIENCE_BOTTLE) {
                 ((IMinecraft) mc).setRightClickDelayTimer(0);
             }
-
             if (crystal && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_PICKAXE && mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
                 ((IMinecraft) mc).setRightClickDelayTimer(0);
             }
-
             if (speedMine) {
                 if (event.getType() == EventType.PRE) {
                     ((IPlayerControllerMP) mc.playerController).setBlockHitDelay(0);
@@ -56,7 +52,6 @@ public class FastInteract extends ToggleableModule {
                     mc.player.addPotionEffect(new PotionEffect(MobEffects.HASTE, 100, item ? 1 : 0));
                 }
             }
-
             if (bow) {
                 if (mc.player.inventory.getCurrentItem().getItem() instanceof ItemBow) {
                     if (mc.player.isHandActive() && mc.player.getItemInUseMaxCount() >= 3) {

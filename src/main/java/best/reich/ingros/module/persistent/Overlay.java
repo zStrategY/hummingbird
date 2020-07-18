@@ -13,6 +13,7 @@ import me.xenforu.kelo.module.ModuleCategory;
 import me.xenforu.kelo.module.annotation.ModuleManifest;
 import me.xenforu.kelo.module.type.PersistentModule;
 import me.xenforu.kelo.module.type.ToggleableModule;
+import me.xenforu.kelo.setting.annotation.Clamp;
 import me.xenforu.kelo.setting.annotation.Mode;
 import me.xenforu.kelo.setting.annotation.Setting;
 import me.xenforu.kelo.util.math.MathUtil;
@@ -31,6 +32,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -53,9 +55,6 @@ public class Overlay extends PersistentModule {
 
     @Setting("Watermark")
     public boolean watermark = true;
-
-    @Setting("Logo")
-    public boolean logo = true;
 
     @Setting("Version")
     public boolean version = true;
@@ -90,6 +89,13 @@ public class Overlay extends PersistentModule {
     @Setting("Crystals")
     public boolean crystals = true;
 
+    @Clamp(maximum = "1920")
+    @Setting("ArraylistX")
+    public float X;
+
+    @Setting("Gapples")
+    public boolean gapples = true;
+
     @Setting("Inventory")
     public boolean inventory = true;
 
@@ -118,8 +124,6 @@ public class Overlay extends PersistentModule {
     private final TimerUtil serverTimer = new TimerUtil();
     private int initialRenderPos = 2;
     private final ResourceLocation INVENTORY_RESOURCE = new ResourceLocation("textures/gui/container/inventory.png");
-    private final ResourceLocation TOTEM_RESOURCE = new ResourceLocation("textures/item/totem.png");
-    private final ResourceLocation Logo = new ResourceLocation("cockandballs/logo.png");
     private Gui gui = new Gui();
     @Subscribe
     public void onPacket(PacketEvent event) {
@@ -133,11 +137,9 @@ public class Overlay extends PersistentModule {
     public void onRender(Render2DEvent event) {
         if (mc.world == null || mc.player == null || mc.gameSettings.showDebugInfo) return;
         if (watermark)
-        RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
+            RenderUtil.drawText(IngrosWare.INSTANCE.getLabel() + ChatFormatting.WHITE, 2, 2, getHudColor(), font);
         if (version)
-        RenderUtil.drawText(IngrosWare.INSTANCE.getVersion() + ChatFormatting.WHITE, 60, 2, getHudColor(), font);
-        if (logo)
-        mc.getTextureManager().bindTexture(Logo);
+            RenderUtil.drawText(IngrosWare.INSTANCE.getVersion() + ChatFormatting.WHITE, 62, 2, getHudColor(), font);
         if (arraylist) {
             int togglesY = (int) (initialRenderPos - RenderUtil.getTextHeight(font) - 2);
             ArrayList<ToggleableModule> modules;
@@ -145,7 +147,7 @@ public class Overlay extends PersistentModule {
             modules.sort(Comparator.comparingDouble(m -> -RenderUtil.getTextWidth(getRenderLabel(m), font)));
             for (ToggleableModule module : modules) {
                 if (!module.isEnabled() || module.isHidden()) continue;
-                RenderUtil.drawText(getRenderLabel(module), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth(getRenderLabel(module), font) - 2, togglesY += RenderUtil.getTextHeight(font) + 2, getArrayListColor(module, togglesY), font);
+                RenderUtil.drawText(getRenderLabel(module),  X - RenderUtil.getTextWidth(getRenderLabel(module), font) - 2, togglesY += RenderUtil.getTextHeight(font) + 2, getArrayListColor(module, togglesY), font);
             }
             if (potionTimer.reach(10)) {
                 for (int i = 0; i < (Minecraft.getDebugFPS() > 45 ? 4 : 8); i++) {
@@ -175,26 +177,26 @@ public class Overlay extends PersistentModule {
         }
         if (getTarget() != null && getTarget() instanceof EntityPlayer && targetHUD) {
             final EntityLivingBase ent = (EntityLivingBase) getTarget();
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 14, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 14, event.getScaledResolution().getScaledHeight() / 2 - 1 + 50, new Color(230, 190, 190, 255).getRGB());
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 52, event.getScaledResolution().getScaledHeight() / 2 + 23 + 50, event.getScaledResolution().getScaledWidth() / 2 + 52, event.getScaledResolution().getScaledHeight() / 2 + 52 + 50, new Color(230, 100, 255, 255).getRGB());
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 51, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 51, event.getScaledResolution().getScaledHeight() / 2 + 51 + 50, new Color(230, 190, 210, 255).getRGB());
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 50, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 50, event.getScaledResolution().getScaledHeight() / 2 + 50 + 50, new Color(255, 190, 240, 255).getRGB());
-                Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 13, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 13, event.getScaledResolution().getScaledHeight() / 2 + 50, new Color(200, 190, 190, 255).getRGB());
-                drawAltFace(getTarget(), event.getScaledResolution().getScaledWidth() / 2 - 12, event.getScaledResolution().getScaledHeight() / 2 + 1 + 50, 24, 24);
-                RenderUtil.drawText(getTarget().getName(), event.getScaledResolution().getScaledWidth() / 2 - RenderUtil.getTextWidth(getTarget().getName(), font) / 2, event.getScaledResolution().getScaledHeight() / 2 + 27 + 50, -1, font);
-                GlStateManager.pushMatrix();
-                GlStateManager.scale(0.5, 0.5, 0.5);
+            Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 14, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 14, event.getScaledResolution().getScaledHeight() / 2 - 1 + 50, new Color(230, 190, 190, 255).getRGB());
+            Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 52, event.getScaledResolution().getScaledHeight() / 2 + 23 + 50, event.getScaledResolution().getScaledWidth() / 2 + 52, event.getScaledResolution().getScaledHeight() / 2 + 52 + 50, new Color(230, 100, 255, 255).getRGB());
+            Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 51, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 51, event.getScaledResolution().getScaledHeight() / 2 + 51 + 50, new Color(230, 190, 210, 255).getRGB());
+            Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 50, event.getScaledResolution().getScaledHeight() / 2 + 25 + 50, event.getScaledResolution().getScaledWidth() / 2 + 50, event.getScaledResolution().getScaledHeight() / 2 + 50 + 50, new Color(255, 190, 240, 255).getRGB());
+            Gui.drawRect(event.getScaledResolution().getScaledWidth() / 2 - 13, event.getScaledResolution().getScaledHeight() / 2 + 24 + 50, event.getScaledResolution().getScaledWidth() / 2 + 13, event.getScaledResolution().getScaledHeight() / 2 + 50, new Color(200, 190, 190, 255).getRGB());
+            drawAltFace(getTarget(), event.getScaledResolution().getScaledWidth() / 2 - 12, event.getScaledResolution().getScaledHeight() / 2 + 1 + 50, 24, 24);
+            RenderUtil.drawText(getTarget().getName(), event.getScaledResolution().getScaledWidth() / 2 - RenderUtil.getTextWidth(getTarget().getName(), font) / 2, event.getScaledResolution().getScaledHeight() / 2 + 27 + 50, -1, font);
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(0.5, 0.5, 0.5);
 
-                if (IngrosWare.INSTANCE.moduleManager.getToggleByName("TotemPopCounter").isEnabled() && TotemPopCounter.popList.containsKey(getTarget().getName()))
-                    RenderUtil.drawText("pops:" + TotemPopCounter.popList.get(getTarget().getName()), event.getScaledResolution().getScaledWidth() - 150 / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
+            if (IngrosWare.INSTANCE.moduleManager.getToggleByName("TotemPopCounter").isEnabled() && TotemPopCounter.popList.containsKey(getTarget().getName()))
+                RenderUtil.drawText("pops:" + TotemPopCounter.popList.get(getTarget().getName()), event.getScaledResolution().getScaledWidth() - 150 / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
 
-                RenderUtil.drawText("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), font) / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
-                GlStateManager.scale(1.0f, 1.0f, 1.0f);
-                GlStateManager.popMatrix();
-                GlStateManager.scale(1, 1, 1);
-                GlStateManager.popMatrix();
-                RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 48, (event.getScaledResolution().getScaledHeight() / 2) + 45 + 50, (((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.60f), 3, new Color(255, 255, 255, 255).getRGB());
-                RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 47, (event.getScaledResolution().getScaledHeight() / 2) + 46 + 50,(((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.40f), 1, getHealthColor(getTarget()));
+            RenderUtil.drawText("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), event.getScaledResolution().getScaledWidth() - RenderUtil.getTextWidth("hp: " + Math.floor(getTarget().getHealth() + Math.floor(getTarget().getAbsorptionAmount())), font) / 2, event.getScaledResolution().getScaledHeight() + 75 + 100, -1, font);
+            GlStateManager.scale(1.0f, 1.0f, 1.0f);
+            GlStateManager.popMatrix();
+            GlStateManager.scale(1, 1, 1);
+            GlStateManager.popMatrix();
+            RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 48, (event.getScaledResolution().getScaledHeight() / 2) + 45 + 50, (((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.60f), 3, new Color(255, 255, 255, 255).getRGB());
+            RenderUtil.drawRect((event.getScaledResolution().getScaledWidth() / 2) - 47, (event.getScaledResolution().getScaledHeight() / 2) + 46 + 50, (((getTarget().getHealth() > 20 ? 20 : getTarget().getHealth()) / 2) * 9.40f), 1, getHealthColor(getTarget()));
         }
         if (armor) drawArmor(event.getScaledResolution());
         if (xyz) {
@@ -215,7 +217,13 @@ public class Overlay extends PersistentModule {
         }
         if (crystals) {
             RenderUtil.drawText("CRY: " + ChatFormatting.WHITE + crystalCount(), 2, y, getHudColor(), font);
+            y += RenderUtil.getTextHeight(font) + 2;
         }
+        if (gapples) {
+            RenderUtil.drawText("GAP: " + ChatFormatting.WHITE + gappleCount(), 2, y, getHudColor(), font);
+            y += RenderUtil.getTextHeight(font) + 2;
+        }
+
         if (ping) {
             final NetworkPlayerInfo networkPlayerInfo = mc.getConnection().getPlayerInfo(mc.player.getGameProfile().getId());
             final String ping = networkPlayerInfo == null ? "0ms" : networkPlayerInfo.getResponseTime() + " ms";
@@ -356,6 +364,10 @@ public class Overlay extends PersistentModule {
         return sb.toString();
     }
 
+    public static int getItems(Item i) {
+        return mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == i).mapToInt(ItemStack::getCount).sum() + mc.player.inventory.offHandInventory.stream().filter(itemStack -> itemStack.getItem() == i).mapToInt(ItemStack::getCount).sum();
+    }
+
 
     private int getArrayListColor(ToggleableModule toggleableModule, int offset) {
         switch (colormode.toUpperCase()) {
@@ -397,24 +409,17 @@ public class Overlay extends PersistentModule {
         }
     }
 
-    private int totemCount() {
-        int count = 0;
-        for (int i = 0; i < 45; ++i) {
-            if (!mc.player.inventory.getStackInSlot(i).isEmpty() && mc.player.inventory.getStackInSlot(i).getItem() == Items.TOTEM_OF_UNDYING) {
-                count++;
-            }
-        }
-        return count;
+
+    private String totemCount() {
+        return String.valueOf(getItems(Items.TOTEM_OF_UNDYING));
     }
 
-    private int crystalCount() {
-        int count = 0;
-        for (int c = 0; c < 45; ++c) {
-            if (!mc.player.inventory.getItemStack().isStackable() && mc.player.inventory.getStackInSlot(c).getItem() == Items.END_CRYSTAL) {
-                count++;
-            }
-        }
-        return count;
+    private String crystalCount() {
+        return String.valueOf(getItems(Items.END_CRYSTAL));
+    }
+
+    private String gappleCount() {
+        return String.valueOf(getItems(Items.GOLDEN_APPLE));
     }
 
     private EntityLivingBase getTarget() {

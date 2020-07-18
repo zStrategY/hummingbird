@@ -19,6 +19,7 @@ public class NoSlowDown extends ToggleableModule {
 
     @Subscribe
     public void onInputUpdate(UpdateInputEvent event) {
+        if (mc.player == null || mc.world == null) return;
         if (mc.player.isHandActive() && !mc.player.isRiding()) {
             mc.player.movementInput.moveStrafe *= 5;
             mc.player.movementInput.moveForward *= 5;
@@ -27,6 +28,7 @@ public class NoSlowDown extends ToggleableModule {
 
     @Subscribe
     public void onPre(PacketEvent event) {
+        if (mc.player == null || mc.world == null) return;
         if (event.getType() == EventType.PRE && event.getPacket() instanceof CPacketPlayer && ncp && mc.player.isActiveItemStackBlocking() && mc.player.onGround && !IngrosWare.INSTANCE.moduleManager.getModule("Speed").isEnabled() && (mc.player.moveStrafing != 0 || mc.player.moveForward != 0) && !mc.gameSettings.keyBindJump.isKeyDown()) {
             mc.player.motionY = 0.02;
             ((ICPacketPlayer)event.getPacket()).setY(((ICPacketPlayer)event.getPacket()).getY() + 0.3);
