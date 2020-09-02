@@ -92,6 +92,9 @@ public class CaRewrite extends ToggleableModule {
     @Setting("HitAttempts")
     public int hitAttempts = 7;
 
+    @Setting("MultiPlace")
+    public boolean multiPlace = false;
+    
     @Setting("Place")
     public boolean place = true;
 
@@ -131,18 +134,17 @@ public class CaRewrite extends ToggleableModule {
                     if (mc.player.getDistanceToEntity(crystal) <= breakRange) {
                         if (!mc.player.canEntityBeSeen(crystal) && mc.player.getDistanceToEntity(crystal) >= wallRange)
                             return;
-                        if (attempts > hitAttempts) return;
                         if (StopwatchUtil.hasCompleted((1000 / aps))) {
                             mc.playerController.attackEntity(mc.player, crystal);
                             mc.player.swingArm(EnumHand.MAIN_HAND);
                             stopwatch.reset();
+                       
+                        }
+                        
+                        if (!multiPlace) {
+                            return;
                         }
 
-                        if (lasthit == crystal) {
-                            ++this.attempts;
-                        } else {
-                            this.attempts = 1;
-                        }
 
                     }
                 }
