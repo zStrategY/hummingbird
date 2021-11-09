@@ -1,4 +1,4 @@
-/*package best.reich.ingros.module.modules.combat;
+package best.reich.ingros.module.modules.combat;
 
 import best.reich.ingros.IngrosWare;
 import best.reich.ingros.events.entity.UpdateEvent;
@@ -367,4 +367,4 @@ public class CrystalAura extends ToggleableModule {
             Logger.printMessage("CA Disabled!", true);
         }
     }
-} */
+} 
